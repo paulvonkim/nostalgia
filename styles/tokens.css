@@ -1,0 +1,89 @@
+/**
+ * Design tokens — see /design.md §4 (color system) and §5 (typography).
+ * Color values were sampled directly from design-reference/ screenshots
+ * (home.png, navbar.png, button_cta.png, menu_item.png, Frame 3.png) rather
+ * than eyeballed, so chrome matches the reference pixel-for-pixel.
+ */
+
+:root {
+  /* ---- Neutrals -------------------------------------------------- */
+  --color-white: #ffffff;
+  --color-grey-100: #eaeaea; /* window gutter, scrollbar track, dialog bg */
+  --color-grey-300: #dcdcdc; /* button platter fill */
+  --color-grey-500: #8f8f8f; /* scrollbar thumb, disabled text, logo default */
+  --color-grey-700: #444444; /* dark grey, reserved for dark-theme chrome */
+  --color-black: #000000;
+
+  /* ---- Effect colors (system-wide accents) ------------------------ */
+  --color-effect-blue: #016ec3; /* desktop wash, links, logo hover */
+  --color-effect-magenta: #c96fc6; /* focus ring, item hover fill */
+
+  /* ---- Case-study color pairs (bold / subtle) ---------------------
+   * Tentative per design.md §4/§9 — not yet tested against a real built
+   * case study page. Mapping of pair -> case study lives in design.md §11.
+   */
+  --color-case-ice-blue: #bfe3f2;
+  --color-case-navy: #1b2a4a;
+  --color-case-cream: #f5ede0;
+  --color-case-charcoal: #33302c;
+  --color-case-blush: #f3c6d3;
+  --color-case-deep-green: #1e3b2f;
+  --color-case-tan: #d9bf94;
+  --color-case-brown: #4a3221;
+
+  /* ---- Typography --------------------------------------------------
+   * Font family variables (--font-chicago, --font-inter) are injected by
+   * next/font in app/layout.tsx.
+   */
+  --font-ui: var(--font-chicago), "Chicago", monospace;
+  --font-body: var(--font-inter), -apple-system, sans-serif;
+
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-xl: 28px;
+
+  /* ---- Chrome geometry ---------------------------------------------
+   * Measured from design-reference/screens/home.png and components/dialog.png.
+   */
+  --border-width: 2px;
+  --window-gutter: 8px;
+  --shadow-offset: 8px;
+  --scrollbar-width: 26px;
+
+  /* ---- Semantic tokens (light theme, default) ----------------------- */
+  --bg-desktop: var(--color-effect-blue);
+  --bg-chrome: var(--color-grey-100);
+  --bg-window: var(--color-white);
+  --bg-navbar: var(--color-white);
+  --border-color: var(--color-black);
+  --text-color: var(--color-black);
+  --text-color-muted: var(--color-grey-500);
+  --shadow-color: rgb(0 0 0 / 60%);
+  --accent: var(--color-effect-blue);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-desktop: var(--color-grey-700);
+    --bg-chrome: #2a2a2a;
+    --bg-window: #1a1a1a;
+    --bg-navbar: #1a1a1a;
+    --border-color: var(--color-white);
+    --text-color: var(--color-white);
+    --text-color-muted: var(--color-grey-500);
+    --shadow-color: rgb(0 0 0 / 80%);
+  }
+}
+
+[data-theme="dark"] {
+  --bg-desktop: var(--color-grey-700);
+  --bg-chrome: #2a2a2a;
+  --bg-window: #1a1a1a;
+  --bg-navbar: #1a1a1a;
+  --border-color: var(--color-white);
+  --text-color: var(--color-white);
+  --text-color-muted: var(--color-grey-500);
+  --shadow-color: rgb(0 0 0 / 80%);
+}
