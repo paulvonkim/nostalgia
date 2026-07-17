@@ -9,34 +9,39 @@
   /* ---- Neutrals -------------------------------------------------- */
   --color-white: #ffffff;
   --color-grey-100: #eaeaea; /* window gutter, scrollbar track, dialog bg */
-  --color-grey-300: #dcdcdc; /* button platter fill */
-  --color-grey-500: #8f8f8f; /* scrollbar thumb, disabled text, logo default */
-  --color-grey-700: #444444; /* dark grey, reserved for dark-theme chrome */
+  --color-grey-300: #dbdbdb; /* button platter fill */
+  --color-grey-400: #b2b2b2; /* secondary button ring, hover state */
+  --color-grey-500: #8f8f8f; /* scrollbar thumb, disabled text */
+  --color-grey-700: #515151; /* diamond logo outline/facet lines, dark chrome */
+  --color-near-black: #020202; /* CTA button text */
   --color-black: #000000;
 
   /* ---- Effect colors (system-wide accents) ------------------------ */
-  --color-effect-blue: #016ec3; /* desktop wash, links, logo hover */
+  --color-effect-blue: #016ec3; /* desktop wash, links, logo hover outline */
+  --color-effect-blue-light: #c4e2ec; /* logo hover facet fill */
   --color-effect-magenta: #c96fc6; /* focus ring, item hover fill */
 
   /* ---- Case-study color pairs (bold / subtle) ---------------------
-   * Tentative per design.md §4/§9 — not yet tested against a real built
-   * case study page. Mapping of pair -> case study lives in design.md §11.
+   * Exact values, not approximations — mapping of pair -> case study
+   * lives in design.md §11.
    */
-  --color-case-ice-blue: #bfe3f2;
-  --color-case-navy: #1b2a4a;
-  --color-case-cream: #f5ede0;
-  --color-case-charcoal: #33302c;
-  --color-case-blush: #f3c6d3;
-  --color-case-deep-green: #1e3b2f;
-  --color-case-tan: #d9bf94;
-  --color-case-brown: #4a3221;
+  --color-case-ice-blue: #c4e2ec;
+  --color-case-navy: #1d2089;
+  --color-case-cream: #f1ede0;
+  --color-case-charcoal: #4c4c4c;
+  --color-case-blush: #ffdcd4;
+  --color-case-deep-green: #096f4b;
+  --color-case-tan: #f6e0ad;
+  --color-case-brown: #844f1d;
 
   /* ---- Typography --------------------------------------------------
-   * Font family variables (--font-chicago, --font-inter) are injected by
-   * next/font in app/layout.tsx.
+   * Font family variables (--font-chicago, --font-inter, --font-gossip)
+   * are injected by next/font in app/layout.tsx.
    */
   --font-ui: var(--font-chicago), "Chicago", monospace;
   --font-body: var(--font-inter), -apple-system, sans-serif;
+  --font-hero:
+    var(--font-gossip), "Chicago", serif; /* blackletter hero wordmark, scoped tightly (see design.md §5) */
 
   --text-xs: 12px;
   --text-sm: 14px;
@@ -64,26 +69,21 @@
   --accent: var(--color-effect-blue);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg-desktop: var(--color-grey-700);
-    --bg-chrome: #2a2a2a;
-    --bg-window: #1a1a1a;
-    --bg-navbar: #1a1a1a;
-    --border-color: var(--color-white);
-    --text-color: var(--color-white);
-    --text-color-muted: var(--color-grey-500);
-    --shadow-color: rgb(0 0 0 / 80%);
-  }
-}
-
+/* Light is always the default, regardless of OS/browser preference — dark
+ * only applies when explicitly toggled via the navbar's Theme control
+ * (data-theme="dark"), never automatically from prefers-color-scheme. */
 [data-theme="dark"] {
   --bg-desktop: var(--color-grey-700);
   --bg-chrome: #2a2a2a;
   --bg-window: #1a1a1a;
   --bg-navbar: #1a1a1a;
-  --border-color: var(--color-white);
-  --text-color: var(--color-white);
+  /* Structural chrome lines (window border, title bar pinstripes,
+   * scrollbar border) use the existing light-grey neutral, not pure white —
+   * pure white read as too stark/glaring for line work at this scale. */
+  --border-color: var(--color-grey-100);
+  /* Off-white, not pure white — body text at this much surface area against
+   * a near-black background was too high-contrast/glaring at #fff. */
+  --text-color: var(--color-grey-100);
   --text-color-muted: var(--color-grey-500);
   --shadow-color: rgb(0 0 0 / 80%);
 }

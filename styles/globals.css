@@ -33,5 +33,4 @@ a {
 .font-ui {
   font-family: var(--font-ui);
   -webkit-font-smoothing: none;
-  font-smooth: never;
 }

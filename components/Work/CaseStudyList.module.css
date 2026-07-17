@@ -1,0 +1,5 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 60px; /* matches the breathing room between cards in design-reference/screens/work.png */
+}

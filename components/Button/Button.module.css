@@ -1,0 +1,60 @@
+/* One button, no variants. Fixed border/radius/fill, identical in both
+ * themes — the earlier primary/secondary/accent split was tried and
+ * dropped. Fill is the exact color the component used before that split
+ * was introduced (var(--color-grey-300)), not a new guess. Text is a
+ * fixed near-black (#020202) rather than the original's var(--text-color):
+ * that token flips light in dark mode and would go unreadable against
+ * this button's own permanently-light fill (the same bug already fixed
+ * once on this component). */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 108px;
+  height: 30px;
+  padding: 0 16px;
+  border: 1px solid var(--color-black);
+  border-radius: 5px;
+  box-shadow: none;
+  background: var(--color-grey-300);
+  color: var(--color-near-black);
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  -webkit-font-smoothing: none;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* No hover/active/focus styling on the button itself — see .ringWrapper. */
+.button:focus-visible {
+  outline: none;
+}
+
+/* Feedback lives entirely on this wrapper so the button's own box never
+ * changes size across states — padding/border are reserved (transparent)
+ * even at rest, so nothing shifts when a state becomes visible. */
+.ringWrapper {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  box-shadow: inset 0 0 0 1px transparent;
+}
+
+.ringWrapper:hover {
+  border-color: var(--color-black);
+  background: var(--color-effect-magenta);
+  box-shadow: inset 0 0 0 1px var(--color-white);
+}
+
+/* Active (mouse press) and keyboard focus get the identical accent-blue
+ * ring — one treatment, not two competing states. */
+.ringWrapper:active,
+.ringWrapper:has(:focus-visible) {
+  border-color: var(--color-black);
+  background: var(--color-effect-blue);
+  box-shadow: inset 0 0 0 1px var(--color-white);
+}

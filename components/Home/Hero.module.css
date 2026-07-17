@@ -1,0 +1,52 @@
+.hero {
+  display: flex;
+  align-items: flex-start;
+  gap: 48px;
+}
+
+.portrait {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 420px;
+  padding-top: 4px;
+}
+
+.wordmark {
+  margin: 0;
+  line-height: 0;
+}
+
+.wordmarkImg {
+  display: block;
+  /* Source is a clean 2x render (671x177) — displaying at exactly half
+   * keeps the nearest-neighbor downscale artifact-free (tested; an
+   * arbitrary ratio here reintroduced moiré against the font's dot grid). */
+  width: 335.5px;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+/* Baked bitmap is solid black — invisible against a near-black dark-mode
+ * background. Invert to flip it white, same fix as DitherReveal's default
+ * image and for the same reason (it's pixels, not theme-aware live text). */
+[data-theme="dark"] .wordmarkImg {
+  filter: invert(1);
+}
+
+.pitch {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  line-height: 1.5;
+  color: var(--text-color);
+}
+
+.cta {
+  margin-top: 8px;
+}

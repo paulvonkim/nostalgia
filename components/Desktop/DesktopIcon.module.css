@@ -1,0 +1,61 @@
+.icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 76px;
+  padding: 4px 0;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.glyph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  transition: transform 100ms ease;
+}
+
+/* Doubles each icon's own rendered size (24-28px natively) without
+ * touching the label — scale is applied to the glyph's contents, not to
+ * .glyph itself, so it doesn't also blow up the label's flex sizing. */
+.glyph svg,
+.glyph img {
+  transform: scale(2);
+}
+
+.icon:active .glyph {
+  transform: scale(0.9);
+}
+
+/* Fixed white bg / black text, matching design-reference/components/
+ * impressum.png — a physical desktop label, not theme-reactive chrome. */
+.label {
+  background: var(--color-white);
+  color: var(--color-black);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 1px 6px;
+  text-align: center;
+  -webkit-font-smoothing: none;
+  transition:
+    background-color 100ms ease,
+    color 100ms ease;
+}
+
+/* Magenta on hover — same treatment as the hero portrait's background
+ * (DitherReveal.module.css), unconditional across both themes. */
+.icon:hover .label {
+  background: var(--color-effect-magenta);
+  color: var(--color-white);
+}
+
+/* Brief press highlight — classic Finder "selected icon" look. Comes
+ * after :hover so it still wins while the icon is actively being clicked. */
+.icon:active .label {
+  background: var(--accent);
+  color: var(--color-white);
+}

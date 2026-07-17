@@ -1,0 +1,23 @@
+/* --diamond-fill / --diamond-outline are set by the parent .logo link in
+ * Navbar.module.css and inherit down through the DOM — no cross-module
+ * class coupling needed. Defaults here cover standalone usage. */
+
+/* Sized in em, off the *inherited* nav font-size, not a hardcoded px value —
+ * open/linear shapes (this diamond, later the hard drive and trash icons)
+ * read smaller than solid letterforms at the same nominal size, because
+ * glyphs fill their box far more densely than a thin-stroked icon does.
+ * ~1.4-1.5x text size is the correction; tune the multiplier, not the unit. */
+.diamondMark {
+  display: block;
+  width: 1.45em;
+  aspect-ratio: 44 / 33;
+  height: auto;
+}
+
+.fill {
+  fill: var(--diamond-fill, var(--color-grey-300));
+}
+
+.outline {
+  fill: var(--diamond-outline, var(--color-grey-700));
+}

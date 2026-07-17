@@ -23,7 +23,8 @@ Audience: design managers and hiring managers evaluating taste and interaction c
 3. **Restraint over full simulation.** This is not a desktop OS the visitor has to learn. One window, fixed navigation, no icon grid to manage.
 4. **Accessible by default.** Focus states, contrast, and keyboard navigation are part of the retro vocabulary, not an accessibility bolt-on. (See: dashed focus ring on CTA buttons.)
 5. **Case study content is untouched.** This system wraps around existing writing — it does not rewrite it.
-6. **Hover interactions must degrade without hover.** Touch devices have no hover state. Every hover-dependent interaction (ASCII reveal, item-list hover, image enlarge) needs a deliberate touch equivalent or graceful fallback, decided per-component — never assumed away. This does not block deferring mobile layout itself, but it does mean interaction dependencies must be tracked now.
+6. **Distinguish verified period-accuracy from intentional modern twists, explicitly, per component.** Geometry, materials, and flat construction (borders, radii, grey chrome, no drop shadows) are held to real 90s reference material and measured, not guessed. Color-forward interactivity (filled colored buttons, hover feedback itself) is NOT period-accurate — 90s Mac software had almost no color in UI chrome and no hover concept at all — and is the deliberate modern layer this whole project is built on, not drift to be second-guessed component by component.
+7. **Hover interactions must degrade without hover.** Touch devices have no hover state. Every hover-dependent interaction (ASCII reveal, item-list hover, image enlarge) needs a deliberate touch equivalent or graceful fallback, decided per-component — never assumed away. This does not block deferring mobile layout itself, but it does mean interaction dependencies must be tracked now.
 
 ---
 
@@ -32,11 +33,16 @@ Audience: design managers and hiring managers evaluating taste and interaction c
 - **Single window architecture.** One window on screen at all times. Navigating (Work / About / case studies) swaps the window's title and content — it does not spawn additional windows.
 - **The window is draggable.** The visitor can move the single window around the desktop plane. Dragging is a physical/tactile detail, not a multi-window management system.
 - **Fixed navbar**, always visible above the desktop plane: logo mark (diamond) — Work — About — Theme — live clock (right-aligned). The diamond mark is the Apple-menu equivalent: it's the home button, turns blue on hover.
-- **Desktop plane**: the colored area behind/around the window. A small set of utility elements float here outside the window frame (currently: a version tag, an Impressum link).
-- **No desktop icon grid.** Navigation is via the navbar text links only, not double-clickable desktop icons — unless we decide otherwise later.
+- **Desktop plane**: the colored area behind/around the window. Three desktop icons float here in a single column, top-right, matching the classic Mac auto-arrange convention — in order: a floppy disk (triggers the résumé download), the LinkedIn logo (opens LinkedIn in a new tab), and, set apart with an extra gap, a stamp icon (opens Impressum).
+- **"About This Site" dialog**: opens from the diamond mark, mirroring the real Mac OS "About This Macintosh" pattern under the Apple menu — thematically precise reuse of an existing component rather than a new nav item. Contains: copyright line, font credit ("Display typeface 'Gossip' by Deborah Khodanovich — gossip.cargo.site"), icon set credit, and a line on the build stack (Next.js, built by Paul Kim). Impressum (stamp icon) stays purely legal — name/contact, no credits mixed in — since legal-notice content needs to stay trivially discoverable from a dedicated, always-present location, not tucked inside a dialog someone has to think to open. Site confirmed not using cookies/tracking, so no cookie notice needed anywhere.
+- **Window dragging**: working as intended — bounded so it can't leave the viewport, resets to centered position on every route change (not just hard refresh).
+- **Home window title**: "Paul Kim's Portfolio," not "Home" or plain "Paul Kim." Immediately clear to any visitor regardless of familiarity with classic Mac conventions (an earlier "Paul Kim HD" idea was dropped — too reliant on knowing the disk-naming in-joke). Avoids literally repeating the Gossip wordmark text while adding just enough context. Home-specific exception; every other window (Work, About, case study titles) stays a functional wayfinding label.
+- **Window sizing**: three cases, not two. About and Impressum use ~840×640 (readable text-only content). Case study pages use a larger, responsive size — `max-width: min(1200px, 92vw)`, `max-height: min(840px, 85vh)` — since they need room for full-width images and before/after twin windows; the `min()` cap keeps drag margin intact on smaller laptop screens rather than filling the viewport edge-to-edge. **Home is not locked to either size** — its size is being tuned iteratively alongside the actual hero content (ASCII portrait, Gossip wordmark, pitch text, CTAs) rather than fixed in advance, since the right size depends on seeing those pieces together. Chrome (borders, title bar, scrollbar) stays visually identical across all sizes — only the scale differs. Centered by default.
+- **Desktop icons, resolved.** Not a full icon grid — a single auto-arranged column, top-right of the desktop, top to bottom: Resume, LinkedIn, then Impressum set apart with a bigger gap — Resume/LinkedIn are a "get in touch" pair, Impressum is a legal notice, not part of that grouping. All three open on a single click, not the literal classic-Mac double-click, with a brief press/highlight animation (icon scales down slightly, label inverts to the accent color) for tactile feedback. Primary site navigation is still the navbar; these three are a secondary, desktop-metaphor path to actions that aren't really "pages" (a download, an external link, and the legal notice).
+- **Hero CTAs simplified to one.** Download Resume and LinkedIn are no longer hero buttons — they moved to the desktop icons above. The hero now has a single "View My Work →" CTA routing to the Work overview, using the one standard CTA button component (see §7) — not a distinct accent-colored variant.
 
 ### Resolved
-No close/zoom/minimize boxes — not designed, not needed. Navigation lives entirely in the navbar, with the single exception of Impressum, which lives on the hard drive desktop icon. Title bar chrome is styling only, not functional controls.
+No close/zoom/minimize boxes — not designed, not needed. Navigation lives entirely in the navbar, with the single exception of Impressum, which lives on the stamp desktop icon. Title bar chrome is styling only, not functional controls.
 
 ---
 
@@ -66,13 +72,27 @@ Light/dark toggle + one visitor-selectable accent color (middle ground between f
 ### Resolved
 Visitor-selectable accent color is scoped to global/system chrome only (Home, About, navbar, general UI outside case studies). It does not apply within case study pages. Inside a case study, color comes entirely from that case's assigned pair (and tonal variations of it) — the visitor's accent choice is overridden there. Neutrals (the light/dark toggle) apply everywhere, including inside case studies, regardless of this.
 
+Dark mode is never automatic (no `prefers-color-scheme` detection) — light is always the default appearance; dark only applies once the visitor explicitly toggles it via the navbar's Theme control.
+
+In dark mode, structural chrome *lines* (window border, title bar pinstripes, scrollbar border) use the neutral scale's light grey, not pure white — pure white against the near-black backgrounds read as too stark/glaring for line work at this scale. Body/paragraph text is likewise an off-white, not pure white, for the same reason (readable text covers far more surface area than a thin border, so full-contrast white felt glaring there too). Small chrome *widgets* with their own fixed neutral fill (CTA buttons, scrollbar arrow buttons/thumb) keep a fixed, non-theme-reactive fill and a fixed contrasting foreground in both themes — deliberately not swapping with light/dark, since their fill was never tied to the theme tokens to begin with.
+
+The ASCII/dither hover-reveal imagery (see §6) is exempt from the theme system entirely — it doesn't invert or otherwise react to light/dark. See §6 for the reasoning.
+
 ---
 
 ## 5. Typography
 
 - **Chicago FLF** — large text, UI chrome, headings, navbar, buttons, labels.
 - **Inter** — body copy, paragraph text inside case studies. (Chicago is a bitmap UI face — deliberately not used for long-form reading.)
-- **Textura** — deferred. Was proposed for the hero as a deliberate era-collision; dropped for now, may revisit once the hero is actually being designed.
+- **Gossip** (by Deborah Khodanovich, `gossip.cargo.site`) — hero typeface (and possibly About page), replacing the deferred Textura placeholder. Not an arbitrary blackletter pairing: Gossip is itself built from Gutenberg's Textura and Susan Kare's Cairo glyphs — the same Kare who designed the original Chicago typeface. This makes the hero's blackletter moment a continuation of the same lineage as the rest of the type system, not a collision between two unrelated eras. Ships in three pixel densities (low/medium/high) — which one reads best at hero scale to be tested once the file is in hand, not decided on paper. Comes with a companion icon set (Kare-sketch-inspired) worth evaluating as a source/reference for the trash desktop icon.
+- **Hero treatment direction**: dark, confident, restrained — not theatrical or campy. The blackletter choice itself carries enough distinctiveness; scale and drama don't need to be pushed further. Scoped tightly to hero (and maybe About) only — Chicago FLF and Inter remain untouched everywhere else.
+- **Hero wordmark confirmed**: "Paul Kim" set in Gossip (Med Square variant, tested at 96pt) as the hero's display type, replacing the earlier generic "Design Portfolio" placeholder heading. Body copy (Inter) sits a size smaller alongside it. First mockup reviewed 2026-07-16 (not live code yet) — restrained/elegant read confirmed as the intended target.
+
+### Open question
+Should the hero headline enter via the same ASCII/dither hover-reveal motif used for images (resolving from static into the full dark blackletter on load), extending that pattern into typography — or does that stay image-only? Not yet decided.
+
+### Open question — Licensing
+No formal license found for Gossip. Creator's stated ask ("please credit me... would love to see it in use") reads as a good-faith invitation, and this use (rendering only, not redistributing the font file, plus credit given) is low-risk — but not verified legal clearance. Recommended: contact the designer directly before shipping, given this is for a professional job-search context.
 
 Sizes/scale: not yet defined — TBD as we design real pages.
 
@@ -80,7 +100,8 @@ Sizes/scale: not yet defined — TBD as we design real pages.
 
 ## 6. Interaction Patterns
 
-- **ASCII/dithered hover-reveal.** Confirmed as an intentional recurring pattern, not limited to the profile photo — images resolve from ASCII/dither into a cleaner state on hover.
+- **ASCII/dithered hover-reveal.** Confirmed as an intentional recurring pattern, not limited to the profile photo — images resolve from ASCII/dither into a cleaner state on hover. Concrete behavior confirmed: reveals the same photo as a clean, undithered JPG — not a different image, not a stylized alternate.
+- **Dither imagery ignores the light/dark theme.** Resolved after an initial attempt to invert the dithered asset's colors in dark mode (so the dots wouldn't vanish against a dark background) was rejected: the portrait should read like a printed photo sitting on the desktop — a fixed physical object unaffected by the surrounding chrome's theme — not an interface element that recolors itself to match. It keeps its native light background and dark dots in both themes.
 - **Draggable window.** Physical drag interaction on the single window.
 - **Live clock.** Navbar, top-right, functioning. Displays time only — no location.
 
@@ -90,10 +111,14 @@ Sizes/scale: not yet defined — TBD as we design real pages.
 
 - **Window chrome**: title bar with brick-pattern flanking the title text, bordered content area, scrollbar.
 - **Scrollbar**: track, thumb, up/down arrow buttons. Multiple reference variants shown — exact anatomy (thumb position states, arrow behavior) TBD.
-- **CTA button**: default (grey platter), pressed/hover, and a dashed focus ring state for keyboard navigation. Focus ring confirmed as a keep — real accessibility value.
+- **CallToAction button — final, complete component spec** (applies to every CTA button site-wide, not one instance). One button, one component — no primary/secondary/accent-color variants of any kind. A three-variant version (neutral primary/secondary plus an accent-colored third) was built and then dropped as unnecessary complexity; every CTA everywhere now looks identical.
+  - **Size**: ~108×30px, or auto-width with equivalent padding for longer labels.
+  - **Border & radius, every state, always, same in light and dark mode**: 1px black border, 4–6px corner radius. No drop shadow (verified against a real Photoshop 1.0 dialog screenshot — classic Mac buttons are flat bordered rectangles, no shadow).
+  - **Fill**: `#DBDBDB` (`--color-grey-300`) — the button's original fill color from before the primary/secondary/accent split was ever introduced, restored rather than re-guessed. Fixed, identical in both themes.
+  - **Hover/active/focus, layered outer-ring model** (an outer wrapper, not a property swap on the button itself, so the core button never resizes — default reserves the same ~2–3px padding/1px black border/white inset-highlight space, transparent, so nothing shifts when a state becomes visible): magenta ring (`#C96FC6`, `--color-effect-magenta`) on hover; accent-blue ring (`--color-effect-blue`) on both `:active` and `:focus-visible` — one shared treatment, not separate states.
 - **Item list**: default, disabled/greyed, plus two distinct interactive states (not competing) — magenta fill and black fill. Proposed mapping (pending confirmation): magenta = hover (transient), black = active/selected (permanent). See open question #5.
-- **Navbar**: diamond logomark, text nav (Work / About / Theme), live clock right-aligned.
-- **Desktop icon**: a single hard drive icon on the desktop plane, opening the Impressum page — a direct repurpose of the classic Mac desktop convention (hard drive icon, always present) for something every site needs but rarely gives real presence to.
+- **Navbar**: diamond logomark, text nav (Work / About / Theme), live clock right-aligned. Hover state: filled background plus text color change together, matching classic selected-menu-item behavior (see Item list component) — not a text-color-only change. **Icon-to-text optical sizing**: icons must not be sized to literally match adjacent text height — open shapes (like the diamond) read smaller than dense letterforms at the same numeric size. Icons need to run larger (roughly 1.4–1.5× the text's font-size as a starting point) to read as visually equal weight. Judged by eye, not a fixed formula — applies to every icon paired with text (diamond, stamp, trash), not just this one instance.
+- **Desktop icons**: three, auto-arranged in a single column from the top-right of the desktop (classic Mac auto-arrange convention, not a full grid). Top to bottom: a floppy disk (triggers the résumé download), the LinkedIn logo (opens LinkedIn in a new tab), then — set apart with a bigger gap — a stamp icon that opens Impressum. The stamp replaces an earlier hard-drive-icon idea: "Impressum" is German for imprint, the same word a physical stamp's mark takes its name from, so the icon plays on the label's own etymology rather than reusing the classic-Mac hard-drive convention for something that was never actually a drive. The gap before it is deliberate — Resume/LinkedIn read as a "get in touch" pair, Impressum is a legal notice and isn't part of that grouping. All three: single click (not the literal double-click), with a brief press/highlight animation — the icon glyph scales down slightly and the label inverts to the accent color — for tactile feedback. The floppy disk and stamp are hand-designed in-house, fixed white fill / black outline in both themes, matching the dithered portrait's "physical object, not theme-reactive chrome" treatment; the LinkedIn icon is LinkedIn's actual published brand asset, used unmodified rather than themed like the others. Labels use a fixed white background / black text (per the impressum.png reference), not theme-reactive either.
 
 ---
 
@@ -107,13 +132,13 @@ Sizes/scale: not yet defined — TBD as we design real pages.
 
 | # | Question | Status |
 |---|---|---|
-| 1 | Window close/zoom/minimize boxes | **Resolved** — none. Navigation lives in navbar; Impressum via hard drive icon |
+| 1 | Window close/zoom/minimize boxes | **Resolved** — none. Navigation lives in navbar; Impressum via stamp icon |
 | 2 | Bold vs. subtle color mapping within each case pair | **Tentative** — bold = content accent, subtle = desktop wash. To be tested against a real build |
 | 3 | Interaction between visitor's accent color and case identity color | **Resolved** — accent color is global-chrome-only, does not apply inside case studies. Neutrals apply everywhere |
 | 4 | Clock "location" | **Resolved** — time only, no location |
 | 5 | Item list magenta vs. black — which is hover, which is active/selected? | Proposed: magenta = hover, black = active/selected. Awaiting confirmation. |
-| 6 | Floating "version tag" element | **Resolved** — dropped. Replaced by a hard drive desktop icon that opens Impressum |
-| 7 | Trash icon — classic desktop pair to the hard drive icon, no meaningful use identified yet | Open, low priority — fine to leave unused |
+| 6 | Floating "version tag" element | **Resolved** — dropped. Replaced by a stamp desktop icon that opens Impressum |
+| 7 | Trash icon — no meaningful use identified yet | Open, low priority — fine to leave unused. Originally conceived as the classic desktop pair to a hard-drive icon; that icon was since replaced by the stamp, so the pairing rationale no longer applies, but the icon itself was never blocking on it |
 | 8 | Case-color mapping for the four cases | **Resolved** — see §11 |
 | 9 | SectionRenderer visual treatment per section type (`text`, `text-image`, `full-width-image`, `before-after`, `stats`, `video`, `notice`) | Open — next design task. `notice` confirmed as a dialog-box treatment |
 
@@ -220,3 +245,13 @@ Desktop-viewport responsiveness (different laptop/monitor widths) is being built
 - **2026-07-16** — Accent color is global-chrome-only; case studies use only their own assigned color and its variations, never the visitor's chosen accent. Neutrals apply universally.
 - **2026-07-16** — SectionRenderer treatments confirmed for all section types (§12). `full-width-image` uses hover-to-enlarge in place, not a lightbox — fast/snappy transition, no easing glide.
 - **2026-07-16** — Desktop-viewport responsiveness built in as we go, per component. Mobile/touch layout remains deferred, but hover-dependent interactions must be tracked for future touch fallback (Principle 6).
+- **2026-07-16** — Hero typeface un-deferred: Gossip (Deborah Khodanovich) selected in place of the placeholder Textura idea — same Textura/Cairo lineage as the rest of the type system, not an arbitrary pairing. License to be verified at source before use.
+- **2026-07-16** — Hero wordmark decided: "Paul Kim" in Gossip Med Square, replacing the generic "Design Portfolio" heading. Tone resolved as restrained/dark/confident, not theatrical or campy — the blackletter choice itself carries enough distinctiveness.
+- **2026-07-16** — Dark mode is opt-in only, never derived from OS/browser preference — light is always the default appearance.
+- **2026-07-16** — Dark-mode chrome-line color (window border, title bar pinstripes, scrollbar border) corrected from pure white to the neutral scale's light grey; body text corrected from pure white to an off-white — both were too high-contrast/glaring against the near-black backgrounds. Fixed-fill chrome widgets (CTA buttons, scrollbar arrow buttons/thumb) keep a fixed fill and fixed contrasting foreground in both themes rather than following the theme tokens.
+- **2026-07-16** — Dither/ASCII imagery (hero portrait, and by extension all future case-study images using the same treatment) confirmed theme-independent — reads like a printed photo sitting on the desktop, not an interface element that recolors to match light/dark. An initial attempt to invert it in dark mode was tried and reverted; it now sits on a fixed light-grey ground instead.
+- **2026-07-16** — Hero simplified to one CTA: "View My Work →", routing to the Work overview, using the standard CTA button component. Download Resume and LinkedIn are no longer hero buttons.
+- **2026-07-16** — Desktop icon grid decision reopened and resolved: not a full grid, but a single auto-arranged column (Hard Drive, Resume, LinkedIn) top-right of the desktop, replacing the two hero buttons that moved here. Single click, not double-click, with a brief press/highlight tactile animation. Icon artwork is hand-designed (no reference bitmap existed for these, unlike the navbar diamond) — fixed white/black, matching the dither imagery's theme-independent treatment.
+- **2026-07-16** — CTA button spec corrected in §7 to match the actual current implementation: primary is white/dark-grey (reversing in dark mode), never accent-colored; a new third "accent" variant carries the site accent color for cases like the hero CTA. All three variants share one hover/active/focus ring mechanism — the earlier idea of shade-shifting a colored fill instead of ringing it was tried and dropped.
+- **2026-07-16** — CTA button simplified again, this time all the way down to one variant: the primary/secondary/accent-color split (previous entry) is fully retired. Every CTA button site-wide is now identical — fill restored to the component's pre-split original (`#DBDBDB`/`--color-grey-300`), border/radius unchanged and theme-independent, magenta ring on hover, accent-blue ring (shared) on active and keyboard focus. Impressum's hard drive icon was also relabeled "Impressum" (was "Hard Drive"), and the LinkedIn desktop icon now uses LinkedIn's actual published brand asset rather than the hand-designed shared-network-drive icon.
+- **2026-07-17** — Hard-drive icon replaced with a stamp: "Impressum" is German for imprint, the same word a physical stamp's mark takes its name from, so the icon now plays on the label's own etymology instead of reusing the classic-Mac hard-drive convention for something that was never actually a drive. Desktop icon order changed to Resume → LinkedIn → Impressum (was Hard Drive → Resume → LinkedIn), with Impressum set apart by a bigger gap since it's a legal notice, not part of the Resume/LinkedIn "get in touch" grouping.

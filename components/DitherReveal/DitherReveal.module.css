@@ -1,0 +1,43 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+  /* Fixed light-grey ground, not transparent/white, in both themes — the
+   * dithered image's transparent gaps otherwise show whatever is behind
+   * the wrapper (the page background), which vanishes against a dark
+   * background. This makes the portrait read like a printed photo sitting
+   * on the desktop: a fixed physical object, not something that recolors
+   * itself to match the surrounding theme. */
+  background: var(--color-grey-100);
+  transition: background-color 120ms ease;
+}
+
+.wrapper:hover {
+  background: var(--color-effect-magenta);
+}
+
+.image {
+  object-fit: cover;
+  transition: opacity 120ms ease;
+}
+
+.default {
+  opacity: 1;
+}
+
+.hover {
+  opacity: 0;
+}
+
+.wrapper:hover .default {
+  opacity: 0;
+}
+
+.wrapper:hover .hover {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image {
+    transition: none;
+  }
+}

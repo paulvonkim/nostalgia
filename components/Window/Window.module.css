@@ -1,0 +1,177 @@
+.outer {
+  display: inline-flex;
+  border: var(--border-width) solid var(--border-color);
+  padding: var(--window-gutter);
+  background: var(--bg-chrome);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  /* Default (no `size` prop) — Home. Sizes to its content intrinsically;
+   * max-width is only a safety cap for very large monitors, not a target. */
+  max-width: min(1100px, 92vw);
+  border: var(--border-width) solid var(--border-color);
+  background: var(--bg-window);
+}
+
+/* About + Impressum */
+.sizeAboutImpressum {
+  width: min(840px, 92vw);
+  height: min(640px, 85vh);
+}
+
+/* Case study pages */
+.sizeCaseStudy {
+  width: min(1200px, 92vw);
+  height: min(840px, 85vh);
+}
+
+/* Work overview — wider than case-study (the two-column cards need the
+ * room; the earlier attempt at content-intrinsic sizing like Home grew
+ * the window to fit the entire list, forcing the whole page to scroll
+ * instead of scrolling inside the window). Height cap is what makes
+ * .content genuinely overflow, so the existing scrollbar mechanism
+ * (real ResizeObserver-based detection, not decorative) actually
+ * engages instead of .content just growing to match its content. */
+.sizeWork {
+  width: min(1400px, 92vw);
+  height: min(840px, 85vh);
+}
+
+.titleBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-bottom: var(--border-width) solid var(--border-color);
+  flex-shrink: 0;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  transition: background-color 100ms ease;
+}
+
+/* Same grey as the CTA button's default fill — a hover affordance
+ * signaling the title bar is draggable. Kept during .dragging too (not
+ * just :hover) since the cursor can slip outside the bar's bounds
+ * mid-drag, which would otherwise flicker the background off. */
+.titleBar:hover,
+.titleBar.dragging {
+  background: var(--color-grey-300);
+}
+
+.titleBar.dragging {
+  cursor: grabbing;
+}
+
+.flank {
+  flex: 1;
+  height: 20px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--border-color) 0,
+    var(--border-color) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+.title {
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  color: var(--text-color);
+  white-space: nowrap;
+  -webkit-font-smoothing: none;
+}
+
+/* Dark mode: the hover fill above is a fixed light grey (not theme-aware),
+ * so the dark theme's light text/pinstripe tokens go low-contrast against
+ * it — pin both to black specifically during hover/dragging. */
+[data-theme="dark"] .titleBar:hover .title,
+[data-theme="dark"] .titleBar.dragging .title {
+  color: var(--color-black);
+}
+
+[data-theme="dark"] .titleBar:hover .flank,
+[data-theme="dark"] .titleBar.dragging .flank {
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--color-black) 0,
+    var(--color-black) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+.body {
+  display: flex;
+  /* flex-basis: auto (not the flex:1 shorthand's 0%) so intrinsic content
+   * height still informs .inner's size when .inner has no fixed height
+   * (Home) — while still growing to fill it when .inner does (About,
+   * case studies). */
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.content {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: var(--bg-window);
+  padding: 40px;
+  overflow: auto;
+  scrollbar-width: none; /* Firefox — real scroll mechanics stay, chrome is drawn by .scrollbar */
+}
+
+.content::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: var(--scrollbar-width);
+  border-left: var(--border-width) solid var(--border-color);
+  background: var(--bg-chrome);
+}
+
+.arrowBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: var(--scrollbar-width);
+  font-size: 10px;
+  line-height: 1;
+  background: var(--color-grey-300);
+  /* Fixed dark, not var(--text-color) — this button's fill is a raw
+   * neutral primitive that never changes with theme (matching the CTA
+   * buttons' fixed-fill philosophy), so a theme-aware glyph color is
+   * exactly what breaks it: in dark mode --text-color flips light, landing
+   * light-on-light against this always-light background and disappearing. */
+  color: var(--color-grey-700);
+}
+
+.arrowBtn:first-child {
+  border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.arrowBtn:last-child {
+  border-top: var(--border-width) solid var(--border-color);
+}
+
+.track {
+  position: relative;
+  flex: 1;
+}
+
+.thumb {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: var(--color-grey-500);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}

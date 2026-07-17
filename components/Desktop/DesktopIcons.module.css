@@ -1,0 +1,21 @@
+/* Both groups use the same 70px offset (46px fixed navbar + margin) —
+ * from the top for the top group, from the bottom for the bottom group —
+ * so Impressum sits exactly as far from the bottom edge as Resume does
+ * from the top. */
+.topGroup {
+  position: fixed;
+  top: 70px;
+  right: 124px; /* 24px base + 100px shift left */
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.bottomGroup {
+  position: fixed;
+  bottom: 70px;
+  right: 124px; /* 24px base + 100px shift left */
+  z-index: 10;
+}

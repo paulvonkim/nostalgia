@@ -1,0 +1,126 @@
+.card {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 24px;
+  /* No fill by default — matches the window's own content background.
+   * The subtle case color is introduced fresh on hover only (below), not
+   * swapped from a bold default. */
+  background: transparent;
+  transition: background-color 150ms ease;
+}
+
+.card:hover {
+  background: var(--case-subtle);
+}
+
+.imageWrap {
+  flex: 0 0 47%;
+}
+
+/* Full image always visible, never cropped — no forced container
+ * aspect-ratio. width:100%/height:auto scales the image to the column
+ * while preserving its own intrinsic ratio, whatever that happens to be
+ * per case study; object-fit:contain is belt-and-suspenders for the same
+ * "never crop" guarantee. */
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Title and description touch with zero gap — one continuous shape, not
+ * two separated blocks. margin:0 on both .title/.description (below) is
+ * what makes that true; the highlight color itself now lives on the
+ * inline spans inside them, not on these wrappers. */
+.textBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 24px;
+  /* Close to 1 — line-height beyond the glyphs' own height is "leading"
+   * that the inline highlight below doesn't paint over, which is what
+   * was showing as a gap both between wrapped lines and between the
+   * title and description blocks. */
+  line-height: 1.1;
+  -webkit-font-smoothing: none;
+}
+
+/* Inline, not block, with box-decoration-break: clone — each wrapped
+ * line gets its own independent padded box, hugging just that line's
+ * text, like real text selection. A block container sized to the
+ * widest line (the earlier approach) leaves empty space around every
+ * shorter line — this is what fixes that. Vertical padding is
+ * deliberately 0: with clone, EVERY line gets its own top+bottom
+ * padding, so any vertical value stacks into a visible gap between
+ * consecutive lines. Horizontal padding only. */
+.titleHighlight {
+  display: inline;
+  background: var(--case-bold);
+  color: var(--color-white);
+  font-weight: bold;
+  padding: 0 0.3em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: background-color 150ms ease;
+}
+
+.card:hover .titleHighlight {
+  background: var(--color-black);
+}
+
+.description {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.1;
+}
+
+.descriptionHighlight {
+  display: inline;
+  background: var(--case-subtle);
+  color: var(--case-bold);
+  padding: 0 0.3em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.card:hover .descriptionHighlight {
+  background: var(--color-white);
+  color: var(--color-black);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px; /* visible separation from the title/description block */
+}
+
+.tag {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  background: var(--case-bold);
+  color: var(--color-white);
+  padding: 3px 10px;
+  -webkit-font-smoothing: none;
+  transition: background-color 150ms ease;
+}
+
+.card:hover .tag {
+  background: var(--color-black);
+}
