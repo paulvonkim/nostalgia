@@ -1,0 +1,31 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.heading {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  color: var(--text-color);
+  -webkit-font-smoothing: none;
+}
+
+.pair {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.col {
+  flex: 1 1 300px;
+  min-width: 0;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}

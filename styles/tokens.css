@@ -35,11 +35,15 @@
   --color-case-brown: #844f1d;
 
   /* ---- Typography --------------------------------------------------
-   * Font family variables (--font-chicago, --font-inter, --font-gossip)
-   * are injected by next/font in app/layout.tsx.
+   * --font-chicago and --font-gossip are injected by next/font/local in
+   * app/layout.tsx. Google Sans (body) is loaded via a plain <link> embed
+   * in that same file's <head> instead — the exact snippet provided,
+   * not a next/font/google wrapper — so it's referenced here by its
+   * literal family name/fallback, matching that snippet's own
+   * `font-family: "Google Sans", sans-serif;` exactly.
    */
   --font-ui: var(--font-chicago), "Chicago", monospace;
-  --font-body: var(--font-inter), -apple-system, sans-serif;
+  --font-body: "Google Sans", sans-serif;
   --font-hero:
     var(--font-gossip), "Chicago", serif; /* blackletter hero wordmark, scoped tightly (see design.md §5) */
 

@@ -1,0 +1,50 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.heading {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  color: var(--text-color);
+  -webkit-font-smoothing: none;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.tile {
+  flex: 1 1 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 12px;
+  background: var(--color-grey-100);
+  /* Inset bevel — dark edge top-left, light edge bottom-right, the classic
+   * "pressed in" LCD-readout look, built from existing neutral tokens
+   * rather than a new bevel color. */
+  box-shadow:
+    inset 1px 1px 0 var(--color-grey-500),
+    inset -1px -1px 0 var(--color-white);
+}
+
+.readout {
+  font-family: var(--font-ui);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-xl);
+  color: var(--text-color);
+  -webkit-font-smoothing: none;
+}
+
+.label {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--text-color-muted);
+  text-align: center;
+}

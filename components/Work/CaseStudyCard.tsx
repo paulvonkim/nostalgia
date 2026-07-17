@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { CSSProperties } from "react";
 import type { CaseStudy } from "@/data/case-studies";
 import styles from "./CaseStudyCard.module.css";
@@ -21,7 +22,6 @@ interface CaseCardStyle extends CSSProperties {
   "--case-subtle": string;
 }
 
-// Step 2: hover interaction added. Click/navigation still deferred.
 export function CaseStudyCard({ study, priority = false }: CaseStudyCardProps) {
   const colors = CASE_COLORS[study.id];
   const cardStyle: CaseCardStyle = {
@@ -30,7 +30,7 @@ export function CaseStudyCard({ study, priority = false }: CaseStudyCardProps) {
   };
 
   return (
-    <article className={styles.card} style={cardStyle}>
+    <Link href={`/work/${study.id}`} className={styles.card} style={cardStyle}>
       <div className={styles.imageWrap}>
         <Image
           src={study.imageUrl}
@@ -64,6 +64,6 @@ export function CaseStudyCard({ study, priority = false }: CaseStudyCardProps) {
           ))}
         </div>
       </div>
-    </article>
+    </Link>
   );
 }

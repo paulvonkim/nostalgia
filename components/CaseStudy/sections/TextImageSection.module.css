@@ -1,0 +1,50 @@
+.section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+/* flex-grow:1 (not 0 — see .imageCol below) so text absorbs whatever
+ * width the image column doesn't use. */
+.text {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.heading {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  color: var(--text-color);
+  -webkit-font-smoothing: none;
+}
+
+.body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  line-height: 1.5;
+  color: var(--text-color);
+  white-space: pre-line;
+}
+
+/* flex-grow:0 is the actual fix here: with both columns at grow:1 (the
+ * previous state), they split the row 50/50 and the image never reached
+ * anywhere near SectionWindow's 600px "medium" cap (measured 408px in
+ * practice) — the cap never got a chance to bind. grow:0 holds this
+ * column at its 600px basis when there's room, letting .text (grow:1)
+ * absorb the rest instead of splitting evenly. */
+.imageCol {
+  flex: 0 1 600px;
+  min-width: 0;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}

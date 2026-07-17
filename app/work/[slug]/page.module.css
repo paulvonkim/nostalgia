@@ -1,0 +1,12 @@
+.desktop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding-top: 70px; /* 46px navbar + 24px margin — same convention as app/work/page.module.css */
+  background: var(--bg-desktop);
+}
+
+.body {
+  margin-top: 48px; /* separates the hero block from the section stack below it */
+}

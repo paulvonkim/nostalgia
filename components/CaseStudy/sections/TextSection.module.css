@@ -1,0 +1,22 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.heading {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  color: var(--text-color);
+  -webkit-font-smoothing: none;
+}
+
+.body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  line-height: 1.5;
+  color: var(--text-color);
+  white-space: pre-line;
+}

@@ -52,7 +52,7 @@ export const caseStudies: CaseStudy[] = [
     title: "Designing for an agent that doesn't exist yet",
     description:
       "A B2B SaaS transitioning from document management to agentic automation.",
-    imageUrl: "/images/case-studies/arco-agent/hero.png",
+    imageUrl: "/images/case-studies/arco-agent/hero-img.png",
     heroBackground: "#1a0a2e",
     heroGradient: "linear-gradient(to bottom, #2d1b69, #0a0a0a)",
     accentColor: "#7c3aed",
@@ -92,7 +92,8 @@ export const caseStudies: CaseStudy[] = [
       {
         type: "video",
         url: "/images/case-studies/arco-agent/prototype-screens.mp4",
-        alt: "document-first home screen prototype showing navigation between documents and pipeline stages",
+        caption:
+          "document-first home screen prototype showing navigation between documents and pipeline stages",
       },
       {
         type: "text",
@@ -123,7 +124,7 @@ export const caseStudies: CaseStudy[] = [
     title: "Toward a single source of truth",
     description:
       "Enterprise PLM implementation across 45 stakeholders, from fragmented spreadsheets to a single source of truth.",
-    imageUrl: "/images/case-studies/drykorn-plm/hero.png",
+    imageUrl: "/images/case-studies/drykorn-plm/hero-img.png",
     accentColor: "hsl(0, 70%, 55%)",
     heroGradient: "linear-gradient(to bottom, #1a0000, #0a0a0a)",
     tags: ["Service Design", "Change Management", "PLM"],
@@ -224,7 +225,7 @@ export const caseStudies: CaseStudy[] = [
     title: "A design system the next tools can read",
     description:
       "A sprawling Figma workspace with no single source of truth. Three team members who had never worked together. Half a day a week to fix it.",
-    imageUrl: "/images/case-studies/arco-ds/hero.png",
+    imageUrl: "/images/case-studies/arco-ds/hero-img.png",
     heroBackground: "#0a1f1e",
     heroBorderColor: "rgba(13, 148, 136, 0.3)",
     accentColor: "#0d9488",
@@ -308,7 +309,7 @@ export const caseStudies: CaseStudy[] = [
     title: "Listening to customers to rebuild the suit as a system",
     description:
       "A declining category rebuilt through field research. Still in the range, still growing, years later.",
-    imageUrl: "/images/case-studies/suits/hero.png",
+    imageUrl: "/images/case-studies/suits/hero-img.png",
     accentColor: "hsl(210, 20%, 35%)",
     heroGradient: "linear-gradient(to bottom, #111827, #030712)",
     tags: ["Service Design", "Field Research", "Systems Design"],
@@ -430,7 +431,7 @@ export const caseStudies: CaseStudy[] = [
       "Configuration design for an agentic system where a wrong rule is a silent failure",
     description:
       "A B2B SaaS document processing product, anonymised. Sole designer, inherited mid-development.",
-    imageUrl: "/images/case-studies/arco/hero.png",
+    imageUrl: "/images/case-studies/arco/hero-img.png",
     tags: ["Feature Design", "B2B SaaS", "JTBD"],
     featured: false,
     role: "Product Designer (Sole Designer)",

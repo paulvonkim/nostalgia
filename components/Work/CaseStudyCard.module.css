@@ -8,6 +8,10 @@
    * swapped from a bold default. */
   background: transparent;
   transition: background-color 150ms ease;
+  /* .card is now a <Link>/<a> — undo the browser's default link underline
+   * so the child text keeps its own explicit colors/no-decoration look. */
+  text-decoration: none;
+  color: inherit;
 }
 
 .card:hover {

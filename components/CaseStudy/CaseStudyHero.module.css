@@ -1,0 +1,146 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Same 848px cap as the rest of the content column (.column below),
+ * centered to match. */
+.imageWrap {
+  width: 100%;
+  max-width: 848px;
+  margin: 0 auto;
+}
+
+/* Full image always visible, never cropped — same "never crop" guarantee
+ * as the Work overview cards (width:100%/height:auto + object-fit:contain). */
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Everything except the hero image shares the section content's 848px
+ * reading column, centered — same cap as SectionRenderer's .stack. */
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 848px;
+  margin: 0 auto;
+}
+
+/* Title and description touch with zero gap, same technique as the Work
+ * overview cards: margin:0, tight line-height, horizontal-only padding on
+ * the inline highlight spans below. */
+.textBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-xl);
+  line-height: 1.1;
+  -webkit-font-smoothing: none;
+}
+
+.titleHighlight {
+  display: inline;
+  background: var(--case-bold);
+  color: var(--color-white);
+  font-weight: bold;
+  padding: 0 0.3em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.description {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  line-height: 1.1;
+}
+
+.descriptionHighlight {
+  display: inline;
+  background: var(--case-subtle);
+  color: var(--case-bold);
+  padding: 0 0.3em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  background: var(--case-bold);
+  color: var(--color-white);
+  padding: 3px 10px;
+  -webkit-font-smoothing: none;
+}
+
+/* Byline metadata stays neutral, not case-colored — design.md: case color
+ * usage is restricted to headings/tags, not general body content. */
+.byline {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+}
+
+.bylineRow {
+  display: flex;
+  gap: 12px;
+  font-size: var(--text-sm);
+}
+
+.bylineLabel {
+  flex: 0 0 90px;
+  margin: 0;
+  font-family: var(--font-ui);
+  color: var(--text-color-muted);
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+}
+
+.bylineValue {
+  flex: 1;
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--text-color);
+}
+
+/* Dialog-box treatment (design.md §12), not a literal 1:1 alert replica —
+ * a bordered chrome box with a small bold label, restrained rather than a
+ * full OK-button alert graphic. */
+.notice {
+  border: var(--border-width) solid var(--border-color);
+  background: var(--bg-chrome);
+  padding: 12px 16px;
+}
+
+.noticeLabel {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: bold;
+  margin-bottom: 4px;
+  -webkit-font-smoothing: none;
+}
+
+.noticeBody {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--text-color-muted);
+  line-height: 1.4;
+}

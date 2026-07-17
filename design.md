@@ -3,7 +3,7 @@
 Source of truth for the redesign. Updated continuously as decisions are made.
 Case study *content* is out of scope here — this covers shell, chrome, interaction, and visual language only.
 
-Last updated: 2026-07-16
+Last updated: 2026-07-17
 
 ---
 
@@ -83,10 +83,10 @@ The ASCII/dither hover-reveal imagery (see §6) is exempt from the theme system 
 ## 5. Typography
 
 - **Chicago FLF** — large text, UI chrome, headings, navbar, buttons, labels.
-- **Inter** — body copy, paragraph text inside case studies. (Chicago is a bitmap UI face — deliberately not used for long-form reading.)
+- **Google Sans** — body copy, paragraph text inside case studies (replaces Inter, 2026-07-17). (Chicago is a bitmap UI face — deliberately not used for long-form reading.) Loaded via a plain `<link>` embed in `app/layout.tsx`'s `<head>` (Google Fonts CSS2 endpoint), not `next/font/google` self-hosting — an explicit, user-provided snippet was used verbatim rather than an independently-sourced/self-hosted equivalent. Variable font; the site uses weight 400, `GRAD 0`, `font-optical-sizing: auto`, applied globally on `body` in `globals.css` since that's the single place `--font-body` is set. Note: the family is literally `"Google Sans"`, a distinct entry from `"Google Sans Flex"` in Google's catalog — the swap request referenced "Flex" by name but the provided code snippet specified plain `"Google Sans"`, which is what was implemented per the instruction to match the given code exactly.
 - **Gossip** (by Deborah Khodanovich, `gossip.cargo.site`) — hero typeface (and possibly About page), replacing the deferred Textura placeholder. Not an arbitrary blackletter pairing: Gossip is itself built from Gutenberg's Textura and Susan Kare's Cairo glyphs — the same Kare who designed the original Chicago typeface. This makes the hero's blackletter moment a continuation of the same lineage as the rest of the type system, not a collision between two unrelated eras. Ships in three pixel densities (low/medium/high) — which one reads best at hero scale to be tested once the file is in hand, not decided on paper. Comes with a companion icon set (Kare-sketch-inspired) worth evaluating as a source/reference for the trash desktop icon.
-- **Hero treatment direction**: dark, confident, restrained — not theatrical or campy. The blackletter choice itself carries enough distinctiveness; scale and drama don't need to be pushed further. Scoped tightly to hero (and maybe About) only — Chicago FLF and Inter remain untouched everywhere else.
-- **Hero wordmark confirmed**: "Paul Kim" set in Gossip (Med Square variant, tested at 96pt) as the hero's display type, replacing the earlier generic "Design Portfolio" placeholder heading. Body copy (Inter) sits a size smaller alongside it. First mockup reviewed 2026-07-16 (not live code yet) — restrained/elegant read confirmed as the intended target.
+- **Hero treatment direction**: dark, confident, restrained — not theatrical or campy. The blackletter choice itself carries enough distinctiveness; scale and drama don't need to be pushed further. Scoped tightly to hero (and maybe About) only — Chicago FLF and Google Sans remain untouched everywhere else.
+- **Hero wordmark confirmed**: "Paul Kim" set in Gossip (Med Square variant, tested at 96pt) as the hero's display type, replacing the earlier generic "Design Portfolio" placeholder heading. Body copy (Google Sans) sits a size smaller alongside it. First mockup reviewed 2026-07-16 (not live code yet) — restrained/elegant read confirmed as the intended target.
 
 ### Open question
 Should the hero headline enter via the same ASCII/dither hover-reveal motif used for images (resolving from static into the full dark blackletter on load), extending that pattern into typography — or does that stay image-only? Not yet decided.
@@ -100,7 +100,7 @@ Sizes/scale: not yet defined — TBD as we design real pages.
 
 ## 6. Interaction Patterns
 
-- **ASCII/dithered hover-reveal.** Confirmed as an intentional recurring pattern, not limited to the profile photo — images resolve from ASCII/dither into a cleaner state on hover. Concrete behavior confirmed: reveals the same photo as a clean, undithered JPG — not a different image, not a stylized alternate.
+- **ASCII/dithered hover-reveal.** Concrete behavior confirmed: reveals the same photo as a clean, undithered JPG — not a different image, not a stylized alternate. **Scope correction**: this is a Hero/About-page pattern only, not a system-wide motif — it does NOT apply to case study images (reverses an earlier note in §12 calling it system-wide across `text-image`, `full-width-image`, and `before-after`).
 - **Dither imagery ignores the light/dark theme.** Resolved after an initial attempt to invert the dithered asset's colors in dark mode (so the dots wouldn't vanish against a dark background) was rejected: the portrait should read like a printed photo sitting on the desktop — a fixed physical object unaffected by the surrounding chrome's theme — not an interface element that recolors itself to match. It keeps its native light background and dark dots in both themes.
 - **Draggable window.** Physical drag interaction on the single window.
 - **Live clock.** Navbar, top-right, functioning. Displays time only — no location.
@@ -140,7 +140,7 @@ Sizes/scale: not yet defined — TBD as we design real pages.
 | 6 | Floating "version tag" element | **Resolved** — dropped. Replaced by a stamp desktop icon that opens Impressum |
 | 7 | Trash icon — no meaningful use identified yet | Open, low priority — fine to leave unused. Originally conceived as the classic desktop pair to a hard-drive icon; that icon was since replaced by the stamp, so the pairing rationale no longer applies, but the icon itself was never blocking on it |
 | 8 | Case-color mapping for the four cases | **Resolved** — see §11 |
-| 9 | SectionRenderer visual treatment per section type (`text`, `text-image`, `full-width-image`, `before-after`, `stats`, `video`, `notice`) | Open — next design task. `notice` confirmed as a dialog-box treatment |
+| 9 | SectionRenderer visual treatment per section type (`text`, `text-image`, `full-width-image`, `before-after`, `stats`, `video`, `notice`) | **Partially built** — hero shell + `notice` (dialog-box treatment) live on the case study route. `text`, `text-image`, `full-width-image`, `before-after`, `stats`, `video` remain open/unbuilt |
 
 ---
 
@@ -148,7 +148,7 @@ Sizes/scale: not yet defined — TBD as we design real pages.
 
 - **Framework**: Next.js (App Router), TypeScript.
 - **Styling**: CSS Modules + a global `tokens.css` of custom properties (colors, type scale, spacing, border/bevel values). Not Tailwind — the pixel-precise bevels, insets, and bitmap type this system needs are easier to hand-roll against tokens than to fight through a utility framework.
-- **Fonts**: `next/font/local` for Chicago FLF (public domain revival by Robin Casady of Susan Kare's original — free for commercial and personal use, TTF/WOFF available) and Inter via `next/font/google`. Textura deferred, not yet sourced.
+- **Fonts**: `next/font/local` for Chicago FLF (public domain revival by Robin Casady of Susan Kare's original — free for commercial and personal use, TTF/WOFF available) and Gossip. Google Sans (body) is loaded via a plain `<link>` embed of the Google Fonts CSS2 endpoint, not `next/font/google` (see §5). Textura deferred, not yet sourced.
 - **Linting/formatting**: Biome (one config, lint + format in one tool). Trade-off accepted: no automatic Next.js-specific or react-hooks-specific lint rules — acceptable for a solo project.
 - **Case study data**: a typed data file (`/data/cases.ts`) drives the case study routes. Content itself is unchanged and migrated separately from this visual work.
 
@@ -213,7 +213,7 @@ Color mapping confirmed:
 
 Unifying idea: every section type is a native OS container (window, twin windows, dialog, digital readout) — not a generic web card. Keeps case study content speaking the same visual language as the shell.
 
-- **`text`** — No device. Chicago FLF heading, Inter body. No decoration needed — the headings already carry the weight.
+- **`text`** — No device. Chicago FLF heading, Google Sans body. No decoration needed — the headings already carry the weight.
 - **`text-image`** — Image in a small nested window: mini title bar (using `image.alt` or a short caption as title), same border language as the main `Window` component, smaller scale.
 - **`full-width-image`** — Wider nested-window frame. Caption lives in a bottom status-bar strip (Photoshop 1.0 info-bar reference), not a floating web caption. **Interaction**: hover-to-enlarge in place, not a lightbox — image scales up modestly where it sits, fast/snappy transition (~100–150ms, no ease bounce), no dimmed overlay. Needs a touch fallback before mobile design (see Principle 6).
 - **`before-after`** — Two small windows side by side, equal scale, titled with the existing `before.label` / `after.label` data fields. Reuses the `Window` component twice — no new component needed.
@@ -221,7 +221,9 @@ Unifying idea: every section type is a native OS container (window, twin windows
 - **`video`** — Same nested-window frame as `text-image`. Native video controls (not fake QuickTime chrome — that tips into gimmick). Optional caption below in system font.
 - **`notice`** — Dialog-box treatment (confirmed earlier), not a literal 1:1 alert replica.
 
-Cross-cutting: the ASCII/dither hover-reveal (confirmed earlier for the hero photo) applies to every static image across `text-image`, `full-width-image`, and both `before-after` images — a system-wide motif, not a one-off.
+Cross-cutting: the ASCII/dither hover-reveal is scoped to Hero/About only (see §6 scope correction) — case study images (`text-image`, `full-width-image`, `before-after`) do not use it; they render as plain images.
+
+**Hero section (all case study pages)**: uses the same highlight-box treatment as the Work overview cards, not plain text — title in a bold-color-background/white-text box, description in a subtle-color-background/bold-color-text box, zero gap between them (same inline `box-decoration-break: clone` technique, same case color pair as the Work card for that case). Case color usage stays restricted to headings and tags — general body content (byline metadata, section body copy) stays neutral, not case-colored. The anonymization/NDA `notice` section renders early on the page, immediately after the hero metadata/tags block — not buried further down among the other content sections.
 
 ### Note on responsiveness sequencing
 Desktop-viewport responsiveness (different laptop/monitor widths) is being built in as each component is made, not deferred. Mobile/touch layout remains deferred pending sketches — but see Principle 6: hover-dependent interactions here (image enlarge, ASCII reveal) need a tracked touch fallback before mobile design begins.
@@ -255,3 +257,7 @@ Desktop-viewport responsiveness (different laptop/monitor widths) is being built
 - **2026-07-16** — CTA button spec corrected in §7 to match the actual current implementation: primary is white/dark-grey (reversing in dark mode), never accent-colored; a new third "accent" variant carries the site accent color for cases like the hero CTA. All three variants share one hover/active/focus ring mechanism — the earlier idea of shade-shifting a colored fill instead of ringing it was tried and dropped.
 - **2026-07-16** — CTA button simplified again, this time all the way down to one variant: the primary/secondary/accent-color split (previous entry) is fully retired. Every CTA button site-wide is now identical — fill restored to the component's pre-split original (`#DBDBDB`/`--color-grey-300`), border/radius unchanged and theme-independent, magenta ring on hover, accent-blue ring (shared) on active and keyboard focus. Impressum's hard drive icon was also relabeled "Impressum" (was "Hard Drive"), and the LinkedIn desktop icon now uses LinkedIn's actual published brand asset rather than the hand-designed shared-network-drive icon.
 - **2026-07-17** — Hard-drive icon replaced with a stamp: "Impressum" is German for imprint, the same word a physical stamp's mark takes its name from, so the icon now plays on the label's own etymology instead of reusing the classic-Mac hard-drive convention for something that was never actually a drive. Desktop icon order changed to Resume → LinkedIn → Impressum (was Hard Drive → Resume → LinkedIn), with Impressum set apart by a bigger gap since it's a legal notice, not part of the Resume/LinkedIn "get in touch" grouping.
+- **2026-07-17** — Case study page hero confirmed to reuse the Work overview card's highlight-box treatment (bold-bg/white-text title, subtle-bg/bold-text description, zero gap) rather than plain text, using each case's own color pair. Case color usage confirmed restricted to headings and tags, not general body content (byline, section copy stay neutral). The `notice` section is confirmed to render early, right after the hero metadata/tags, not buried among later content sections.
+- **2026-07-17** — Scope correction: the ASCII/dither hover-reveal is Hero/About only, not a system-wide motif — it does not apply to case study images, reversing the §12 note that called it system-wide across `text-image`/`full-width-image`/`before-after`. Those section types render plain images instead.
+- **2026-07-17** — Case study route (`app/work/[slug]/page.tsx`) and hero shell built, reading real data from `data/case-studies.ts` by id. Uses the existing `case-study` Window size. Renders: hero image (full, uncropped), title/description highlight boxes, tags, a Role/Team/Methods/Tools byline (neutral color, skips any field the case doesn't have), and the notice section(s) pulled out of `sections`. The other section-type renderers (`text`, `text-image`, `full-width-image`, `before-after`, `stats`, `video`) are deliberately not built yet — out of scope for this pass.
+- **2026-07-17** — Body font swapped sitewide: Inter → Google Sans (see §5). Loaded via a plain `<link>` embed (Google Fonts CSS2 endpoint) in `app/layout.tsx`'s `<head>`, per an explicit user-provided snippet used verbatim rather than a self-hosted `next/font/google` equivalent. `--font-inter` removed from `styles/tokens.css`/`app/layout.tsx` entirely — zero remaining references confirmed via repo-wide grep. Chicago FLF and Gossip (both still `next/font/local`) are unaffected.

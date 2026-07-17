@@ -1,5 +1,15 @@
+"use client";
+
 import Image from "next/image";
+import { useRef, useState } from "react";
 import styles from "./DitherReveal.module.css";
+
+// Must match the opacity-crossfade duration in DitherReveal.module.css —
+// the grain-pulse overlay is only meant to be visible for the span of that
+// transition, on both hover-in and hover-out, so it's driven by a matching
+// timeout rather than a pure-CSS :hover trigger (a spike-then-settle
+// animation can't reverse symmetrically off :hover alone).
+const TRANSITION_MS = 450;
 
 interface DitherRevealProps {
   defaultSrc: string;
@@ -29,10 +39,24 @@ export function DitherReveal({
   sizes = "(max-width: 640px) 90vw, 400px",
   priority = false,
 }: DitherRevealProps) {
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function pulseGrain() {
+    setIsTransitioning(true);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(
+      () => setIsTransitioning(false),
+      TRANSITION_MS,
+    );
+  }
+
   return (
     <div
-      className={`${styles.wrapper} ${className ?? ""}`}
+      className={`${styles.wrapper} ${isTransitioning ? styles.transitioning : ""} ${className ?? ""}`}
       style={{ aspectRatio: `${width} / ${height}` }}
+      onPointerEnter={pulseGrain}
+      onPointerLeave={pulseGrain}
     >
       <Image
         src={defaultSrc}
@@ -50,6 +74,7 @@ export function DitherReveal({
         sizes={sizes}
         className={`${styles.image} ${styles.hover}`}
       />
+      <span className={styles.grain} aria-hidden="true" />
     </div>
   );
 }

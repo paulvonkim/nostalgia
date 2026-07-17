@@ -1,0 +1,87 @@
+/* Same border language as the main Window component (Window.module.css),
+ * at a smaller nested scale: smaller gutter/shadow offset, no drag cursor,
+ * no scrollbar system — this frame is static content, not the single
+ * on-screen window. */
+.outer {
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  border: var(--border-width) solid var(--border-color);
+  padding: 4px;
+  background: var(--bg-chrome);
+  box-shadow: 4px 4px 0 var(--shadow-color);
+}
+
+.outer.medium {
+  max-width: 600px;
+}
+
+.outer.wide {
+  max-width: none;
+}
+
+/* Dark mode only — a soft mid-grey halo around the frame border, layered
+ * alongside (not replacing) the existing hard-offset chrome shadow. Light
+ * mode is untouched: no extra shadow rule applies there. Grey rather than
+ * black — the existing --shadow-color token stays black/near-black in
+ * both themes, which reads fine for the offset shadow but too heavy for
+ * this softer accent. Scoped to SectionWindow only (text-image,
+ * full-width-image, before-after, video) — not the main Window, buttons,
+ * or anything else. */
+[data-theme="dark"] .outer {
+  box-shadow:
+    4px 4px 0 var(--shadow-color),
+    0 0 10px color-mix(in srgb, var(--color-grey-500) 45%, transparent);
+}
+
+.inner {
+  border: var(--border-width) solid var(--border-color);
+  background: var(--bg-window);
+  overflow: hidden;
+}
+
+.titleBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.flank {
+  flex: 1;
+  height: 12px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--border-color) 0,
+    var(--border-color) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+.title {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-font-smoothing: none;
+}
+
+.body {
+  display: block;
+}
+
+/* Photoshop 1.0 info-bar reference — a status readout strip, not a
+ * floating web caption. */
+.statusBar {
+  padding: 4px 8px;
+  border-top: var(--border-width) solid var(--border-color);
+  background: var(--bg-chrome);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--text-color-muted);
+}
