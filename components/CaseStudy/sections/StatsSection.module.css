@@ -6,10 +6,9 @@
 
 .heading {
   margin: 0;
-  font-family: var(--font-ui);
+  font-family: var(--font-body);
   font-size: var(--text-lg);
   color: var(--text-color);
-  -webkit-font-smoothing: none;
 }
 
 .grid {
@@ -35,11 +34,10 @@
 }
 
 .readout {
-  font-family: var(--font-ui);
+  font-family: var(--font-body);
   font-variant-numeric: tabular-nums;
   font-size: var(--text-xl);
   color: var(--text-color);
-  -webkit-font-smoothing: none;
 }
 
 .label {

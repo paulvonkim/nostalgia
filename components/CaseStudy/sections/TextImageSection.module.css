@@ -16,10 +16,9 @@
 
 .heading {
   margin: 0;
-  font-family: var(--font-ui);
+  font-family: var(--font-body);
   font-size: var(--text-lg);
   color: var(--text-color);
-  -webkit-font-smoothing: none;
 }
 
 .body {

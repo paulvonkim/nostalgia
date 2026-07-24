@@ -55,6 +55,87 @@
 /* Inverted fill, like the reference's selected/hover item state — not a
  * text-color-only change. */
 .navItem:hover {
-  background: var(--color-effect-magenta);
+  background: var(--color-effect-blue);
+  color: var(--color-white);
+}
+
+/* ---- Work dropdown --------------------------------------------------
+ * Classic Mac menu-bar dropdown, adapted to this system's own item-list
+ * states (design.md §7) rather than the reference's literal always-black
+ * highlight: blue is this site's existing *hover* (transient) language
+ * — same as .navItem above — so it carries over here too. Black is
+ * reserved for *active/selected* (permanent): the menu trigger while its
+ * dropdown is open, and whichever item matches the current route. */
+.menuWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+/* Stays black even mid-hover while open — otherwise .navItem:hover's
+ * blue (higher specificity, class+pseudo-class vs. this single class)
+ * would flicker over it whenever the pointer sits on the trigger. */
+.navItemOpen,
+.navItem.navItemOpen:hover {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+/* margin-top is an eyeballed gap, not a computed one — .navItem's own box
+ * doesn't span the navbar's full 46px height (centered within it instead),
+ * so there's no clean CSS percentage/keyword that lands this flush against
+ * the navbar's bottom border. Starting value, revisit if it drifts. */
+.menu {
+  position: absolute;
+  top: 100%;
+  /* -10px, not 0: .navItem's `margin: 0 -10px` (below) expands its
+   * hover/open background 10px past its own layout box without pushing
+   * neighboring nav items apart — .menuWrap sizes to that shrunk layout
+   * box, so left: 0 here left the dropdown's edge 10px right of the
+   * trigger's actual visual (background) edge instead of matching it. */
+  left: -10px;
+  margin-top: 12px;
+  z-index: 10;
+  min-width: 240px;
+  max-width: 320px;
+  padding: 4px 0;
+  background: var(--bg-window);
+  border: var(--border-width) solid var(--border-color);
+  box-shadow: 4px 4px 0 var(--shadow-color);
+}
+
+.menuDivider {
+  height: var(--border-width);
+  margin: 4px 0;
+  background: var(--border-color);
+}
+
+/* Shared by both <Link> items (WorkMenu) and <button> items (ThemeMenu) —
+ * the border/background/width/text-align/cursor resets only matter for
+ * the latter (buttons carry native chrome anchors don't), but they're a
+ * no-op on anchors, so one rule covers both without a variant. */
+.menuItem {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  line-height: 1.3;
+  color: var(--text-color);
+  text-decoration: none;
+  text-align: left;
+  cursor: pointer;
+  -webkit-font-smoothing: none;
+}
+
+.menuItem:hover {
+  background: var(--color-effect-blue);
+  color: var(--color-white);
+}
+
+.menuItemActive,
+.menuItemActive:hover {
+  background: var(--color-black);
   color: var(--color-white);
 }

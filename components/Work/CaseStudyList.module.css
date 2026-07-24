@@ -1,5 +1,11 @@
 .list {
-  display: flex;
-  flex-direction: column;
-  gap: 60px; /* matches the breathing room between cards in design-reference/screens/work.png */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 48px 40px;
+}
+
+@media (max-width: 640px) {
+  .list {
+    grid-template-columns: 1fr;
+  }
 }

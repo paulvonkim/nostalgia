@@ -24,6 +24,11 @@
 
 /* Case study pages */
 .sizeCaseStudy {
+  /* max-width: none overrides .inner's base max-width: min(1100px, 92vw)
+   * — that rule is scoped (per its own comment) to Home's sizeless
+   * default, but with nothing here to override it, it was silently
+   * capping this size variant's own 1200px width down to 1100px. */
+  max-width: none;
   width: min(1200px, 92vw);
   height: min(840px, 85vh);
 }
@@ -134,7 +139,7 @@
   flex-shrink: 0;
   width: var(--scrollbar-width);
   border-left: var(--border-width) solid var(--border-color);
-  background: var(--bg-chrome);
+  background: var(--color-grey-500);
 }
 
 .arrowBtn {
@@ -171,7 +176,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  background: var(--color-grey-500);
+  background: var(--bg-chrome);
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
 }

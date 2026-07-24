@@ -62,13 +62,12 @@
 }
 
 .title {
-  font-family: var(--font-ui);
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   color: var(--text-color);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  -webkit-font-smoothing: none;
 }
 
 .body {
@@ -76,9 +75,12 @@
 }
 
 /* Photoshop 1.0 info-bar reference — a status readout strip, not a
- * floating web caption. */
+ * floating web caption. Horizontal padding is 0, not 8px: .body (the
+ * image) has none, sitting flush against .inner's edges, so an 8px
+ * inset here left the caption text out of alignment with the image
+ * above it. Vertical padding stays for legibility/tap-target room. */
 .statusBar {
-  padding: 4px 8px;
+  padding: 4px 0;
   border-top: var(--border-width) solid var(--border-color);
   background: var(--bg-chrome);
   font-family: var(--font-body);

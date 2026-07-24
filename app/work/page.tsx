@@ -8,7 +8,7 @@ export default function Work() {
     <>
       <Navbar />
       <main className={styles.desktop}>
-        <Window title="Work" size="work">
+        <Window title="Selected Work" size="work">
           <CaseStudyList />
         </Window>
       </main>

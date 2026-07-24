@@ -1,60 +1,63 @@
-/* One button, no variants. Fixed border/radius/fill, identical in both
- * themes — the earlier primary/secondary/accent split was tried and
- * dropped. Fill is the exact color the component used before that split
- * was introduced (var(--color-grey-300)), not a new guess. Text is a
- * fixed near-black (#020202) rather than the original's var(--text-color):
- * that token flips light in dark mode and would go unreadable against
- * this button's own permanently-light fill (the same bug already fixed
- * once on this component). */
+/* Rebuilt from an explicit reference — a classic Mac beveled button, not
+ * the earlier outer-ring-wrapper model. Light top/left highlight, dark
+ * bottom/right shadow at rest; both invert on press so the face reads
+ * as pushed in. Font-size kept as it was before (--text-base); every
+ * other value below is the reference's own, with its raw hex colors
+ * swapped for the closest existing token rather than new custom values:
+ *   #000 → --color-black         #dddddd → --color-grey-300 (rest fill)
+ *   #fff → --color-white         #888    → --color-grey-500
+ *   #f4f4f4 → --color-grey-100   #a0a0a0 → --color-grey-400
+ *   hover #e8e8e8 → --color-grey-100
+ *   active #c8c8c8 → --color-grey-400 (technically a hair closer to
+ *     grey-300, but that's already the resting fill — grey-400 keeps
+ *     the press reading as a real darkening instead of no visible change)
+ */
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-width: 108px;
-  height: 30px;
-  padding: 0 16px;
+  letter-spacing: 0.5px;
+  padding: 13px 34px;
+  box-sizing: border-box;
   border: 1px solid var(--color-black);
-  border-radius: 5px;
-  box-shadow: none;
+  border-radius: 0;
   background: var(--color-grey-300);
-  color: var(--color-near-black);
+  color: var(--color-black);
   font-family: var(--font-ui);
   font-size: var(--text-base);
   -webkit-font-smoothing: none;
   text-decoration: none;
-  cursor: pointer;
   white-space: nowrap;
-}
-
-/* No hover/active/focus styling on the button itself — see .ringWrapper. */
-.button:focus-visible {
+  cursor: pointer;
   outline: none;
+  user-select: none;
+  box-shadow:
+    inset 1px 1px 0 0 var(--color-white),
+    inset -1px -1px 0 0 var(--color-grey-500),
+    inset 2px 2px 0 0 var(--color-grey-100),
+    inset -2px -2px 0 0 var(--color-grey-400);
 }
 
-/* Feedback lives entirely on this wrapper so the button's own box never
- * changes size across states — padding/border are reserved (transparent)
- * even at rest, so nothing shifts when a state becomes visible. */
-.ringWrapper {
-  display: inline-flex;
-  padding: 3px;
-  border: 1px solid transparent;
-  border-radius: 8px;
-  background: transparent;
-  box-shadow: inset 0 0 0 1px transparent;
+.button:hover {
+  background: var(--color-grey-100);
 }
 
-.ringWrapper:hover {
-  border-color: var(--color-black);
-  background: var(--color-effect-magenta);
-  box-shadow: inset 0 0 0 1px var(--color-white);
+/* Not in the reference — outline: none above suppresses the browser's
+ * default focus ring with nothing to replace it, so this adds one back
+ * (same fill as :hover) rather than leaving keyboard focus invisible. */
+.button:focus-visible {
+  background: var(--color-grey-100);
 }
 
-/* Active (mouse press) and keyboard focus get the identical accent-blue
- * ring — one treatment, not two competing states. */
-.ringWrapper:active,
-.ringWrapper:has(:focus-visible) {
-  border-color: var(--color-black);
-  background: var(--color-effect-blue);
-  box-shadow: inset 0 0 0 1px var(--color-white);
+.button:active {
+  background: var(--color-grey-400);
+  /* Bevel inverts — dark top/left, light bottom/right — and padding
+   * nudges 1px down/right, so both the frame and the content sell the
+   * same "pressed in" read. */
+  box-shadow:
+    inset 1px 1px 0 0 var(--color-grey-500),
+    inset -1px -1px 0 0 var(--color-white),
+    inset 2px 2px 0 0 var(--color-grey-400),
+    inset -2px -2px 0 0 var(--color-grey-100);
+  padding: 14px 33px 12px 35px;
 }

@@ -148,10 +148,10 @@ export const caseStudies: CaseStudy[] = [
       "Stakeholder management",
     ],
     sections: [
-      {
+      /* {
         type: "notice",
         body: "Work completed at Drykorn between 2019 and 2022. Some process details have been generalised.",
-      },
+      }, */
       {
         type: "text",
         heading: "No data, no decision",
@@ -334,10 +334,10 @@ export const caseStudies: CaseStudy[] = [
       "Multi-season iteration",
     ],
     sections: [
-      {
+      /* {
         type: "notice",
         body: "Work completed at Drykorn between 2015 and 2022. Some process details have been generalised.",
-      },
+      }, */
       {
         type: "text",
         heading:
@@ -458,27 +458,35 @@ export const caseStudies: CaseStudy[] = [
         body: "When configuring rules, users need to immediately understand what each rule does and what happens if they change it. No surprises downstream. With that established, the design decision was deliberate: build something familiar. A configuration component drawing on patterns users already knew from the existing system, covering full functionality without overwhelming.",
       },
       {
-        type: "text-image",
+        type: "text",
         heading: "The configuration problem",
         body: "The configuration page was the hardest problem. Four rule types, three states each, and a configuration summary that needed to stay visible without interrupting the flow.\n\nThe original approach stepped users through configuration sequentially. The rebuilt version keeps all three states visible at once through tab navigation: active, inactive, excluded. Users immediately understand the consequences of each rule. Every rule affects two things: what gets extracted now and how the agent learns for next time.",
+      },
+      {
+        type: "full-width-image",
         image: {
           url: "/images/case-studies/arco/rules-page.png",
           alt: "Arco rules configuration page showing field list with active, inactive and excluded states",
         },
       },
       {
-        type: "text-image",
+        type: "text",
         heading: "What changes when a rule changes",
         body: "The hardest design problem wasn't the configuration layout. It was consequence visibility. Every rule in this system does two things simultaneously: it controls what gets extracted now, and it shapes what the agent learns for future extractions. A user who changes a rule without understanding both effects doesn't just affect one session. They affect every session until they catch it, and in a document processing workflow, catching it means auditing output, not reading an error message.\n\nThe consequence modal surfaces exactly what stops, what pauses, and what gets retained before a user commits. Destructive actions require explicit confirmation. This wasn't a safety pattern added at the end. It was the structural requirement that shaped the entire page. The tab navigation keeping all three states visible at once came from the same logic: if users can only see one state at a time, they can't reason about the relationship between them.",
-        image: {
-          url: "/images/case-studies/arco/rules-screen.mp4",
-          alt: "Consequence modal showing the effects of excluding a field from extractions",
-        },
       },
       {
-        type: "text-image",
+        type: "video",
+        url: "/images/case-studies/arco/rules-screen.mp4",
+        caption:
+          "Consequence modal showing the effects of excluding a field from extractions",
+      },
+      {
+        type: "text",
         heading: "Memory as a rule",
         body: "One rule type stands apart. The memory rule draws from and writes to a list of known values used for fuzzy matching during extraction. Users can view and edit that list directly from the configuration page.",
+      },
+      {
+        type: "full-width-image",
         image: {
           url: "/images/case-studies/arco/memory-modal.png",
           alt: "Memory list modal showing known values for invoice number fuzzy matching",

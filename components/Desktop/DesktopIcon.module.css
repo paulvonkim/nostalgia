@@ -18,9 +18,10 @@
   transition: transform 100ms ease;
 }
 
-/* Doubles each icon's own rendered size (24-28px natively) without
- * touching the label — scale is applied to the glyph's contents, not to
- * .glyph itself, so it doesn't also blow up the label's flex sizing. */
+/* Doubles each icon's own rendered size (28px natively, all three now)
+ * without touching the label — scale is applied to the glyph's contents,
+ * not to .glyph itself, so it doesn't also blow up the label's flex
+ * sizing. */
 .glyph svg,
 .glyph img {
   transform: scale(2);
@@ -46,10 +47,13 @@
     color 100ms ease;
 }
 
-/* Magenta on hover — same treatment as the hero portrait's background
- * (DitherReveal.module.css), unconditional across both themes. */
+/* Blue on hover, unconditional across both themes. Same value as
+ * --accent below (both resolve to --color-effect-blue), so hover and
+ * the active/press state right below no longer read as visually
+ * distinct here — a deliberate tradeoff made when magenta was retired
+ * as the site's hover color. */
 .icon:hover .label {
-  background: var(--color-effect-magenta);
+  background: var(--color-effect-blue);
   color: var(--color-white);
 }
 

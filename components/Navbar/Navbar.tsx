@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { Clock } from "@/components/Clock/Clock";
+import { AboutMenu } from "./AboutMenu";
 import { DiamondMark } from "./DiamondMark";
 import styles from "./Navbar.module.css";
-import { ThemeToggle } from "./ThemeToggle";
+import { ThemeMenu } from "./ThemeMenu";
+import { WorkMenu } from "./WorkMenu";
 
 export function Navbar() {
   return (
@@ -12,13 +14,9 @@ export function Navbar() {
           <DiamondMark />
         </Link>
         <nav className={styles.nav}>
-          <Link href="/work" className={styles.navItem}>
-            Work
-          </Link>
-          <Link href="/about" className={styles.navItem}>
-            About
-          </Link>
-          <ThemeToggle />
+          <WorkMenu />
+          <AboutMenu />
+          <ThemeMenu />
         </nav>
       </div>
       <Clock />

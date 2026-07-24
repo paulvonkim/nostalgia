@@ -12,11 +12,16 @@ interface VideoSectionProps {
 // plain text below instead, which wraps naturally). Optional heading, if
 // present, sits above as a plain section heading; optional caption sits
 // below in system font.
+//
+// size="wide" (848px), not "medium" (600px) — this comment already said
+// "same scale as full-width-image", but FullWidthImageSection was fixed
+// to size="wide" without updating this to match, leaving video visibly
+// smaller than every other visual on the page.
 export function VideoSection({ heading, url, caption }: VideoSectionProps) {
   return (
     <div className={styles.section}>
       {heading && <h2 className={styles.heading}>{heading}</h2>}
-      <SectionWindow size="medium">
+      <SectionWindow size="wide">
         {/* biome-ignore lint/a11y/useMediaCaption: silent screen-capture prototype clips, no dialogue/audio to caption */}
         <video className={styles.video} src={url} controls />
       </SectionWindow>

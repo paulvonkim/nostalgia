@@ -16,6 +16,12 @@ interface WindowProps {
   // Home has no fixed size — omitting this prop sizes the window
   // intrinsically to its content (max-width: min(1100px, 92vw) safety cap).
   size?: "about-impressum" | "case-study" | "work";
+  // Home's window is content-intrinsic and essentially never overflows, so
+  // the scrollbar chrome there is pure unused decoration — set false to
+  // omit it. .content stays overflow: auto regardless (see Window.module.css),
+  // so scrolling itself still works via wheel/trackpad in the rare case it's
+  // ever needed; this only hides the visual arrow/track/thumb chrome.
+  scrollbar?: boolean;
 }
 
 const SIZE_CLASS: Record<NonNullable<WindowProps["size"]>, string> = {
@@ -61,7 +67,12 @@ interface DragState {
   height: number;
 }
 
-export function Window({ title, children, size }: WindowProps) {
+export function Window({
+  title,
+  children,
+  size,
+  scrollbar = true,
+}: WindowProps) {
   const pathname = usePathname();
   const outerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -190,21 +201,23 @@ export function Window({ title, children, size }: WindowProps) {
           <div className={styles.content} ref={viewportRef}>
             <div ref={contentSizeRef}>{children}</div>
           </div>
-          <div className={styles.scrollbar} aria-hidden="true">
-            <span className={styles.arrowBtn}>▲</span>
-            <span className={styles.track}>
-              {scroll.hasOverflow && (
-                <span
-                  className={styles.thumb}
-                  style={{
-                    height: `${scroll.thumbHeightPct}%`,
-                    top: `${scroll.thumbTopPct}%`,
-                  }}
-                />
-              )}
-            </span>
-            <span className={styles.arrowBtn}>▼</span>
-          </div>
+          {scrollbar && (
+            <div className={styles.scrollbar} aria-hidden="true">
+              <span className={styles.arrowBtn}>▲</span>
+              <span className={styles.track}>
+                {scroll.hasOverflow && (
+                  <span
+                    className={styles.thumb}
+                    style={{
+                      height: `${scroll.thumbHeightPct}%`,
+                      top: `${scroll.thumbTopPct}%`,
+                    }}
+                  />
+                )}
+              </span>
+              <span className={styles.arrowBtn}>▼</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

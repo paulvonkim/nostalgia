@@ -6,10 +6,9 @@
 
 .heading {
   margin: 0;
-  font-family: var(--font-ui);
+  font-family: var(--font-body);
   font-size: var(--text-lg);
   color: var(--text-color);
-  -webkit-font-smoothing: none;
 }
 
 .video {
@@ -17,6 +16,12 @@
   width: 100%;
 }
 
+/* No max-width/margin needed here anymore — the <SectionWindow> above is
+ * now size="wide" (max-width: none), which fills .section's full width
+ * exactly rather than being a narrower centered frame within it, so
+ * .caption spanning .section's own full width already lines up with it
+ * without any extra matching. (Previously "medium"/600px and centered —
+ * see git history if that's ever needed again.) */
 .caption {
   margin: 0;
   font-family: var(--font-body);

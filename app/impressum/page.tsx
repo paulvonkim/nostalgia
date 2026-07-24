@@ -1,17 +1,15 @@
-import { DesktopIcons } from "@/components/Desktop/DesktopIcons";
-import { Hero } from "@/components/Home/Hero";
+import { Impressum } from "@/components/Impressum/Impressum";
 import { Navbar } from "@/components/Navbar/Navbar";
 import { Window } from "@/components/Window/Window";
 import styles from "./page.module.css";
 
-export default function Home() {
+export default function ImpressumPage() {
   return (
     <>
       <Navbar />
       <main className={styles.desktop}>
-        <DesktopIcons />
-        <Window title="Paul Kim's Portfolio." scrollbar={false}>
-          <Hero />
+        <Window title="Impressum" size="about-impressum">
+          <Impressum />
         </Window>
       </main>
     </>

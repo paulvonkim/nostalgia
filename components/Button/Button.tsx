@@ -14,22 +14,27 @@ type ButtonAsLink = CommonProps &
 
 type ButtonProps = ButtonAsButton | ButtonAsLink;
 
-// CTA button, site-wide — one style, no variants. Fixed border/radius and
-// fixed fill, identical in both themes. Hover/active/focus feedback lives
-// on an outer ring wrapper, never a property change on the button itself,
-// so its own box never resizes. See Button.module.css.
+// CTA button, site-wide — one style, no variants, identical in both
+// themes. Classic Mac beveled button (see Button.module.css) — no outer
+// ring wrapper; hover/active feedback is a property change directly on
+// the button itself (background + bevel direction), per the reference
+// this was rebuilt from.
 export function Button({ children, className, href, ...rest }: ButtonProps) {
   const classes = `${styles.button} ${className ?? ""}`;
 
-  const control = href ? (
-    <a
-      href={href}
-      className={classes}
-      {...(rest as AnchorHTMLAttributes<HTMLAnchorElement>)}
-    >
-      {children}
-    </a>
-  ) : (
+  if (href) {
+    return (
+      <a
+        href={href}
+        className={classes}
+        {...(rest as AnchorHTMLAttributes<HTMLAnchorElement>)}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  return (
     <button
       type="button"
       className={classes}
@@ -38,6 +43,4 @@ export function Button({ children, className, href, ...rest }: ButtonProps) {
       {children}
     </button>
   );
-
-  return <span className={styles.ringWrapper}>{control}</span>;
 }

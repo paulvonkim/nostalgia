@@ -9,7 +9,7 @@ const chicago = localFont({
 });
 
 const gossip = localFont({
-  src: "../public/fonts/Gossip-MedSquare.woff2",
+  src: "../public/fonts/Gossip-MedSquare.otf",
   variable: "--font-gossip",
   display: "swap",
 });

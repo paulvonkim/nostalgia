@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { ReactNode } from "react";
 import styles from "./DesktopIcon.module.css";
 
@@ -22,16 +23,37 @@ export function DesktopIcon({
   target,
   rel,
 }: DesktopIconProps) {
-  return (
-    <a
-      href={href}
-      download={download}
-      target={target}
-      rel={rel}
-      className={styles.icon}
-    >
+  const content = (
+    <>
       <span className={styles.glyph}>{icon}</span>
       <span className={styles.label}>{label}</span>
-    </a>
+    </>
+  );
+
+  // Plain internal navigation (Impressum) goes through next/link — a
+  // plain <a> here means a full page reload, and since theme is
+  // deliberately never persisted (design.md: dark only ever applies via
+  // explicit toggle, never remembered), a reload always lands back on
+  // light regardless of what the visitor had set. download (Resume) and
+  // external targets (LinkedIn) genuinely need a plain <a>; Link doesn't
+  // support either meaningfully.
+  if (download || target) {
+    return (
+      <a
+        href={href}
+        download={download}
+        target={target}
+        rel={rel}
+        className={styles.icon}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} className={styles.icon}>
+      {content}
+    </Link>
   );
 }

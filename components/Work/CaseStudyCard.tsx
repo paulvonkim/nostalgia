@@ -1,9 +1,8 @@
 import Image from "next/image";
-import Link from "next/link";
-import type { CSSProperties } from "react";
+import { Button } from "@/components/Button/Button";
 import type { CaseStudy } from "@/data/case-studies";
+import { HERO_IMAGE_DIMENSIONS } from "@/data/hero-image-dimensions";
 import styles from "./CaseStudyCard.module.css";
-import { CASE_COLORS } from "./caseColors";
 
 interface CaseStudyCardProps {
   study: CaseStudy;
@@ -12,50 +11,33 @@ interface CaseStudyCardProps {
   priority?: boolean;
 }
 
-// Case colors are set once here as CSS custom properties and inherited by
-// every descendant rule (card fill, title/description/tag highlights). The
-// :hover overrides in CaseStudyCard.module.css swap to fixed black/white —
-// only the *default* state is per-case, so those two vars are all this
-// component needs to hand off to CSS.
-interface CaseCardStyle extends CSSProperties {
-  "--case-bold": string;
-  "--case-subtle": string;
-}
-
+// Bordered card, nested bordered image frame — the folder-tab hover-reveal
+// shape is gone (dropped per earlier redesign direction). Real per-case
+// width/height (same dimensions CaseStudyHero uses), object-fit: contain,
+// no `fill` — the complete photo always renders, nothing cropped or masked.
+//
+// The card itself is inert (a div, not a link) — the Button below is the
+// only real navigation target, both because it can't nest inside a link
+// (it renders its own <a>) and because that's the reference's own model:
+// a static panel you read, with one explicit "open" action.
 export function CaseStudyCard({ study, priority = false }: CaseStudyCardProps) {
-  const colors = CASE_COLORS[study.id];
-  const cardStyle: CaseCardStyle = {
-    "--case-bold": colors.bold,
-    "--case-subtle": colors.subtle,
-  };
-
+  const dimensions = HERO_IMAGE_DIMENSIONS[study.id];
   return (
-    <Link href={`/work/${study.id}`} className={styles.card} style={cardStyle}>
-      <div className={styles.imageWrap}>
+    <div className={styles.card}>
+      <div className={styles.imageFrame}>
         <Image
           src={study.imageUrl}
           alt={study.title}
-          width={1200}
-          height={900}
+          width={dimensions.width}
+          height={dimensions.height}
           priority={priority}
           className={styles.image}
-          sizes="(max-width: 900px) 92vw, 550px"
+          sizes="(max-width: 640px) 92vw, 46vw"
         />
       </div>
       <div className={styles.content}>
-        <div className={styles.textBlock}>
-          {/* Inline + box-decoration-break: clone — each wrapped line gets
-           * its own independent, tightly-fit highlight (padding on every
-           * side of every line), not one block sized to the widest line. */}
-          <h2 className={styles.title}>
-            <span className={styles.titleHighlight}>{study.title}</span>
-          </h2>
-          <p className={styles.description}>
-            <span className={styles.descriptionHighlight}>
-              {study.description}
-            </span>
-          </p>
-        </div>
+        <h2 className={styles.title}>{study.title}</h2>
+        <p className={styles.description}>{study.description}</p>
         <div className={styles.tags}>
           {study.tags.map((tag) => (
             <span key={tag} className={styles.tag}>
@@ -63,7 +45,10 @@ export function CaseStudyCard({ study, priority = false }: CaseStudyCardProps) {
             </span>
           ))}
         </div>
+        <div className={styles.footer}>
+          <Button href={`/work/${study.id}`}>View Case Study</Button>
+        </div>
       </div>
-    </Link>
+    </div>
   );
 }

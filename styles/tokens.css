@@ -17,9 +17,9 @@
   --color-black: #000000;
 
   /* ---- Effect colors (system-wide accents) ------------------------ */
-  --color-effect-blue: #016ec3; /* desktop wash, links, logo hover outline */
-  --color-effect-blue-light: #c4e2ec; /* logo hover facet fill */
-  --color-effect-magenta: #c96fc6; /* focus ring, item hover fill */
+  --color-effect-blue: #016ec3; /* desktop wash, links, logo hover outline, now also the site-wide hover fill (navbar, dropdown menus, Button, DesktopIcon) */
+  --color-effect-blue-light: #c2e4ff; /* logo hover facet fill */
+  --color-effect-magenta: #c96fc6; /* retired as the hover fill (replaced by --color-effect-blue above); unused, kept for palette reference */
 
   /* ---- Case-study color pairs (bold / subtle) ---------------------
    * Exact values, not approximations — mapping of pair -> case study
@@ -60,6 +60,12 @@
   --window-gutter: 8px;
   --shadow-offset: 8px;
   --scrollbar-width: 26px;
+
+  /* ---- Motion -------------------------------------------------------
+   * Overshoot/bounce ease — for interactions with a physical, pulled-away
+   * feel (e.g. the Work overview folder-card hover), not plain ease-out.
+   */
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* ---- Semantic tokens (light theme, default) ----------------------- */
   --bg-desktop: var(--color-effect-blue);

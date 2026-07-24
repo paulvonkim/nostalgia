@@ -2,13 +2,9 @@
   position: relative;
   width: 100%;
   overflow: hidden; /* keeps the grain overlay below contained to the frame */
-  /* Fixed light-grey ground, not transparent/white, in both themes — the
-   * dithered image's transparent gaps otherwise show whatever is behind
-   * the wrapper (the page background), which vanishes against a dark
-   * background. This makes the portrait read like a printed photo sitting
-   * on the desktop: a fixed physical object, not something that recolors
-   * itself to match the surrounding theme. */
-  background: var(--color-grey-100);
+  /* Transparent — the art itself (dark glyphs, transparent gaps) shows
+   * whatever sits behind the wrapper. Dark mode is handled instead by
+   * inverting the images below, not by a fixed backing fill. */
 }
 
 .image {
@@ -17,6 +13,14 @@
    * rather than a glassy dissolve, reinforcing the grain overlay below
    * instead of competing with it. */
   transition: opacity 450ms steps(6, jump-end);
+}
+
+/* Dark mode: the art is dark glyphs on a transparent ground, invisible
+ * against a near-black page background — invert so the glyphs render
+ * light instead. Applies to both layers (.default and .hover both
+ * extend .image), so the crossfade stays consistent in both states. */
+[data-theme="dark"] .image {
+  filter: invert(1);
 }
 
 .default {

@@ -1,16 +1,10 @@
 import Image from "next/image";
-import type { CSSProperties } from "react";
-import { CASE_COLORS } from "@/components/Work/caseColors";
 import type { CaseStudy } from "@/data/case-studies";
+import { HERO_IMAGE_DIMENSIONS } from "@/data/hero-image-dimensions";
 import styles from "./CaseStudyHero.module.css";
 
 interface CaseStudyHeroProps {
   study: CaseStudy;
-}
-
-interface CaseColorStyle extends CSSProperties {
-  "--case-bold": string;
-  "--case-subtle": string;
 }
 
 const BYLINE_FIELDS: {
@@ -33,32 +27,22 @@ const BYLINE_FIELDS: {
 // page after this component). The hero image renders AFTER the notice,
 // not before it.
 //
-// Size hierarchy: the hero image is the largest element on the page, so it
-// spans the full window content width. Everything else (title/description,
-// tags, byline, notice) shares the same 848px capped, centered column as
-// the section content below it.
+// Size: the hero image shares the same 848px capped, centered column as
+// everything else on this page (title/description, tags, byline, notice,
+// and the section images further down) — not larger than those, even
+// though it's the first/most prominent thing on the page.
 export function CaseStudyHero({ study }: CaseStudyHeroProps) {
-  const colors = CASE_COLORS[study.id];
-  const colorStyle: CaseColorStyle = {
-    "--case-bold": colors.bold,
-    "--case-subtle": colors.subtle,
-  };
   const notices = (study.sections ?? []).filter(
     (section) => section.type === "notice",
   );
+  const dimensions = HERO_IMAGE_DIMENSIONS[study.id];
 
   return (
-    <div className={styles.hero} style={colorStyle}>
+    <div className={styles.hero}>
       <div className={styles.column}>
         <div className={styles.textBlock}>
-          <h1 className={styles.title}>
-            <span className={styles.titleHighlight}>{study.title}</span>
-          </h1>
-          <p className={styles.description}>
-            <span className={styles.descriptionHighlight}>
-              {study.description}
-            </span>
-          </p>
+          <h1 className={styles.title}>{study.title}</h1>
+          <p className={styles.description}>{study.description}</p>
         </div>
 
         <dl className={styles.byline}>
@@ -94,11 +78,11 @@ export function CaseStudyHero({ study }: CaseStudyHeroProps) {
         <Image
           src={study.imageUrl}
           alt={study.title}
-          width={1600}
-          height={1200}
+          width={dimensions.width}
+          height={dimensions.height}
           priority
           className={styles.image}
-          sizes="(max-width: 900px) 92vw, 1120px"
+          sizes="(max-width: 900px) 92vw, 848px"
         />
       </div>
     </div>
