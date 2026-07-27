@@ -38,8 +38,16 @@
     inset -2px -2px 0 0 var(--color-grey-400);
 }
 
+/* Rest state (.button above) and :active (below) are untouched — only
+ * this hover feedback changes. The 2px/2px shift is the same "press"
+ * illusion the tags use (see components/Work/CaseStudyCard.module.css)
+ * translated here: there, a resting drop-shadow disappears while the
+ * element shifts into the gap it was casting; this button has no resting
+ * outer shadow to drop, so the shift alone carries the 3D read — nudging
+ * toward the surface, same physical direction as the tags' press. */
 .button:hover {
   background: var(--color-grey-100);
+  transform: translate(2px, 2px);
 }
 
 /* Not in the reference — outline: none above suppresses the browser's

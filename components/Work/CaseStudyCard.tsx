@@ -46,7 +46,7 @@ export function CaseStudyCard({ study, priority = false }: CaseStudyCardProps) {
           ))}
         </div>
         <div className={styles.footer}>
-          <Button href={`/work/${study.id}`}>View Case Study</Button>
+          <Button href={`/work/${study.id}`}>Open Case Study</Button>
         </div>
       </div>
     </div>

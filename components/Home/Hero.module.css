@@ -1,7 +1,16 @@
+/* padding-bottom compensates for the title bar's own visual weight above
+ * the window's content (its padding + text + border, ~40px) which has no
+ * equivalent below — without this, the window's symmetric 40px content
+ * padding (Window.module.css .content) reads as tighter at the bottom
+ * than the top even though the CSS value is identical on both sides.
+ * Scoped to the Home hero specifically, not Window's shared .content,
+ * since every other page (About, Work, case studies) uses that same
+ * padding and isn't reporting the same crowded-bottom complaint. */
 .hero {
   display: flex;
   align-items: flex-start;
   gap: 48px;
+  padding-bottom: 20px;
 }
 
 .portrait {

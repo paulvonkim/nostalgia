@@ -65,14 +65,28 @@
  * The earlier version added 4px of its own horizontal padding on top of
  * that, misaligning text ~4px from the image; spacing between children
  * is each element's own margin below (matching the reference's rhythm)
- * instead of a flex gap layered on top of them. */
+ * instead of a flex gap layered on top of them.
+ *
+ * flex: 1 1 auto — CaseStudyList's grid already stretches every .card in
+ * a row to match the row's tallest card (CSS Grid's default
+ * align-items: stretch); without this, that extra height just sat below
+ * a shorter card's content with nothing claiming it, so .footer stayed
+ * wherever the text happened to end instead of at the card's true bottom
+ * edge. This makes .content itself grow to fill that stretched height,
+ * so .footer's margin-top: auto below has real space to push into. */
 .content {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
 }
 
+/* margin-top: auto consumes all of .content's leftover height (from the
+ * grid-stretch above), pinning the CTA to the same bottom edge on every
+ * card in a row regardless of how much text is above it. */
 .footer {
   display: flex;
   justify-content: flex-end;
+  margin-top: auto;
 }
 
 .title {
@@ -105,9 +119,12 @@
   color: var(--text-color);
 }
 
-/* ---- Tags — pill styling (border/color/font) unchanged; only the
- * container's margin below was adjusted to match the reference's
- * spacing rhythm ---- */
+/* ---- Tags — redesigned as small raised boxes per an exact reference
+ * spec (background #EAEAEA is the literal hex of --color-grey-100, hence
+ * that token below). Sized to each tag's own text, not the spec's fixed
+ * 123x32px — that read as one Figma instance's rendered size, not a
+ * literal fixed box, and tag text length varies too much across the
+ * site ("Figma" vs "Product Design") to hold a fixed width. ---- */
 
 .tags {
   display: flex;
@@ -116,18 +133,31 @@
   margin: 0 0 32px;
 }
 
+/* Fixed-fill chrome, same philosophy as Button: background/border/text
+ * are raw tokens, not theme-aware ones, because the box's own fill
+ * (--color-grey-100) doesn't change between themes either — a
+ * theme-aware text color would go near-white in dark mode and vanish
+ * against a background that's still light grey. */
 .tag {
   font-family: var(--font-body);
   font-size: 13px;
-  border: 1px solid var(--color-grey-400);
-  color: var(--color-grey-500);
-  padding: 2px 8px;
+  padding: 3px 10px;
+  color: var(--color-black);
+  background: var(--color-grey-100);
+  border: 1px solid var(--color-black);
+  box-shadow: 2px 2px 0 rgb(0 0 0 / 30%);
   transition:
-    color 150ms ease,
-    border-color 150ms ease;
+    box-shadow 150ms ease,
+    transform 150ms ease;
 }
 
-.card:hover .tag {
-  color: var(--text-color);
-  border-color: var(--text-color);
+/* Hard (non-blurred) drop shadow at rest reads as the tag sitting raised
+ * off the card. On hover — of the tag itself, not the card — it settles
+ * slightly (shadow 2px → 1px, shift by that same 1px) rather than fully
+ * flattening: tags aren't actually clickable, so a full disappear+2px
+ * press read as more "clickable" than intended. This keeps a hint of
+ * depth changing without implying a real press interaction. */
+.tag:hover {
+  box-shadow: 1px 1px 0 rgb(0 0 0 / 30%);
+  transform: translate(1px, 1px);
 }

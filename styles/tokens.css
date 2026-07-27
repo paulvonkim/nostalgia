@@ -56,9 +56,9 @@
   /* ---- Chrome geometry ---------------------------------------------
    * Measured from design-reference/screens/home.png and components/dialog.png.
    */
-  --border-width: 2px;
+  --border-width: 1px;
   --window-gutter: 8px;
-  --shadow-offset: 8px;
+  --shadow-offset: 4px;
   --scrollbar-width: 26px;
 
   /* ---- Motion -------------------------------------------------------

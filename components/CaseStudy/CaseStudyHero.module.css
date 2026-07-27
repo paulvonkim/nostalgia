@@ -68,12 +68,29 @@
   width: 100%;
 }
 
+/* Same raised-box design as the Work overview cards (components/Work/
+ * CaseStudyCard.module.css) — fixed-fill chrome (raw tokens, not
+ * theme-aware, since the box's own --color-grey-100 fill doesn't change
+ * between themes either). Hover settles rather than fully flattens
+ * (shadow 2px → 1px, shift by that same 1px) — tags aren't actually
+ * clickable, so a full disappear+2px press read as more "clickable"
+ * than intended. */
 .tag {
   font-family: var(--font-body);
   font-size: 16px;
-  border: 1px solid var(--color-grey-400);
-  color: var(--color-grey-500);
   padding: 3px 10px;
+  color: var(--color-black);
+  background: var(--color-grey-100);
+  border: 1px solid var(--color-black);
+  box-shadow: 2px 2px 0 rgb(0 0 0 / 30%);
+  transition:
+    box-shadow 150ms ease,
+    transform 150ms ease;
+}
+
+.tag:hover {
+  box-shadow: 1px 1px 0 rgb(0 0 0 / 30%);
+  transform: translate(1px, 1px);
 }
 
 /* Byline metadata stays neutral, not case-colored — design.md: case color

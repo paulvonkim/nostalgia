@@ -34,7 +34,7 @@ export function Hero() {
           by over a decade translating complexity into systems that work.
         </p>
         <div className={styles.cta}>
-          <Button href="/work">View My Work</Button>
+          <Button href="/work">Open My Work</Button>
         </div>
       </div>
       <DitherReveal
