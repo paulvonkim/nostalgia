@@ -1,13 +1,13 @@
 .about {
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: var(--space-9);
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
+  gap: var(--space-8);
 }
 
 /* Same responsive collapse pattern as CaseStudyList's grid — mirrored,

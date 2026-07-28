@@ -8,5 +8,5 @@
 }
 
 .body {
-  margin-top: 48px; /* separates the hero block from the section stack below it */
+  margin-top: var(--space-9); /* separates the hero block from the section stack below it */
 }

@@ -17,7 +17,7 @@
   flex-direction: column;
   border: var(--border-width) solid var(--border-color);
   background: var(--bg-chrome);
-  padding: 24px;
+  padding: var(--space-6);
   box-shadow:
     inset 1px 1px 0 0 var(--color-white),
     inset -1px -1px 0 0 var(--color-grey-500),
@@ -103,7 +103,7 @@
 }
 
 .title {
-  margin: 24px 0 16px;
+  margin: var(--space-6) 0 var(--space-4);
   font-family: var(--font-body);
   font-size: 22px;
   line-height: 1.2;
@@ -112,7 +112,7 @@
 }
 
 .description {
-  margin: 0 0 24px;
+  margin: 0 0 var(--space-6);
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.4;
@@ -126,17 +126,28 @@
  * wrong way, dropping contrast from ~5.4:1 at rest to ~2.2:1 on hover.
  * --text-color flips with the theme (black in light, near-white in
  * dark), so hover gains contrast in both directions instead of losing
- * it in one. */
+ * it in one.
+ *
+ * :focus-within and :active are hover's keyboard/touch equivalents —
+ * :hover never fires for either. .card itself isn't focusable (a plain
+ * div, not a link), but Button inside it is, so :focus-within fires once
+ * a keyboard user tabs to it; :active covers touch, since it applies to
+ * ancestors of whatever's being pressed for as long as the press is
+ * held, same as it would on desktop mouse-down. */
 .card:hover .title,
-.card:hover .description {
+.card:hover .description,
+.card:focus-within .title,
+.card:focus-within .description,
+.card:active .title,
+.card:active .description {
   color: var(--text-color);
 }
 
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin: 0 0 32px;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-7);
 }
 
 /* Pill chrome itself (background/border/shadow/hover) now lives in the

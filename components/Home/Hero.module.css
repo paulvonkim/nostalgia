@@ -9,8 +9,8 @@
 .hero {
   display: flex;
   align-items: flex-start;
-  gap: 48px;
-  padding-bottom: 20px;
+  gap: var(--space-9);
+  padding-bottom: var(--space-5);
 }
 
 .portrait {
@@ -21,9 +21,9 @@
 .copy {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space-5);
   max-width: 420px;
-  padding-top: 4px;
+  padding-top: var(--space-1);
 }
 
 .wordmark {
@@ -57,5 +57,5 @@
 }
 
 .cta {
-  margin-top: 8px;
+  margin-top: var(--space-2);
 }

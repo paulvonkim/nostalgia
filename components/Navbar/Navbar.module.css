@@ -8,7 +8,7 @@
   align-items: center;
   justify-content: space-between;
   height: 46px;
-  padding: 0 24px;
+  padding: 0 var(--space-6);
   background: var(--bg-navbar);
   border-bottom: var(--border-width) solid var(--border-color);
   font-family: var(--font-ui);
@@ -20,7 +20,7 @@
 .left {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: var(--space-7);
 }
 
 .logo {
@@ -39,7 +39,7 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: var(--space-6);
 }
 
 .navItem {
@@ -93,11 +93,11 @@
    * box, so left: 0 here left the dropdown's edge 10px right of the
    * trigger's actual visual (background) edge instead of matching it. */
   left: -10px;
-  margin-top: 12px;
+  margin-top: var(--space-3);
   z-index: 10;
   min-width: 240px;
   max-width: 320px;
-  padding: 4px 0;
+  padding: var(--space-1) 0;
   background: var(--bg-window);
   border: var(--border-width) solid var(--border-color);
   box-shadow: 4px 4px 0 var(--shadow-color);
@@ -105,7 +105,7 @@
 
 .menuDivider {
   height: var(--border-width);
-  margin: 4px 0;
+  margin: var(--space-1) 0;
   background: var(--border-color);
 }
 
@@ -116,7 +116,7 @@
 .menuItem {
   display: block;
   width: 100%;
-  padding: 8px 16px;
+  padding: var(--space-2) var(--space-4);
   border: none;
   background: none;
   font-family: var(--font-ui);

@@ -49,8 +49,8 @@
 .titleBar {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px 12px;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
   /* Chrome grey, same as the navbar — otherwise this inherits .inner's
    * --bg-window (white/near-black "paper" tone), which read as too
    * light/washed out for window furniture rather than content. */
@@ -129,7 +129,7 @@
   flex: 1 1 auto;
   min-width: 0;
   background: var(--bg-window);
-  padding: 40px;
+  padding: var(--space-8);
   overflow: auto;
   scrollbar-width: none; /* Firefox — real scroll mechanics stay, chrome is drawn by .scrollbar */
 }

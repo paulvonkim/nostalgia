@@ -1,7 +1,7 @@
 .stack {
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: var(--space-9);
   /* Window itself stays the same size — only this content column narrows,
    * for a readable line length, centered within the window's content area. */
   max-width: 848px;

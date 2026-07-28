@@ -2,9 +2,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-1);
   width: 76px;
-  padding: 4px 0;
+  padding: var(--space-1) 0;
   text-decoration: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;

@@ -15,10 +15,10 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   align-items: stretch;
-  gap: 40px;
+  gap: var(--space-8);
   border: var(--border-width) solid var(--border-color);
   background: var(--bg-chrome);
-  padding: 24px;
+  padding: var(--space-6);
   box-shadow:
     inset 1px 1px 0 0 var(--color-white),
     inset -1px -1px 0 0 var(--color-grey-500),
@@ -113,7 +113,7 @@
  * (design.md scopes Gossip to Hero, not About) or the body font used
  * everywhere else on this page. */
 .name {
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-4);
   font-family: var(--font-ui);
   font-size: 40px;
   font-weight: 700;
@@ -123,7 +123,7 @@
 }
 
 .bio {
-  margin: 0 0 24px;
+  margin: 0 0 var(--space-6);
   font-family: var(--font-body);
   font-size: 18px;
   line-height: 1.55;
@@ -133,6 +133,6 @@
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 32px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-7);
 }

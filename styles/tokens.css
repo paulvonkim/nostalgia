@@ -53,6 +53,23 @@
   --text-lg: 20px;
   --text-xl: 28px;
 
+  /* ---- Spacing -------------------------------------------------------
+   * Formalizes the margin/padding/gap values already in use across the
+   * codebase — not a new scale invented on paper, a name for the numbers
+   * that were already there. Component-specific one-off values (e.g. a
+   * button's own hand-tuned press-shift padding) deliberately aren't
+   * forced onto this scale even where a number happens to coincide.
+   */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+
   /* ---- Chrome geometry ---------------------------------------------
    * Measured from design-reference/screens/home.png and components/dialog.png.
    */

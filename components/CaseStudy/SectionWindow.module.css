@@ -8,7 +8,7 @@
   max-width: 480px;
   margin: 0 auto;
   border: var(--border-width) solid var(--border-color);
-  padding: 4px;
+  padding: var(--space-1);
   background: var(--bg-chrome);
   box-shadow: 4px 4px 0 var(--shadow-color);
 }
@@ -44,8 +44,8 @@
 .titleBar {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 4px 8px;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
   border-bottom: var(--border-width) solid var(--border-color);
 }
 
@@ -80,7 +80,7 @@
  * inset here left the caption text out of alignment with the image
  * above it. Vertical padding stays for legibility/tap-target room. */
 .statusBar {
-  padding: 4px 0;
+  padding: var(--space-1) 0;
   border-top: var(--border-width) solid var(--border-color);
   background: var(--bg-chrome);
   font-family: var(--font-body);

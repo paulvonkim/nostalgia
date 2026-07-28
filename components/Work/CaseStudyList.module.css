@@ -1,7 +1,7 @@
 .list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 48px 40px;
+  gap: var(--space-9) var(--space-8);
 }
 
 @media (max-width: 640px) {
