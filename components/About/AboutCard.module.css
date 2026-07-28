@@ -1,0 +1,93 @@
+/* Same chrome language as the Work overview cards (components/Work/
+ * CaseStudyCard.module.css) — border, raised bevel, --bg-chrome fill —
+ * reused deliberately, not reinvented. No footer/CTA here (no Button, no
+ * margin-top: auto trick): these are static informational tiles, not
+ * links, but they do reuse CaseStudyCard's title/description hover
+ * treatment below. */
+.card {
+  display: flex;
+  flex-direction: column;
+  border: var(--border-width) solid var(--border-color);
+  background: var(--bg-chrome);
+  padding: 24px;
+  box-shadow:
+    inset 1px 1px 0 0 var(--color-white),
+    inset -1px -1px 0 0 var(--color-grey-500),
+    inset 2px 2px 0 0 var(--color-grey-100),
+    inset -2px -2px 0 0 var(--color-grey-400);
+}
+
+/* Same recessed-bevel frame as CaseStudyCard's .imageFrame, but square
+ * (aspect-ratio: 1/1) and object-fit: cover instead of contain — these
+ * are lifestyle photos of mixed native aspect ratios being fit into a
+ * uniform grid, not case-study screenshots that must never crop. */
+.imageFrame {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background: var(--bg-window);
+  padding: 2px;
+  margin-bottom: 2px;
+  box-shadow:
+    inset 1px 1px 0 0 var(--color-grey-500),
+    inset -1px -1px 0 0 var(--color-white),
+    inset 2px 2px 0 0 var(--color-grey-400),
+    inset -2px -2px 0 0 var(--color-grey-100),
+    1px 1px 0 0 var(--color-black);
+}
+
+/* height: 100% — HoverGrainImage's own .stage sets width: 100% but no
+ * height (so it shrink-wraps a non-fill image elsewhere); this fill-mode
+ * <Image> needs its direct parent (the stage div) to have a definite
+ * height too, which .imageFrame's aspect-ratio: 1/1 provides. */
+.imageStage {
+  height: 100%;
+}
+
+/* Grayscale-to-color hover, cross-faded through the same grain-pulse
+ * texture DitherReveal uses (components/GrainPulse/) — hovering the
+ * image itself, not the whole card, matching how the shared Tag
+ * component's own hover is scoped to the tag rather than the card.
+ * grayscale(0.6), not full grayscale(1) — partial desaturation per the
+ * brief. */
+.image {
+  object-fit: cover;
+  filter: grayscale(0.6);
+  transition: filter var(--grain-duration) var(--grain-easing);
+}
+
+.imageStage:hover .image {
+  filter: grayscale(0);
+}
+
+/* Same mechanism/timing as CaseStudyCard's .card:hover .title —
+ * .color: var(--color-grey-500) at rest (not the full-contrast
+ * var(--text-color) this used to sit at) so the hover brightening below
+ * is an actual visible shift, matching how CaseStudyCard's own title
+ * behaves rather than just copying the hover rule with nothing for it
+ * to change. */
+.heading {
+  margin: 20px 0 8px;
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-grey-500);
+  transition: color 150ms ease;
+}
+
+/* var(--text-color-muted) resolves to the same raw value as
+ * CaseStudyCard's .description rest color (--color-grey-500) in both
+ * themes — already equivalent, no change needed beyond the transition. */
+.caption {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--text-color-muted);
+  transition: color 150ms ease;
+}
+
+.card:hover .heading,
+.card:hover .caption {
+  color: var(--text-color);
+}

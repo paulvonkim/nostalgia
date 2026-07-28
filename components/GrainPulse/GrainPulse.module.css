@@ -1,0 +1,36 @@
+/* A transient texture flash, present only for the span of a paired
+ * crossfade/filter transition (both directions), then gone — not a
+ * permanent film-grain filter sitting over the resting or hovered state.
+ * The .transitioning class is toggled via JS (see useGrainPulse), not
+ * plain :hover, since a spike-then-settle animation can't reverse
+ * symmetrically off :hover alone. */
+.grain {
+  position: absolute;
+  inset: 0;
+  background-image: url(/images/grain.png);
+  background-repeat: repeat;
+  background-size: 6px 6px;
+  mix-blend-mode: overlay;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.transitioning {
+  animation: grainPulse var(--grain-duration) var(--grain-easing);
+}
+
+@keyframes grainPulse {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .transitioning {
+    animation: none;
+  }
+}

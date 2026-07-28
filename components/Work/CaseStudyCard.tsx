@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { Button } from "@/components/Button/Button";
+import { HoverGrainImage } from "@/components/GrainPulse/HoverGrainImage";
+import { Tag } from "@/components/Tag/Tag";
 import type { CaseStudy } from "@/data/case-studies";
 import { HERO_IMAGE_DIMENSIONS } from "@/data/hero-image-dimensions";
 import styles from "./CaseStudyCard.module.css";
@@ -25,24 +27,26 @@ export function CaseStudyCard({ study, priority = false }: CaseStudyCardProps) {
   return (
     <div className={styles.card}>
       <div className={styles.imageFrame}>
-        <Image
-          src={study.imageUrl}
-          alt={study.title}
-          width={dimensions.width}
-          height={dimensions.height}
-          priority={priority}
-          className={styles.image}
-          sizes="(max-width: 640px) 92vw, 46vw"
-        />
+        <HoverGrainImage className={styles.imageStage}>
+          <Image
+            src={study.imageUrl}
+            alt={study.title}
+            width={dimensions.width}
+            height={dimensions.height}
+            priority={priority}
+            className={styles.image}
+            sizes="(max-width: 640px) 92vw, 46vw"
+          />
+        </HoverGrainImage>
       </div>
       <div className={styles.content}>
         <h2 className={styles.title}>{study.title}</h2>
         <p className={styles.description}>{study.description}</p>
         <div className={styles.tags}>
           {study.tags.map((tag) => (
-            <span key={tag} className={styles.tag}>
+            <Tag key={tag} className={styles.tag}>
               {tag}
-            </span>
+            </Tag>
           ))}
         </div>
         <div className={styles.footer}>

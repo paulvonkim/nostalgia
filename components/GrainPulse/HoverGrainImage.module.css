@@ -1,0 +1,11 @@
+/* position: relative anchors the GrainPulse overlay (inset: 0); display:
+ * block + width: 100% so a non-fill child <Image> (width: 100%; height:
+ * auto) sizes against this stage instead of shrink-wrapping to nothing.
+ * No height is forced — that lets the stage shrink-wrap to a non-fill
+ * image's own rendered height, while a `fill`-mode consumer overrides
+ * height via its own passed className (see AboutCard.module.css). */
+.stage {
+  position: relative;
+  display: block;
+  width: 100%;
+}

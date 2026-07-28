@@ -54,10 +54,17 @@ export function AboutMenu() {
           <div className={styles.menuDivider} />
           {/* Same href/download/target/rel as the Resume/LinkedIn desktop
            * icons (DesktopIcons.tsx) — same "get in touch" pair, same
-           * destinations, just reachable from the navbar too now. */}
+           * destinations, just reachable from the navbar too now.
+           * target="_blank" matters here specifically: this href is
+           * cross-origin (Google Drive), and the `download` attribute is
+           * only honored by browsers for same-origin URLs — without a
+           * new tab, clicking this just navigated away from the
+           * portfolio in the same tab instead of downloading anything. */}
           <a
-            href="/resume.pdf"
+            href="https://drive.google.com/file/d/11tgcmzgHXf3XKYph3ogQ1XzA2qJUyqbS/view?usp=sharing"
             download
+            target="_blank"
+            rel="noopener noreferrer"
             role="menuitem"
             className={styles.menuItem}
             onClick={() => setOpen(false)}
@@ -65,7 +72,7 @@ export function AboutMenu() {
             Download Resume
           </a>
           <a
-            href="https://www.linkedin.com/in/paulkim"
+            href="https://www.linkedin.com/in/-paulkim"
             target="_blank"
             rel="noopener noreferrer"
             role="menuitem"

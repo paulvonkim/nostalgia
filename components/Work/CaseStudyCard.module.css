@@ -53,11 +53,24 @@
     1px 1px 0 0 var(--color-black);
 }
 
+/* Grayscale-to-color hover, cross-faded through the same grain-pulse
+ * texture DitherReveal uses (components/GrainPulse/) — hovering the
+ * image itself, not the whole card, matching how the shared Tag
+ * component's own hover (Tag.module.css) is scoped to the tag rather
+ * than the card: not every reaction here assumes "the whole card is one
+ * clickable unit." grayscale(0.6), not full grayscale(1) — partial
+ * desaturation per the brief. */
 .image {
   display: block;
   width: 100%;
   height: auto;
   object-fit: contain;
+  filter: grayscale(0.6);
+  transition: filter var(--grain-duration) var(--grain-easing);
+}
+
+.imageStage:hover .image {
+  filter: grayscale(0);
 }
 
 /* No padding/gap here — .card's own 24px padding is the only inset, so
@@ -119,13 +132,6 @@
   color: var(--text-color);
 }
 
-/* ---- Tags — redesigned as small raised boxes per an exact reference
- * spec (background #EAEAEA is the literal hex of --color-grey-100, hence
- * that token below). Sized to each tag's own text, not the spec's fixed
- * 123x32px — that read as one Figma instance's rendered size, not a
- * literal fixed box, and tag text length varies too much across the
- * site ("Figma" vs "Product Design") to hold a fixed width. ---- */
-
 .tags {
   display: flex;
   flex-wrap: wrap;
@@ -133,31 +139,10 @@
   margin: 0 0 32px;
 }
 
-/* Fixed-fill chrome, same philosophy as Button: background/border/text
- * are raw tokens, not theme-aware ones, because the box's own fill
- * (--color-grey-100) doesn't change between themes either — a
- * theme-aware text color would go near-white in dark mode and vanish
- * against a background that's still light grey. */
+/* Pill chrome itself (background/border/shadow/hover) now lives in the
+ * shared Tag component (components/Tag/Tag.module.css) — this is just
+ * the size override for this tighter grid-card context, since Tag's own
+ * default (16px) matches CaseStudyHero and About instead. */
 .tag {
-  font-family: var(--font-body);
-  font-size: 13px;
-  padding: 3px 10px;
-  color: var(--color-black);
-  background: var(--color-grey-100);
-  border: 1px solid var(--color-black);
-  box-shadow: 2px 2px 0 rgb(0 0 0 / 30%);
-  transition:
-    box-shadow 150ms ease,
-    transform 150ms ease;
-}
-
-/* Hard (non-blurred) drop shadow at rest reads as the tag sitting raised
- * off the card. On hover — of the tag itself, not the card — it settles
- * slightly (shadow 2px → 1px, shift by that same 1px) rather than fully
- * flattening: tags aren't actually clickable, so a full disappear+2px
- * press read as more "clickable" than intended. This keeps a hint of
- * depth changing without implying a real press interaction. */
-.tag:hover {
-  box-shadow: 1px 1px 0 rgb(0 0 0 / 30%);
-  transform: translate(1px, 1px);
+  font-size: 10px;
 }

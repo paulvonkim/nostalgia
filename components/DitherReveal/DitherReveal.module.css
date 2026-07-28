@@ -12,7 +12,7 @@
   /* Stepped, not linear — the crossfade itself reads gritty/chunky in time
    * rather than a glassy dissolve, reinforcing the grain overlay below
    * instead of competing with it. */
-  transition: opacity 450ms steps(6, jump-end);
+  transition: opacity var(--grain-duration) var(--grain-easing);
 }
 
 /* Dark mode: the art is dark glyphs on a transparent ground, invisible
@@ -39,44 +39,11 @@
   opacity: 1;
 }
 
-/* Grain-pulse overlay: a transient texture flash synced to the crossfade
- * above, present only for the span of the transition (both directions),
- * then gone — not a permanent film-grain filter sitting over the resting
- * or hovered image. Driven by the .transitioning class (set via JS on
- * pointerenter/pointerleave in DitherReveal.tsx) rather than plain :hover,
- * because a spike-then-settle animation can't reverse symmetrically off
- * :hover alone. */
-.grain {
-  position: absolute;
-  inset: 0;
-  background-image: url(/images/grain.png);
-  background-repeat: repeat;
-  background-size: 6px 6px;
-  mix-blend-mode: overlay;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.wrapper.transitioning .grain {
-  animation: grainPulse 450ms steps(6, jump-end);
-}
-
-@keyframes grainPulse {
-  0%,
-  100% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.45;
-  }
-}
-
+/* Grain-pulse overlay itself (components/GrainPulse/) now handles its own
+ * reduced-motion case — only the crossfade transition above is this
+ * file's own concern. */
 @media (prefers-reduced-motion: reduce) {
   .image {
     transition: none;
-  }
-
-  .wrapper.transitioning .grain {
-    animation: none;
   }
 }

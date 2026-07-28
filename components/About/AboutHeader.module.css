@@ -1,0 +1,138 @@
+/* Same grid definition as .grid below (About.module.css) — 3 columns,
+ * 40px gap — the image sits in column 1 and the text spans columns 2-3.
+ * Breakpoints mirror .grid's for the same reason — if the card grid
+ * drops to 2 or 1 columns, the header does too. Note: since this now
+ * carries its own 24px card padding (below), its columns are ~48px
+ * narrower than .grid's own (which has no container-level padding — each
+ * AboutCard's padding is inside itself) — the "image = one card width"
+ * match is close, not pixel-exact, once wrapped as its own card.
+ *
+ * Same card chrome as AboutCard's .card (components/About/AboutCard.
+ * module.css) — border, raised bevel, --bg-chrome fill, 24px padding —
+ * reused directly so the header reads as one more card in the same
+ * family as the six below, not a bare, un-chromed section above them. */
+.header {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: stretch;
+  gap: 40px;
+  border: var(--border-width) solid var(--border-color);
+  background: var(--bg-chrome);
+  padding: 24px;
+  box-shadow:
+    inset 1px 1px 0 0 var(--color-white),
+    inset -1px -1px 0 0 var(--color-grey-500),
+    inset 2px 2px 0 0 var(--color-grey-100),
+    inset -2px -2px 0 0 var(--color-grey-400);
+}
+
+@media (max-width: 900px) {
+  .header {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .header {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Same recessed-bevel frame as CaseStudyCard's .imageFrame (border-free,
+ * depth built entirely from the inset bevel + hard corner shadow) — no
+ * aspect-ratio forced here, unlike AboutCard's square variant, since
+ * this photo isn't meant to crop.
+ *
+ * align-self: start opts this out of .header's row stretch — its height
+ * stays exactly what the image's own aspect ratio produces, never
+ * distorted by however tall .info ends up. .info is the one that
+ * stretches to match this image's height (see below), not the other
+ * way around. */
+.imageFrame {
+  grid-column: 1 / 2;
+  align-self: start;
+  background: var(--bg-window);
+  padding: 2px;
+  box-shadow:
+    inset 1px 1px 0 0 var(--color-grey-500),
+    inset -1px -1px 0 0 var(--color-white),
+    inset 2px 2px 0 0 var(--color-grey-400),
+    inset -2px -2px 0 0 var(--color-grey-100),
+    1px 1px 0 0 var(--color-black);
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* display: flex + align-items: flex-start — a grid item can still be its
+ * own flex container for its children. flex-start (not the default
+ * stretch) matters here: Button is a direct flex child, and stretch was
+ * forcing it to fill the column's width instead of sizing to its own
+ * content.
+ *
+ * justify-content: space-between — .info stretches to match the photo's
+ * height (see .imageFrame above), which usually leaves leftover vertical
+ * space. That used to all get dumped into one gap, right above the
+ * button (via margin-top: auto there), clustering name/bio/tags at the
+ * top. space-between spreads that leftover evenly across all three gaps
+ * instead, on top of each one's own base size below — this still keeps
+ * the button flush against .info's bottom edge (space-between never
+ * adds space after the last item), so its position doesn't move.
+ *
+ * No flat `gap` here — each gap's base size is set individually below
+ * (.name/.bio/.tags margin-bottom) instead, because a single uniform
+ * value didn't read as even: .bio's line-height (1.55) adds visible
+ * leading above/below its own text that a flat gap doesn't account for,
+ * while .tags' tight pill boxes (plus their hard shadow) have none. */
+.info {
+  grid-column: 2 / 4;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+@media (max-width: 900px) {
+  .info {
+    grid-column: 2 / 3;
+  }
+}
+
+@media (max-width: 560px) {
+  .imageFrame,
+  .info {
+    grid-column: 1;
+  }
+}
+
+/* Live text, not a baked bitmap like the Home wordmark — Chicago (the
+ * same chrome font as Button/Window/Tag), not the Gossip blackletter
+ * (design.md scopes Gossip to Hero, not About) or the body font used
+ * everywhere else on this page. */
+.name {
+  margin: 0 0 16px;
+  font-family: var(--font-ui);
+  font-size: 40px;
+  font-weight: 700;
+  -webkit-font-smoothing: none;
+  line-height: 1.15;
+  color: var(--text-color);
+}
+
+.bio {
+  margin: 0 0 24px;
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--text-color);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 32px;
+}

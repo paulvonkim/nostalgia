@@ -15,13 +15,15 @@ export function DesktopIcons() {
         <DesktopIcon
           icon={<FloppyDiskIcon />}
           label="Resume"
-          href="/resume.pdf"
+          href="https://drive.google.com/file/d/11tgcmzgHXf3XKYph3ogQ1XzA2qJUyqbS/view?usp=sharing"
           download
+          target="_blank"
+          rel="noopener noreferrer"
         />
         <DesktopIcon
           icon={<LinkedInIcon />}
           label="LinkedIn"
-          href="https://www.linkedin.com/in/paulkim"
+          href="https://www.linkedin.com/in/-paulkim"
           target="_blank"
           rel="noopener noreferrer"
         />

@@ -1,15 +1,15 @@
-import { Impressum } from "@/components/Impressum/Impressum";
+import { About } from "@/components/About/About";
 import { Navbar } from "@/components/Navbar/Navbar";
 import { Window } from "@/components/Window/Window";
 import styles from "./page.module.css";
 
-export default function ImpressumPage() {
+export default function AboutPage() {
   return (
     <>
       <Navbar />
       <main className={styles.desktop}>
-        <Window title="Impressum" size="impressum">
-          <Impressum />
+        <Window title="About" size="case-study">
+          <About />
         </Window>
       </main>
     </>

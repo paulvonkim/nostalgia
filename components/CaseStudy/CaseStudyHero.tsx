@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Tag } from "@/components/Tag/Tag";
 import type { CaseStudy } from "@/data/case-studies";
 import { HERO_IMAGE_DIMENSIONS } from "@/data/hero-image-dimensions";
 import styles from "./CaseStudyHero.module.css";
@@ -60,9 +61,9 @@ export function CaseStudyHero({ study }: CaseStudyHeroProps) {
 
         <div className={styles.tags}>
           {study.tags.map((tag) => (
-            <span key={tag} className={styles.tag}>
+            <Tag key={tag} className={styles.tag}>
               {tag}
-            </span>
+            </Tag>
           ))}
         </div>
 

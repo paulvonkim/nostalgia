@@ -16,8 +16,7 @@ const gossip = localFont({
 
 export const metadata: Metadata = {
   title: "Paul Kim — Design Portfolio",
-  description:
-    "Design Portfolio — a skeuomorphic homage to Mac OS 7 and Photoshop 1.0.",
+  description: "Design Portfolio.",
 };
 
 export default function RootLayout({

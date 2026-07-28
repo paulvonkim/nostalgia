@@ -1,0 +1,33 @@
+/* Fixed-fill chrome, same philosophy as Button: background/border/text
+ * are raw tokens, not theme-aware ones, because the box's own fill
+ * (--color-grey-100) doesn't change between themes either — a
+ * theme-aware text color would go near-white in dark mode and vanish
+ * against a background that's still light grey.
+ *
+ * Default font-size (16px) matches CaseStudyHero's usage and the About
+ * page; CaseStudyCard overrides it smaller via its own className, since
+ * that context is a tighter grid card. */
+.tag {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  -webkit-font-smoothing: none;
+  padding: 3px 10px;
+  color: var(--color-black);
+  background: var(--color-grey-100);
+  border: 1px solid var(--color-black);
+  box-shadow: 2px 2px 0 rgb(0 0 0 / 30%);
+  transition:
+    box-shadow 150ms ease,
+    transform 150ms ease;
+}
+
+/* Hard (non-blurred) drop shadow at rest reads as the tag sitting raised
+ * off its background. On hover it settles slightly (shadow 2px → 1px,
+ * shift by that same 1px) rather than fully flattening — these tags
+ * aren't actually clickable, so a full disappear+2px press read as more
+ * "clickable" than intended. */
+.tag:hover {
+  box-shadow: 1px 1px 0 rgb(0 0 0 / 30%);
+  transform: translate(1px, 1px);
+}

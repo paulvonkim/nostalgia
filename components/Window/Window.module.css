@@ -16,13 +16,14 @@
   background: var(--bg-window);
 }
 
-/* About + Impressum */
-.sizeAboutImpressum {
+/* Impressum only — About used to share this size too, but now uses
+ * .sizeCaseStudy below (needs the room for its photo grid) */
+.sizeImpressum {
   width: min(840px, 92vw);
   height: min(640px, 85vh);
 }
 
-/* Case study pages */
+/* Case study pages + About */
 .sizeCaseStudy {
   /* max-width: none overrides .inner's base max-width: min(1100px, 92vw)
    * — that rule is scoped (per its own comment) to Home's sizeless
@@ -50,6 +51,10 @@
   align-items: center;
   gap: 12px;
   padding: 8px 12px;
+  /* Chrome grey, same as the navbar — otherwise this inherits .inner's
+   * --bg-window (white/near-black "paper" tone), which read as too
+   * light/washed out for window furniture rather than content. */
+  background: var(--bg-chrome);
   border-bottom: var(--border-width) solid var(--border-color);
   flex-shrink: 0;
   cursor: grab;

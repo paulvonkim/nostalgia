@@ -67,11 +67,22 @@
    */
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 
+  /* Grain-pulse dissolve — the same crossfade timing DitherReveal's
+   * hover-reveal uses (hero/about portrait), now shared by the Work
+   * overview and About grid cards' grayscale-to-color hover too.
+   * Stepped, not linear/eased — reads gritty/chunky in time, reinforcing
+   * the grain texture instead of competing with a glassy interpolation. */
+  --grain-duration: 450ms;
+  --grain-easing: steps(6, jump-end);
+
   /* ---- Semantic tokens (light theme, default) ----------------------- */
   --bg-desktop: var(--color-effect-blue);
   --bg-chrome: var(--color-grey-100);
   --bg-window: var(--color-white);
-  --bg-navbar: var(--color-white);
+  /* Chrome (window furniture), not content — same grey as the window
+   * gutter/dialog boxes, not --bg-window's white "paper" tone, which
+   * read as too light/washed out for a persistent structural bar. */
+  --bg-navbar: var(--bg-chrome);
   --border-color: var(--color-black);
   --text-color: var(--color-black);
   --text-color-muted: var(--color-grey-500);
@@ -86,7 +97,7 @@
   --bg-desktop: var(--color-grey-700);
   --bg-chrome: #2a2a2a;
   --bg-window: #1a1a1a;
-  --bg-navbar: #1a1a1a;
+  --bg-navbar: var(--bg-chrome);
   /* Structural chrome lines (window border, title bar pinstripes,
    * scrollbar border) use the existing light-grey neutral, not pure white —
    * pure white read as too stark/glaring for line work at this scale. */
