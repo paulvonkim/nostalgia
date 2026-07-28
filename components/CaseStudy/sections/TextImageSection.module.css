@@ -14,17 +14,24 @@
   gap: var(--space-3);
 }
 
+/* Geist Pixel (Square variant) — sitewide section-heading treatment, see
+ * styles/tokens.css. */
 .heading {
   margin: 0;
-  font-family: var(--font-body);
+  font-family: var(--font-pixel);
+  font-variation-settings: "ELSH" 1;
+  -webkit-font-smoothing: none;
   font-size: var(--text-lg);
   color: var(--text-color);
 }
 
+/* 16px, not the shared var(--text-lg) (20px) — that token is also used
+ * by unrelated chrome (Navbar, Window's title bar, Home's pitch text),
+ * so changing it directly would ripple there too. */
 .body {
   margin: 0;
   font-family: var(--font-body);
-  font-size: var(--text-lg);
+  font-size: 16px;
   line-height: 1.5;
   color: var(--text-color);
   white-space: pre-line;

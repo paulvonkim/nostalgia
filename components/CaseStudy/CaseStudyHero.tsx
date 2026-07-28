@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Tag } from "@/components/Tag/Tag";
 import type { CaseStudy } from "@/data/case-studies";
 import { HERO_IMAGE_DIMENSIONS } from "@/data/hero-image-dimensions";
 import styles from "./CaseStudyHero.module.css";
@@ -23,15 +22,16 @@ const BYLINE_FIELDS: {
 // separately by SectionRenderer. Notice sections are pulled out of
 // `study.sections` and shown here; the rest of `sections` is ignored here.
 //
-// Order: title/description → byline → tags → notice → hero image →
-// content sections (the last of those is SectionRenderer, rendered by the
-// page after this component). The hero image renders AFTER the notice,
-// not before it.
+// Order: title/description → byline → hero image → notice → content
+// sections (the last of those is SectionRenderer, rendered by the page
+// after this component). No tags here — the byline (Role/Team/Methods/
+// Tools) is the only metadata on this page; tags stay on the Work
+// overview cards only.
 //
 // Size: the hero image shares the same 848px capped, centered column as
-// everything else on this page (title/description, tags, byline, notice,
-// and the section images further down) — not larger than those, even
-// though it's the first/most prominent thing on the page.
+// everything else on this page (title/description, byline, notice, and
+// the section images further down) — not larger than those, even though
+// it's the first/most prominent thing on the page.
 export function CaseStudyHero({ study }: CaseStudyHeroProps) {
   const notices = (study.sections ?? []).filter(
     (section) => section.type === "notice",
@@ -46,33 +46,38 @@ export function CaseStudyHero({ study }: CaseStudyHeroProps) {
           <p className={styles.description}>{study.description}</p>
         </div>
 
-        <dl className={styles.byline}>
-          {BYLINE_FIELDS.map(({ label, values }) => {
-            const list = values(study);
-            if (!list || list.length === 0) return null;
-            return (
-              <div key={label} className={styles.bylineRow}>
-                <dt className={styles.bylineLabel}>{label}</dt>
-                <dd className={styles.bylineValue}>{list.join(", ")}</dd>
-              </div>
-            );
-          })}
-        </dl>
-
-        <div className={styles.tags}>
-          {study.tags.map((tag) => (
-            <Tag key={tag} className={styles.tag}>
-              {tag}
-            </Tag>
-          ))}
+        <div className={styles.balloon}>
+          <dl className={styles.byline}>
+            {BYLINE_FIELDS.map(({ label, values }) => {
+              const list = values(study);
+              if (!list || list.length === 0) return null;
+              return (
+                <div key={label} className={styles.bylineRow}>
+                  <dt className={styles.bylineLabel}>{label}</dt>
+                  <dd className={styles.bylineValue}>{list.join(", ")}</dd>
+                </div>
+              );
+            })}
+          </dl>
+          {/* Two paths, not one: the fill closes back across the top edge
+           * (the segment that tucks under .balloon's own bottom border,
+           * hidden — no stroke there), while the stroke path stays open
+           * and only draws the two visible outer edges (the curve + the
+           * diagonal to the point). Same fill/stroke-split technique used
+           * for the old CaseStudyCard folder-tab shape: clip-path can't
+           * put a border along a non-rectangular cut, so the border has
+           * to be its own separate shape.
+           *
+           * Curved edge is a single quadratic (Q), one control point,
+           * kept strictly inside the start/end bounding box (control
+           * (10,20) vs. start (30,2)/end (4,32)) — the earlier cubic's
+           * first control point overshot past the start point (34 > 30),
+           * which is exactly what produced the curl/loop artifact. */}
+          <svg className={styles.tail} viewBox="0 0 44 34" aria-hidden="true">
+            <path className={styles.tailFill} d="M30,2 Q10,20 4,32 L8,2 Z" />
+            <path className={styles.tailStroke} d="M30,2 Q10,20 4,32 L8,2" />
+          </svg>
         </div>
-
-        {notices.map((notice) => (
-          <div key={notice.body} className={styles.notice}>
-            <span className={styles.noticeLabel}>Notice</span>
-            <p className={styles.noticeBody}>{notice.body}</p>
-          </div>
-        ))}
       </div>
 
       <div className={styles.imageWrap}>
@@ -86,6 +91,13 @@ export function CaseStudyHero({ study }: CaseStudyHeroProps) {
           sizes="(max-width: 900px) 92vw, 848px"
         />
       </div>
+
+      {notices.map((notice) => (
+        <div key={notice.body} className={styles.notice}>
+          <span className={styles.noticeLabel}>Notice</span>
+          <p className={styles.noticeBody}>{notice.body}</p>
+        </div>
+      ))}
     </div>
   );
 }

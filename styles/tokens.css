@@ -35,17 +35,25 @@
   --color-case-brown: #844f1d;
 
   /* ---- Typography --------------------------------------------------
-   * --font-chicago and --font-gossip are injected by next/font/local in
-   * app/layout.tsx. Google Sans (body) is loaded via a plain <link> embed
-   * in that same file's <head> instead — the exact snippet provided,
-   * not a next/font/google wrapper — so it's referenced here by its
-   * literal family name/fallback, matching that snippet's own
-   * `font-family: "Google Sans", sans-serif;` exactly.
+   * --font-chicago is injected by next/font/local in app/layout.tsx.
+   * Geist and Geist Pixel are loaded via a plain <link> embed in that
+   * same file's <head> instead — the exact snippet provided, not a
+   * next/font/google wrapper — so they're referenced here by their
+   * literal family names/fallbacks, matching that snippet's own
+   * `font-family: "Geist"/"Geist Pixel", sans-serif;` exactly.
+   *
+   * Three-font system: Chicago is chrome only (window title bars,
+   * navbar, scrollbar labels) — unchanged. Geist Pixel is headings, tags,
+   * and CTA/buttons — replaces Chicago in those roles. Geist (Sans) is
+   * body/paragraph text — replaces the former Google Sans. Geist Pixel
+   * consumers must also set `font-variation-settings: "ELSH" 1;` (the
+   * Square shape variant, confirmed against Vercel's geist-pixel-font
+   * repo) — that's per-axis, so it can't be folded into this token the
+   * way font-family can.
    */
   --font-ui: var(--font-chicago), "Chicago", monospace;
-  --font-body: "Google Sans", sans-serif;
-  --font-hero:
-    var(--font-gossip), "Chicago", serif; /* blackletter hero wordmark, scoped tightly (see design.md §5) */
+  --font-body: "Geist", sans-serif;
+  --font-pixel: "Geist Pixel", sans-serif;
 
   --text-xs: 12px;
   --text-sm: 14px;

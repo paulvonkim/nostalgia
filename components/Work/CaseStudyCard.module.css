@@ -102,10 +102,14 @@
   margin-top: auto;
 }
 
+/* Geist Pixel (Square variant) — see CaseStudyHero.module.css's .title
+ * for the same treatment/rationale. */
 .title {
   margin: var(--space-6) 0 var(--space-4);
-  font-family: var(--font-body);
-  font-size: 22px;
+  font-family: var(--font-pixel);
+  font-variation-settings: "ELSH" 1;
+  -webkit-font-smoothing: none;
+  font-size: 20px;
   line-height: 1.2;
   color: var(--color-grey-500);
   transition: color 150ms ease;
@@ -114,7 +118,8 @@
 .description {
   margin: 0 0 var(--space-6);
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 200;
   line-height: 1.4;
   color: var(--color-grey-500);
   transition: color 150ms ease;
@@ -148,12 +153,4 @@
   flex-wrap: wrap;
   gap: var(--space-2);
   margin: 0 0 var(--space-7);
-}
-
-/* Pill chrome itself (background/border/shadow/hover) now lives in the
- * shared Tag component (components/Tag/Tag.module.css) — this is just
- * the size override for this tighter grid-card context, since Tag's own
- * default (16px) matches CaseStudyHero and About instead. */
-.tag {
-  font-size: 10px;
 }

@@ -4,12 +4,21 @@
  * theme-aware text color would go near-white in dark mode and vanish
  * against a background that's still light grey.
  *
- * Default font-size (16px) matches CaseStudyHero's usage and the About
- * page; CaseStudyCard overrides it smaller via its own className, since
- * that context is a tighter grid card. */
+ * One size, used everywhere (CaseStudyCard, CaseStudyHero, About) — no
+ * per-usage overrides.
+ *
+ * Geist Pixel (Square variant), not Chicago — tags moved to the sitewide
+ * headings/tags/buttons face (see styles/tokens.css). font-weight: 700,
+ * not the embed snippet's default 400 — at this element's much smaller
+ * size (14px vs. headings' 20-56px), 400 read visibly lighter/thinner
+ * than the headings instead of matching them; pixel-grid faces don't
+ * hold a consistent visual weight across that big a size range, so the
+ * declared weight needs to compensate. */
 .tag {
   display: inline-block;
-  font-family: var(--font-ui);
+  font-family: var(--font-pixel);
+  font-variation-settings: "ELSH" 1;
+  font-weight: 700;
   font-size: 14px;
   -webkit-font-smoothing: none;
   padding: 3px 10px;

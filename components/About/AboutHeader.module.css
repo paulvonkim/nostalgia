@@ -1,29 +1,19 @@
 /* Same grid definition as .grid below (About.module.css) — 3 columns,
- * 40px gap — the image sits in column 1 and the text spans columns 2-3.
+ * 40px gap, no container-level padding — the image sits in column 1 and
+ * the text spans columns 2-3. No card chrome here (border/background/
+ * shadow/padding, tried in an earlier pass) — plain structural grid
+ * only, so this reads as its own header section rather than a seventh
+ * card. Because there's no padding of its own, this grid is now
+ * pixel-exact with .grid's below (that earlier card padding was making
+ * it ~48px narrower, an approximation) — the image in column 1 is
+ * genuinely the same width as an AboutCard, not just close to it.
  * Breakpoints mirror .grid's for the same reason — if the card grid
- * drops to 2 or 1 columns, the header does too. Note: since this now
- * carries its own 24px card padding (below), its columns are ~48px
- * narrower than .grid's own (which has no container-level padding — each
- * AboutCard's padding is inside itself) — the "image = one card width"
- * match is close, not pixel-exact, once wrapped as its own card.
- *
- * Same card chrome as AboutCard's .card (components/About/AboutCard.
- * module.css) — border, raised bevel, --bg-chrome fill, 24px padding —
- * reused directly so the header reads as one more card in the same
- * family as the six below, not a bare, un-chromed section above them. */
+ * drops to 2 or 1 columns, the header does too. */
 .header {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   align-items: stretch;
   gap: var(--space-8);
-  border: var(--border-width) solid var(--border-color);
-  background: var(--bg-chrome);
-  padding: var(--space-6);
-  box-shadow:
-    inset 1px 1px 0 0 var(--color-white),
-    inset -1px -1px 0 0 var(--color-grey-500),
-    inset 2px 2px 0 0 var(--color-grey-100),
-    inset -2px -2px 0 0 var(--color-grey-400);
 }
 
 @media (max-width: 900px) {
@@ -38,19 +28,23 @@
   }
 }
 
-/* Same recessed-bevel frame as CaseStudyCard's .imageFrame (border-free,
- * depth built entirely from the inset bevel + hard corner shadow) — no
- * aspect-ratio forced here, unlike AboutCard's square variant, since
- * this photo isn't meant to crop.
+/* Same square frame as AboutCard's .imageFrame (components/About/
+ * AboutCard.module.css) — aspect-ratio: 1/1 + object-fit: cover below,
+ * copied directly rather than reinterpreted, so this photo is genuinely
+ * the same size/shape as an AboutCard's, not just visually similar. That
+ * does mean cropping now, unlike the earlier natural-aspect-ratio
+ * version — a deliberate trade for matching the grid.
  *
  * align-self: start opts this out of .header's row stretch — its height
- * stays exactly what the image's own aspect ratio produces, never
- * distorted by however tall .info ends up. .info is the one that
- * stretches to match this image's height (see below), not the other
- * way around. */
+ * stays exactly what aspect-ratio: 1/1 produces from its own column
+ * width, never distorted by however tall .info ends up. .info is the
+ * one that stretches to match this image's height (see below), not the
+ * other way around. */
 .imageFrame {
   grid-column: 1 / 2;
   align-self: start;
+  position: relative;
+  aspect-ratio: 1 / 1;
   background: var(--bg-window);
   padding: 2px;
   box-shadow:
@@ -62,9 +56,7 @@
 }
 
 .image {
-  display: block;
-  width: 100%;
-  height: auto;
+  object-fit: cover;
 }
 
 /* display: flex + align-items: flex-start — a grid item can still be its
@@ -108,15 +100,18 @@
   }
 }
 
-/* Live text, not a baked bitmap like the Home wordmark — Chicago (the
- * same chrome font as Button/Window/Tag), not the Gossip blackletter
- * (design.md scopes Gossip to Hero, not About) or the body font used
- * everywhere else on this page. */
+/* Live text, not a baked bitmap like the Home wordmark. Geist Pixel
+ * (Square variant) — the sitewide headings face, not the body font used
+ * everywhere else on this page. font-weight: 400, not 700 — the
+ * embed snippet's own boilerplate is a single default weight, and this
+ * is a pixel-grid display face where forcing bold would just synthesize
+ * a fake-bold and blur the shapes. */
 .name {
   margin: 0 0 var(--space-4);
-  font-family: var(--font-ui);
+  font-family: var(--font-pixel);
+  font-variation-settings: "ELSH" 1;
   font-size: 40px;
-  font-weight: 700;
+  font-weight: 400;
   -webkit-font-smoothing: none;
   line-height: 1.15;
   color: var(--text-color);
@@ -126,6 +121,7 @@
   margin: 0 0 var(--space-6);
   font-family: var(--font-body);
   font-size: 18px;
+  font-weight: 200;
   line-height: 1.55;
   color: var(--text-color);
 }

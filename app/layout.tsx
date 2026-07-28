@@ -8,12 +8,6 @@ const chicago = localFont({
   display: "swap",
 });
 
-const gossip = localFont({
-  src: "../public/fonts/Gossip-MedSquare.otf",
-  variable: "--font-gossip",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   title: "Paul Kim — Design Portfolio",
   description: "Design Portfolio.",
@@ -25,11 +19,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${chicago.variable} ${gossip.variable}`}>
+    <html lang="en" className={chicago.variable}>
       <head>
-        {/* Body font (Google Sans) — loaded via the exact embed snippet
-         * provided, not next/font/google, per explicit instruction to
-         * match the given source rather than self-host a substitute. */}
+        {/* Body font (Geist) and headings/tags/buttons font (Geist Pixel,
+         * Square variant — ELSH axis value 1, confirmed against Vercel's
+         * geist-pixel-font repo) — loaded via the exact embed snippet
+         * provided, not next/font/google, same rationale as before: match
+         * the given source rather than self-host a substitute. Replaces
+         * the old Google Sans embed (body) and Chicago's former headings/
+         * tags/buttons role. */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -37,7 +35,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Geist+Pixel&family=Geist:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet"
         />
       </head>

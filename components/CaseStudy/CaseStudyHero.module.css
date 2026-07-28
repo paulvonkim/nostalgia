@@ -45,31 +45,89 @@
   width: 100%;
 }
 
+/* Geist Pixel (Square variant) — headings replace Chicago/body-font with
+ * this face sitewide (see styles/tokens.css). font-variation-settings
+ * selects the Square shape (ELSH axis, value 1); font-smoothing: none
+ * keeps it crisp, same reasoning as Chicago/Gossip elsewhere. */
 .title {
   margin: 0;
-  font-family: var(--font-body);
+  font-family: var(--font-pixel);
+  font-variation-settings: "ELSH" 1;
+  -webkit-font-smoothing: none;
   font-size: var(--text-xl);
   line-height: 1.2;
   color: var(--text-color);
 }
 
+/* 16px, not the shared var(--text-lg) (20px) — that token is also used
+ * by unrelated chrome (Navbar, Window's title bar, Home's pitch text),
+ * so changing it directly would ripple there too. */
 .description {
   margin: 0;
   font-family: var(--font-body);
-  font-size: var(--text-lg);
+  font-size: 16px;
   line-height: 1.5;
   color: var(--text-color);
 }
 
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
+/* System 7 Balloon Help styling — a real skeuomorphic prop, not page
+ * chrome, so its fill is fixed (white) in both themes rather than the
+ * theme-aware --bg-window token the rest of this page's frames use —
+ * same "physical object" treatment already established for the
+ * dithered portrait and desktop icons (design.md).
+ * border: 2px, not var(--border-width) (1px) — bolder than the rest of
+ * the site's chrome, deliberately, to read as a distinct cartoon-bubble
+ * outline. Color is --color-grey-700 (dark grey, the same token already
+ * used for the diamond logo's outline/facet lines), not pure black.
+ * border-radius: 12px — tightened from an earlier 14px pass, which
+ * still read as too soft/rounded-card-like at this box's fairly short
+ * height, where the radius-to-height ratio reads more strongly than
+ * the raw px value alone suggests.
+ * box-shadow reuses Window's own hard-offset shadow token pair exactly
+ * (--shadow-offset/--shadow-color, 0 blur) — already a hard, non-blurred
+ * shadow; the tighter radius above should also read as visibly crisper,
+ * since a shadow following a heavily rounded silhouette optically reads
+ * softer even at 0 blur.
+ * No margin-bottom — the tail (below) protrudes 32px past this box's own
+ * bottom edge via absolute positioning, which isn't counted by normal
+ * layout, so with no margin here the tail's tip lands flush against
+ * .hero's own gap to the image below: net visual gap is zero, which is
+ * the intended look now that the image sits directly after this. */
+.balloon {
+  position: relative;
   width: 100%;
+  background: var(--color-white);
+  border: 2px solid var(--color-grey-700);
+  border-radius: 12px;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+  padding: var(--space-4) var(--space-5);
 }
 
-.tag {
-  font-size: 12px;
+/* Fixed left offset (not e.g. a percentage) — the tail's horizontal
+ * position shouldn't drift with the balloon's own width, which varies
+ * with content (byline text length differs per case study). bottom:
+ * -32px = -(viewBox height 34 − 2px overlap) — that 2px overlap is what
+ * lets .tailFill's hidden top edge tuck just inside .balloon's own
+ * border instead of leaving a seam. */
+.tail {
+  position: absolute;
+  left: 24px;
+  bottom: -32px;
+  width: 44px;
+  height: 34px;
+  overflow: visible;
+}
+
+.tailFill {
+  fill: var(--color-white);
+}
+
+.tailStroke {
+  fill: none;
+  stroke: var(--color-grey-700);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* Byline metadata stays neutral, not case-colored — design.md: case color
@@ -88,19 +146,36 @@
   font-size: var(--text-sm);
 }
 
+/* Geist Pixel (Square variant) — field labels only, values stay Geist
+ * Sans below. font-weight: 700, not the sitewide default 400 — same fix
+ * already applied to Tag/Button: at this small a size, 400 reads
+ * visibly lighter/thinner than the headings instead of matching them.
+ * Fixed var(--text-color-muted) works here without a dark-mode
+ * contrast bug even though .balloon's fill is fixed white — that token
+ * resolves to the same raw grey in both themes already (unlike
+ * .bylineValue below). */
 .bylineLabel {
   flex: 0 0 90px;
   margin: 0;
-  font-family: var(--font-body);
+  font-family: var(--font-pixel);
+  font-variation-settings: "ELSH" 1;
+  font-weight: 700;
+  -webkit-font-smoothing: none;
   color: var(--text-color-muted);
   text-transform: uppercase;
 }
 
+/* Geist Sans (var(--font-body)) — the values, not the labels above.
+ * color: fixed var(--color-black), not var(--text-color) — .balloon's
+ * fill is fixed white in both themes (see .balloon comment), so a
+ * theme-aware text color would flip to near-white in dark mode and
+ * vanish against it. Same fixed-fill-needs-fixed-text fix already
+ * applied to Button/Tag. */
 .bylineValue {
   flex: 1;
   margin: 0;
   font-family: var(--font-body);
-  color: var(--text-color);
+  color: var(--color-black);
 }
 
 /* Dialog-box treatment (design.md §12), not a literal 1:1 alert replica —
@@ -108,12 +183,16 @@
  * OK-button alert graphic. No border — depth comes entirely from the
  * hard offset shadow instead, the same one Window.module.css's .outer
  * uses (same --shadow-offset/--shadow-color tokens, not a softer or
- * blurred variant). width: 100% explicit, not relying on .column's flex
- * stretch default — same full-width treatment as the hero image and the
- * section visuals below (image/video/full-width-image all fill the same
- * 848px column edge to edge). */
+ * blurred variant).
+ *
+ * max-width/margin: same 848px-capped, centered treatment as .imageWrap
+ * above — this now renders below the hero image as a direct child of
+ * .hero, not nested inside .column, so it no longer inherits that cap
+ * from a parent and needs its own copy of it. */
 .notice {
   width: 100%;
+  max-width: 848px;
+  margin: 0 auto;
   background: var(--bg-chrome);
   padding: var(--space-3) var(--space-4);
   box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);

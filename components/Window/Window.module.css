@@ -147,14 +147,19 @@
   background: var(--color-grey-500);
 }
 
+/* font-family explicit here, not left to inherit — scrollbar chrome
+ * stays Chicago, and without this it was silently inheriting body's
+ * font instead (the ▲/▼ glyphs render differently per font). */
 .arrowBtn {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   height: var(--scrollbar-width);
+  font-family: var(--font-ui);
   font-size: 10px;
   line-height: 1;
+  -webkit-font-smoothing: none;
   background: var(--color-grey-300);
   /* Fixed dark, not var(--text-color) — this button's fill is a raw
    * neutral primitive that never changes with theme (matching the CTA

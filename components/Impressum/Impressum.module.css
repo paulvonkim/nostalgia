@@ -7,10 +7,19 @@
   color: var(--text-color);
 }
 
+/* Geist Pixel (Square variant) — overrides .impressum's inherited
+ * font-family: var(--font-body), same sitewide heading treatment as
+ * case study/section headings (see styles/tokens.css). font-weight: 400,
+ * not 700 — the embed snippet's own boilerplate is a single default
+ * weight, and forcing bold on a pixel-grid display face just
+ * synthesizes a fake-bold that blurs the shapes. */
 .title {
   margin: 0;
+  font-family: var(--font-pixel);
+  font-variation-settings: "ELSH" 1;
+  -webkit-font-smoothing: none;
   font-size: var(--text-xl);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.2;
 }
 
@@ -20,10 +29,14 @@
   gap: var(--space-2);
 }
 
+/* Same Geist Pixel treatment as .title above. */
 .heading {
   margin: 0;
+  font-family: var(--font-pixel);
+  font-variation-settings: "ELSH" 1;
+  -webkit-font-smoothing: none;
   font-size: var(--text-lg);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.3;
 }
 
@@ -46,9 +59,13 @@
   gap: var(--space-2);
 }
 
+/* Same Geist Pixel treatment as .title above. */
 .subheading {
   margin: 0;
+  font-family: var(--font-pixel);
+  font-variation-settings: "ELSH" 1;
+  -webkit-font-smoothing: none;
   font-size: var(--text-base);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.3;
 }

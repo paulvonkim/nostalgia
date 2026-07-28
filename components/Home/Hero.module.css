@@ -26,34 +26,54 @@
   padding-top: var(--space-1);
 }
 
+/* Live text now, not a baked bitmap — the old bitmap existed specifically
+ * because live pixel-style text (Gossip) rendered blurry on Retina
+ * displays regardless of font-smoothing, tested across Chrome and Safari
+ * and multiple Gossip densities (see design.md §5 / git history for
+ * that investigation). Geist Pixel is a different font, but the same
+ * general category (pixel-grid display face) — this carries the same
+ * risk of recurring and hasn't been visually verified after this
+ * change; check it before trusting this looks right. Color: currently
+ * --text-color (theme-aware) rather than the bitmap's old fixed-black-
+ * plus-dark-mode-invert trick, since this is live text now, not pixels. */
 .wordmark {
   margin: 0;
-  line-height: 0;
+  font-family: var(--font-pixel);
+  font-variation-settings: "ELSH" 1;
+  font-weight: 400;
+  font-size: 56px;
+  line-height: 1;
+  -webkit-font-smoothing: none;
+  color: var(--text-color);
 }
 
-.wordmarkImg {
-  display: block;
-  /* Source is a clean 2x render (671x177) — displaying at exactly half
-   * keeps the nearest-neighbor downscale artifact-free (tested; an
-   * arbitrary ratio here reintroduced moiré against the font's dot grid). */
-  width: 335.5px;
-  height: auto;
-  image-rendering: pixelated;
-}
-
-/* Baked bitmap is solid black — invisible against a near-black dark-mode
- * background. Invert to flip it white, same fix as DitherReveal's default
- * image and for the same reason (it's pixels, not theme-aware live text). */
-[data-theme="dark"] .wordmarkImg {
-  filter: invert(1);
-}
-
+/* line-height tightened from 1.5 to 1.3 — that value was tuned for
+ * flowing prose wrapping naturally across ~2 lines; now that the text
+ * breaks into 3 short, deliberate clause-lines (see Hero.tsx), 1.5 left
+ * visible gaps between lines that read as loose/accidental rather than
+ * a considered block. This is the "within the paragraph" fix, not the
+ * surrounding .copy gap (var(--space-5), spacing to the wordmark/CTA) —
+ * that value is unrelated to the text's own internal rhythm and wasn't
+ * part of what looked off here. */
 .pitch {
   margin: 0;
   font-family: var(--font-body);
   font-size: var(--text-lg);
-  line-height: 1.5;
+  font-weight: 200;
+  line-height: 1.3;
   color: var(--text-color);
+}
+
+/* white-space: nowrap — .copy's 420px max-width is narrower than two of
+ * the three clauses actually need at this font-size (measured ~468px
+ * and ~478px vs. a 420px container), so the browser's own wrap was
+ * kicking in a second time *inside* those clauses even with the
+ * deliberate <br> between them, producing more than 3 lines. This
+ * forces each clause to stay on its own single line no matter the
+ * container width, so the <br>s above are the only breaks that ever
+ * apply — the actual fix, not just correct <br> placement in the DOM. */
+.pitchLine {
+  white-space: nowrap;
 }
 
 .cta {

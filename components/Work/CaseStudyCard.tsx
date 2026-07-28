@@ -44,9 +44,7 @@ export function CaseStudyCard({ study, priority = false }: CaseStudyCardProps) {
         <p className={styles.description}>{study.description}</p>
         <div className={styles.tags}>
           {study.tags.map((tag) => (
-            <Tag key={tag} className={styles.tag}>
-              {tag}
-            </Tag>
+            <Tag key={tag}>{tag}</Tag>
           ))}
         </div>
         <div className={styles.footer}>

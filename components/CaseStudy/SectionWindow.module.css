@@ -61,9 +61,14 @@
   );
 }
 
+/* Chicago, not the body font — this is a nested window title bar (same
+ * border language as the main Window component per the file-top
+ * comment), and window title bars are chrome, staying Chicago. Same
+ * smoothing/family pairing as Window.module.css's own .title. */
 .title {
-  font-family: var(--font-body);
+  font-family: var(--font-ui);
   font-size: var(--text-sm);
+  -webkit-font-smoothing: none;
   color: var(--text-color);
   white-space: nowrap;
   overflow: hidden;

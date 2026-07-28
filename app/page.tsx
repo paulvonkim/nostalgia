@@ -10,7 +10,7 @@ export default function Home() {
       <Navbar />
       <main className={styles.desktop}>
         <DesktopIcons />
-        <Window title="Paul Kim's Portfolio." scrollbar={false}>
+        <Window title="Home" scrollbar={false}>
           <Hero />
         </Window>
       </main>

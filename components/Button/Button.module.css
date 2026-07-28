@@ -23,7 +23,16 @@
   border-radius: 0;
   background: var(--color-grey-300);
   color: var(--color-black);
-  font-family: var(--font-ui);
+  /* Geist Pixel (Square variant), not Chicago — CTA/buttons moved to the
+   * sitewide headings/tags/buttons face (see styles/tokens.css).
+   * font-weight: 700, not the embed snippet's default 400 — at this
+   * element's much smaller size (16px vs. headings' 20-56px), 400 read
+   * visibly lighter/thinner than the headings instead of matching them;
+   * pixel-grid faces don't hold a consistent visual weight across that
+   * big a size range, so the declared weight needs to compensate. */
+  font-family: var(--font-pixel);
+  font-variation-settings: "ELSH" 1;
+  font-weight: 700;
   font-size: var(--text-base);
   -webkit-font-smoothing: none;
   text-decoration: none;

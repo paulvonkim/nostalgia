@@ -64,12 +64,20 @@
  * var(--text-color) this used to sit at) so the hover brightening below
  * is an actual visible shift, matching how CaseStudyCard's own title
  * behaves rather than just copying the hover rule with nothing for it
- * to change. */
+ * to change.
+ *
+ * Geist Pixel (Square variant) — sitewide heading treatment (see
+ * styles/tokens.css). font-weight: 400, not 700 — the embed snippet's
+ * own boilerplate is a single default weight, and forcing bold on a
+ * pixel-grid display face just synthesizes a fake-bold and blurs the
+ * shapes, same reasoning as every other heading using this face. */
 .heading {
   margin: var(--space-5) 0 var(--space-2);
-  font-family: var(--font-body);
+  font-family: var(--font-pixel);
+  font-variation-settings: "ELSH" 1;
+  -webkit-font-smoothing: none;
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.2;
   color: var(--color-grey-500);
   transition: color 150ms ease;
@@ -82,6 +90,7 @@
   margin: 0;
   font-family: var(--font-body);
   font-size: 15px;
+  font-weight: 200;
   line-height: 1.4;
   color: var(--text-color-muted);
   transition: color 150ms ease;

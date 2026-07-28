@@ -22,16 +22,20 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Google Sans variable-axis settings, from the provided embed snippet's
-   * .google-sans-<uniquifier> class, applied here since body is already
-   * the single place font-family: var(--font-body) is set — these are
-   * inherited properties, so every --font-body usage site picks them up.
-   * font-optical-sizing/font-variation-settings are no-ops on Chicago and
-   * Gossip (neither has an opsz/GRAD axis), so this is safe to set globally. */
+  /* Geist's variable-axis settings, from the provided embed snippet's
+   * .geist-<uniquifier> class, applied here since body is already the
+   * single place font-family: var(--font-body) is set — these are
+   * inherited properties, so every --font-body usage site picks them up,
+   * and every --font-pixel (Geist Pixel) or --font-ui (Chicago) usage
+   * site inherits them harmlessly too (font-weight/font-style are
+   * universal; font-optical-sizing no-ops on fonts without an opsz axis).
+   * Geist Pixel's own font-variation-settings ("ELSH" — the pixel shape
+   * axis) is NOT set here: that axis doesn't exist on Geist or Chicago,
+   * and unlike weight/style it's specific enough that each --font-pixel
+   * consumer sets it directly instead (see e.g. Tag.module.css). */
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-  font-variation-settings: "GRAD" 0;
 }
 
 a {
