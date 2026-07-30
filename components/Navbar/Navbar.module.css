@@ -263,12 +263,33 @@
   padding: 0;
   border: none;
   background: none;
-  font-family: var(--font-ui);
-  font-size: 24px;
-  line-height: 1;
   color: var(--text-color);
   cursor: pointer;
-  -webkit-font-smoothing: none;
+}
+
+/* CSS-drawn X, not a Chicago "×" glyph — same currentColor-bar technique
+ * as .hamburgerBars/.hamburgerBar below, for a consistent hand-drawn icon
+ * language instead of relying on font rendering (which reads inconsistently
+ * across browsers at this size/weight, unlike a fixed-width CSS shape). */
+.closeIcon {
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+}
+
+.closeBar {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.closeBar:last-child {
+  transform: translateY(-50%) rotate(-45deg);
 }
 
 .panelSection {

@@ -80,16 +80,18 @@
  * height: min(Xpx, 85vh) is a deliberate desktop proportion, not a
  * viewport-fit target, so it left the same too-short-with-a-gap problem
  * the sizeless variant had. height: auto frees the box from that 85vh
- * cap; min-height is the actual floor, using each page's own 70px
- * .desktop padding-top (navbar + 24px margin, see those page.module.css
- * files) rather than Home's 46px. Content taller than this still scrolls
- * inside .content (overflow: auto, unchanged) — this only fixes the
- * too-short case, not the scroll mechanism. */
+ * cap; min-height is the actual floor. 46px, matching the sizeless
+ * variant's own formula below exactly — every page's .desktop now uses
+ * the same 46px padding-top at this width (see the page.module.css
+ * files), so there's no longer a separate 70px offset to account for.
+ * Content taller than this still scrolls inside .content (overflow:
+ * auto, unchanged) — this only fixes the too-short case, not the scroll
+ * mechanism. */
 @media (max-width: 1024px) {
   .inner.sizeImpressum,
   .inner.sizeCaseStudy {
     height: auto;
-    min-height: calc(100vh - 70px - (var(--space-2) * 2));
+    min-height: calc(100vh - 46px - (var(--space-2) * 2));
   }
 }
 

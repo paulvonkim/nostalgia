@@ -17,6 +17,8 @@
 @media (max-width: 1024px) {
   .desktop {
     align-items: stretch;
+    justify-content: normal;
+    padding-top: 46px;
     background: var(--bg-window);
   }
 }

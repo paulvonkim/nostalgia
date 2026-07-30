@@ -110,7 +110,10 @@ export function Navbar() {
             aria-label="Close menu"
             onClick={closeMenu}
           >
-            ×
+            <span className={styles.closeIcon} aria-hidden="true">
+              <span className={styles.closeBar} />
+              <span className={styles.closeBar} />
+            </span>
           </button>
           <WorkMenu variant="panel" onNavigate={closeMenu} />
           <AboutMenu variant="panel" onNavigate={closeMenu} />
