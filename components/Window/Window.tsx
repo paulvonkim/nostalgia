@@ -15,7 +15,7 @@ interface WindowProps {
   children?: ReactNode;
   // Home has no fixed size — omitting this prop sizes the window
   // intrinsically to its content (max-width: min(1100px, 92vw) safety cap).
-  size?: "impressum" | "case-study" | "work";
+  size?: "impressum" | "case-study";
   // Home's window is content-intrinsic and essentially never overflows, so
   // the scrollbar chrome there is pure unused decoration — set false to
   // omit it. .content stays overflow: auto regardless (see Window.module.css),
@@ -27,7 +27,6 @@ interface WindowProps {
 const SIZE_CLASS: Record<NonNullable<WindowProps["size"]>, string> = {
   impressum: styles.sizeImpressum,
   "case-study": styles.sizeCaseStudy,
-  work: styles.sizeWork,
 };
 
 interface ScrollState {

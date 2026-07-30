@@ -23,7 +23,9 @@
   height: min(640px, 85vh);
 }
 
-/* Case study pages + About */
+/* Case study pages + About + Work overview — Work used to be its own
+ * wider 1400px variant (.sizeWork, since removed), but now matches this
+ * size directly instead of keeping a near-duplicate definition around. */
 .sizeCaseStudy {
   /* max-width: none overrides .inner's base max-width: min(1100px, 92vw)
    * — that rule is scoped (per its own comment) to Home's sizeless
@@ -31,18 +33,6 @@
    * capping this size variant's own 1200px width down to 1100px. */
   max-width: none;
   width: min(1200px, 92vw);
-  height: min(840px, 85vh);
-}
-
-/* Work overview — wider than case-study (the two-column cards need the
- * room; the earlier attempt at content-intrinsic sizing like Home grew
- * the window to fit the entire list, forcing the whole page to scroll
- * instead of scrolling inside the window). Height cap is what makes
- * .content genuinely overflow, so the existing scrollbar mechanism
- * (real ResizeObserver-based detection, not decorative) actually
- * engages instead of .content just growing to match its content. */
-.sizeWork {
-  width: min(1400px, 92vw);
   height: min(840px, 85vh);
 }
 
