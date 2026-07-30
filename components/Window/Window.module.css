@@ -6,6 +6,18 @@
   box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
 }
 
+/* inline-flex shrink-wraps to its content by default — .inner's own
+ * width: 100% below has nothing real to stretch against without this,
+ * since .outer itself never grows past whatever .inner happens to
+ * measure. Gutter also shrinks here (the reference's fixed 8px reads as
+ * excessive chrome once the window is already edge-to-edge). */
+@media (max-width: 1024px) {
+  .outer {
+    width: 100%;
+    padding: var(--space-2);
+  }
+}
+
 .inner {
   display: flex;
   flex-direction: column;
@@ -36,6 +48,20 @@
   height: min(840px, 85vh);
 }
 
+/* Every size tier (including the sizeless Home default above) forced to
+ * full-width here — .inner, .sizeImpressum and .sizeCaseStudy are all
+ * three listed explicitly since each carries its own width/max-width
+ * that would otherwise win on specificity (two classes vs. one). Height
+ * is untouched — only width/max-width were part of this ask. */
+@media (max-width: 1024px) {
+  .inner,
+  .inner.sizeImpressum,
+  .inner.sizeCaseStudy {
+    width: 100%;
+    max-width: none;
+  }
+}
+
 .titleBar {
   display: flex;
   align-items: center;
@@ -64,6 +90,17 @@
 
 .titleBar.dragging {
   cursor: grabbing;
+}
+
+/* cursor: default, not grab — dragging is disabled at this width (see
+ * Window.tsx's pointerdown guard), so the grab cursor would be a false
+ * affordance. touch-action: none stays: it's still what stops the
+ * title bar from panning/scrolling the page under a touch drag gesture
+ * even though the drag itself is now a no-op. */
+@media (max-width: 1024px) {
+  .titleBar {
+    cursor: default;
+  }
 }
 
 .flank {
@@ -128,6 +165,37 @@
   display: none;
 }
 
+/* Fixed var(--space-8) reads as oversized once the window itself is
+ * already edge-to-edge (see .outer above) — two narrower tiers instead
+ * of one, matching the mobile/tablet split used elsewhere. */
+@media (max-width: 1024px) {
+  .content {
+    padding: var(--space-6);
+  }
+}
+
+@media (max-width: 480px) {
+  .content {
+    padding: var(--space-5);
+  }
+}
+
+/* Native scroll below 1024px, not the custom .thumb UI — re-enables the
+ * real browser scrollbar this component normally suppresses (above),
+ * since .scrollbar's own arrow buttons/thumb are hidden here regardless
+ * of the `scrollbar` prop passed in. overflow: auto on .content itself
+ * was never conditional, so scrolling was always functionally there
+ * either way — this only changes which scrollbar chrome represents it. */
+@media (max-width: 1024px) {
+  .content {
+    scrollbar-width: auto;
+  }
+
+  .content::-webkit-scrollbar {
+    display: block;
+  }
+}
+
 .scrollbar {
   display: flex;
   flex-direction: column;
@@ -135,6 +203,12 @@
   width: var(--scrollbar-width);
   border-left: var(--border-width) solid var(--border-color);
   background: var(--color-grey-500);
+}
+
+@media (max-width: 1024px) {
+  .scrollbar {
+    display: none;
+  }
 }
 
 /* font-family explicit here, not left to inherit — scrollbar chrome

@@ -36,10 +36,45 @@
   --diamond-outline: var(--color-effect-blue);
 }
 
+/* Both always render (avoids a hydration mismatch from guessing
+ * viewport width server-side) — CSS toggles which is visible. Desktop:
+ * icon shown, text hidden (default below). ≤1024px: flipped, in the
+ * media query further down after .hamburger. */
+.logoIcon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.logoText {
+  display: none;
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  color: var(--text-color);
+  -webkit-font-smoothing: none;
+}
+
 .nav {
   display: flex;
   align-items: center;
   gap: var(--space-6);
+}
+
+@media (max-width: 1024px) {
+  .nav {
+    display: none;
+  }
+
+  .clockWrap {
+    display: none;
+  }
+
+  .logoIcon {
+    display: none;
+  }
+
+  .logoText {
+    display: inline-flex;
+  }
 }
 
 .navItem {
@@ -138,4 +173,164 @@
 .menuItemActive:hover {
   background: var(--color-black);
   color: var(--color-white);
+}
+
+/* ---- Hamburger (≤1024px only) -----------------------------------------
+ * Hidden by default (desktop); shown in the media query below, where it
+ * replaces .nav + Clock. 44px min-height is WCAG's minimum recommended
+ * touch-target size — the visible content (3 short bars + "Menu") is
+ * smaller than that, padding is what gets the hit target there. */
+.hamburger {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 44px;
+  min-height: 44px;
+  padding: var(--space-2);
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: var(--text-base);
+  color: inherit;
+  cursor: pointer;
+  -webkit-font-smoothing: none;
+}
+
+@media (max-width: 1024px) {
+  .hamburger {
+    display: inline-flex;
+    /* Flush to the true viewport edge — cancels .navbar's own
+     * var(--space-6) horizontal padding for this element only, so
+     * everything else (logo, clock) keeps its normal inset. */
+    margin-right: calc(var(--space-6) * -1);
+  }
+}
+
+.hamburgerBars {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hamburgerBar {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+}
+
+/* ---- Mobile/tablet nav panel (≤1024px) --------------------------------
+ * Full-screen (inset: 0) and above the page content, but a lower z-index
+ * than .navbar itself (100) — the fixed navbar's own opaque background
+ * naturally covers this panel's top 46px, which is exactly why
+ * padding-top: 46px below pushes the first row clear of that covered
+ * strip instead of rendering hidden underneath it. That's also what
+ * keeps the hamburger button clickable (it lives in .navbar, so it's
+ * always painted above the panel) — needed to close the panel again by
+ * re-tapping it. Reuses --bg-chrome/--border-color, the same tokens the
+ * floating dropdown above already uses, rather than new ones. */
+.panel {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+  overflow-y: auto;
+  background: var(--bg-chrome);
+  padding: calc(46px + var(--space-7)) var(--space-6) var(--space-7);
+}
+
+/* position: fixed, not absolute — .panel itself scrolls (overflow-y:
+ * auto), so a plain absolutely-positioned child would scroll away with
+ * the rest of the panel's content instead of staying put. Positioned
+ * clear of the 46px navbar band (not overlapping it) rather than
+ * layered on top of it — .panel establishes its own stacking context
+ * (position: fixed + z-index), so nothing inside it can out-rank
+ * .navbar's z-index: 100 by raising its own z-index alone; sitting in
+ * the empty gap below the navbar sidesteps that entirely instead of
+ * fighting it. */
+.panelClose {
+  position: fixed;
+  top: calc(46px + var(--space-3));
+  right: var(--space-6);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--font-ui);
+  font-size: 24px;
+  line-height: 1;
+  color: var(--text-color);
+  cursor: pointer;
+  -webkit-font-smoothing: none;
+}
+
+.panelSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Chicago (var(--font-ui)), not the body font — every row in this panel
+ * uses the same chrome typeface, per the brief. min-height: 44px, same
+ * touch-target reasoning as .hamburger. */
+.panelItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  color: var(--text-color);
+  text-decoration: none;
+  text-align: left;
+  cursor: pointer;
+  -webkit-font-smoothing: none;
+}
+
+.panelItemActive {
+  color: var(--color-effect-blue);
+}
+
+/* ThemeMenu's panel variant uses this instead of .panelItemActive above —
+ * reuses .menuItemActive's own existing background/color values exactly
+ * (not a new color convention), just via a compound selector: applying
+ * .menuItemActive alone would lose to .panelItem's own later-declared
+ * color rule at equal specificity, since .menuItemActive is declared
+ * earlier in this file. */
+.panelItem.menuItemActive,
+.panelItem.menuItemActive:hover {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+/* Indented, visually grouped sub-list — the 4 case studies under "All
+ * Selected Work". Smaller font + tighter gap than .panelItem's own
+ * default rhythm marks these as children of the row above, not peers of
+ * it — same "sub-item" signal .menuDivider/indentation give the desktop
+ * dropdown, translated to this flat panel layout. */
+.panelSubList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-left: var(--space-6);
+}
+
+.panelSubList .panelItem {
+  min-height: 36px;
+  font-size: var(--text-base);
+}
+
+.panelDivider {
+  height: var(--border-width);
+  background: var(--border-color);
 }

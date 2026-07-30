@@ -7,6 +7,31 @@
   background: var(--bg-desktop);
 }
 
+/* Window is forced to width: 100% below 1024px (Window.module.css), so
+ * without this its outer border sits flush against the viewport edge —
+ * unlike Window's own internal .content padding (unchanged, still
+ * var(--space-8)), this is the outer edge inset between the window chrome
+ * itself and the screen. */
+@media (max-width: 1024px) {
+  .desktop {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+    /* var(--bg-window), not --bg-desktop — the accent-blue desktop wash
+     * is a desktop-only flourish; at this width the window fills the
+     * viewport edge to edge anyway (see Window.module.css), so the wash
+     * would only ever show as a thin, pointless sliver around it. Same
+     * fix as Home's own page.module.css. */
+    background: var(--bg-window);
+  }
+}
+
+@media (max-width: 480px) {
+  .desktop {
+    padding-left: var(--space-5);
+    padding-right: var(--space-5);
+  }
+}
+
 .body {
   margin-top: var(--space-9); /* separates the hero block from the section stack below it */
 }

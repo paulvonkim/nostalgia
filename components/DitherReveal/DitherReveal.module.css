@@ -47,3 +47,17 @@
     transition: none;
   }
 }
+
+/* No reliable hover on touch (useGrainPulse also skips wiring its pointer
+ * handlers there, see that file) — show the resolved photo by default
+ * instead of stranding touch visitors on the dithered placeholder with no
+ * way to trigger the :hover crossfade below. */
+@media (hover: none) {
+  .default {
+    opacity: 0;
+  }
+
+  .hover {
+    opacity: 1;
+  }
+}

@@ -6,3 +6,13 @@
   padding-top: 46px; /* clears the fixed navbar */
   background: var(--bg-desktop);
 }
+
+/* var(--bg-window), not --bg-desktop — the accent-blue desktop wash is a
+ * desktop-only flourish; at this width the window fills the viewport
+ * edge to edge anyway (see Window.module.css), so the wash would only
+ * ever show as a thin, pointless sliver around it. */
+@media (max-width: 1024px) {
+  .desktop {
+    background: var(--bg-window);
+  }
+}

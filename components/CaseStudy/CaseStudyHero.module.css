@@ -38,6 +38,18 @@
   margin: 0 auto;
 }
 
+/* .column and .imageWrap share this same 848px cap by design (see each
+ * one's own comment, and .notice's own copy further down) — dropping it
+ * below 1024px keeps that pairing intact instead of leaving the image
+ * capped while the text column stretches wider, which would visibly
+ * misalign their edges. */
+@media (max-width: 1024px) {
+  .column,
+  .imageWrap {
+    max-width: none;
+  }
+}
+
 .textBlock {
   display: flex;
   flex-direction: column;
@@ -146,6 +158,16 @@
   font-size: var(--text-sm);
 }
 
+/* Two-column label/value holds down to tablet — only phones stack, where
+ * the fixed 90px label column (.bylineLabel below) starts crowding the
+ * value text at this narrow a width. */
+@media (max-width: 480px) {
+  .bylineRow {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+}
+
 /* Geist Pixel (Square variant) — field labels only, values stay Geist
  * Sans below. font-weight: 700, not the sitewide default 400 — same fix
  * already applied to Tag/Button: at this small a size, 400 reads
@@ -163,6 +185,15 @@
   -webkit-font-smoothing: none;
   color: var(--text-color-muted);
   text-transform: uppercase;
+}
+
+/* .bylineRow's flex-direction flips to column above — flex: 0 0 90px
+ * would otherwise apply that 90px along the now-vertical main axis
+ * (height, not width), forcing the label box artificially tall. */
+@media (max-width: 480px) {
+  .bylineLabel {
+    flex: 0 0 auto;
+  }
 }
 
 /* Geist Sans (var(--font-body)) — the values, not the labels above.
@@ -196,6 +227,14 @@
   background: var(--bg-chrome);
   padding: var(--space-3) var(--space-4);
   box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+}
+
+/* Same cap-drop as .column/.imageWrap above, kept in sync with them —
+ * see that rule's comment for why all three move together. */
+@media (max-width: 1024px) {
+  .notice {
+    max-width: none;
+  }
 }
 
 .noticeLabel {

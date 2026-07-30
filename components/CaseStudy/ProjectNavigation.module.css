@@ -8,6 +8,16 @@
   border-top: var(--border-width) solid var(--border-color);
 }
 
+/* Stacked, not side-by-side, on phones — .next keeps its own right/
+ * left arrow-and-text alignment as-is (not overridden here), so each
+ * link still reads in its own semantic direction once stacked. */
+@media (max-width: 480px) {
+  .nav {
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+}
+
 .link {
   display: flex;
   align-items: flex-start;

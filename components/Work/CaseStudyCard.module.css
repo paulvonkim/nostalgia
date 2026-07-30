@@ -73,6 +73,17 @@
   filter: grayscale(0);
 }
 
+/* No reliable hover on touch (useGrainPulse also skips wiring its
+ * pointer handlers there, see components/GrainPulse/useGrainPulse.ts) —
+ * same fallback as Home's DitherReveal: show the resolved, full-color
+ * state by default instead of stranding touch visitors on the
+ * desaturated rest state with no way to trigger :hover. */
+@media (hover: none) {
+  .image {
+    filter: grayscale(0);
+  }
+}
+
 /* No padding/gap here — .card's own 24px padding is the only inset, so
  * title/description/tags/button sit flush with the image frame's edges.
  * The earlier version added 4px of its own horizontal padding on top of
@@ -100,6 +111,16 @@
   display: flex;
   justify-content: flex-end;
   margin-top: auto;
+}
+
+/* Full width of the card — Button.module.css's own padding is untouched,
+ * same cross-module tag-selector approach as Hero's CTA
+ * (components/Home/Hero.module.css). */
+@media (max-width: 1024px) {
+  .footer a {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
 
 /* Geist Pixel (Square variant) — see CaseStudyHero.module.css's .title
@@ -148,9 +169,31 @@
   color: var(--text-color);
 }
 
+/* No reliable hover on touch — same reasoning as .image above: render at
+ * full contrast by default rather than leaving it stuck at the muted
+ * grey rest state with no hover to ever lift it. */
+@media (hover: none) {
+  .title,
+  .description {
+    color: var(--text-color);
+  }
+}
+
 .tags {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
   margin: 0 0 var(--space-7);
+}
+
+/* Full width of the card, one per row — Tag itself renders a <span>
+ * (Tag.tsx), so a tag-name selector reaches it across the CSS Modules
+ * boundary instead of needing a shared class. flex-wrap above already
+ * stacks them vertically once each takes the full row; no other layout
+ * change. */
+@media (max-width: 1024px) {
+  .tags span {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }

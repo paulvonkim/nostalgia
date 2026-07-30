@@ -78,6 +78,24 @@
   --space-8: 40px;
   --space-9: 48px;
 
+  /* ---- Breakpoints ---------------------------------------------------
+   * Reference only — custom properties can't be used inside @media
+   * conditions, so every actual media query below uses these as literal
+   * px values instead. Keeping the numbers written down in one place so
+   * they don't drift between files.
+   *   mobile:  ≤480px
+   *   tablet:  481px–1024px
+   *   desktop: >1024px
+   * The responsive behavior gated on these lives in: app/page.module.css
+   * (.desktop background), components/Desktop/DesktopIcons.module.css
+   * (icons hidden), components/Navbar/Navbar.module.css (hamburger +
+   * full-screen panel nav), and components/Window/Window.module.css
+   * (drag disabled, forced full-width, native scroll). All of them use a
+   * single `max-width: 1024px` query — mobile and tablet share the same
+   * "no drag, no floating menus" behavior here; nothing in this pass
+   * needs the 480px line to differ from the 1024px one.
+   */
+
   /* ---- Chrome geometry ---------------------------------------------
    * Measured from design-reference/screens/home.png and components/dialog.png.
    */
