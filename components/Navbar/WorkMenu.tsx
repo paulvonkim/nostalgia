@@ -10,7 +10,19 @@ import styles from "./Navbar.module.css";
 // offers should match what "All Work" itself shows.
 const visibleCases = caseStudies.filter((study) => !study.hidden);
 
-export function WorkMenu() {
+interface WorkMenuProps {
+  /** "dropdown" (default): desktop floating menu, unchanged, toggled via
+   * its own trigger button. "panel": mobile/tablet nav panel — no
+   * trigger/toggle at all, "All Selected Work" is itself a real link and
+   * the case studies render as an always-visible indented sub-list right
+   * below it, matching the panel's exact specified structure. */
+  variant?: "dropdown" | "panel";
+  /** panel mode only — called when an item is clicked, so the parent
+   * (Navbar) can close the whole mobile panel. */
+  onNavigate?: () => void;
+}
+
+export function WorkMenu({ variant = "dropdown", onNavigate }: WorkMenuProps) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -34,6 +46,35 @@ export function WorkMenu() {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [open]);
+
+  if (variant === "panel") {
+    return (
+      <div className={styles.panelSection}>
+        <Link
+          href="/work"
+          className={`${styles.panelItem} ${pathname === "/work" ? styles.menuItemActive : ""}`}
+          onClick={onNavigate}
+        >
+          All Selected Work
+        </Link>
+        <div className={styles.panelSubList}>
+          {visibleCases.map((study, index) => {
+            const href = `/work/${study.id}`;
+            return (
+              <Link
+                key={study.id}
+                href={href}
+                className={`${styles.panelItem} ${pathname === href ? styles.menuItemActive : ""}`}
+                onClick={onNavigate}
+              >
+                Case Study #{index + 1}
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.menuWrap} ref={wrapRef}>

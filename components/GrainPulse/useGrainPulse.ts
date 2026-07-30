@@ -21,6 +21,23 @@ export function useGrainPulse(durationMs = 450) {
     );
   }
 
+  // pointerenter/pointerleave don't fire reliably from a touch tap the way
+  // they do from a mouse, so on devices without real hover this pulse (and
+  // whatever hover-driven crossfade/filter it's paired with) never
+  // resolves cleanly — skip wiring it up at all rather than leave it half-
+  // working. typeof window guards SSR; only affects which handlers get
+  // attached, not any rendered markup, so there's no hydration mismatch.
+  const hoverUnavailable =
+    typeof window !== "undefined" && window.matchMedia("(hover: none)").matches;
+
+  if (hoverUnavailable) {
+    return {
+      isTransitioning: false,
+      onPointerEnter: undefined,
+      onPointerLeave: undefined,
+    };
+  }
+
   return {
     isTransitioning,
     onPointerEnter: pulse,

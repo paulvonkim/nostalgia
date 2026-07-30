@@ -21,6 +21,18 @@
   max-width: none;
 }
 
+/* Every size tier forced to full width here — .outer and .outer.medium
+ * are both listed since each carries its own max-width that would
+ * otherwise win on specificity; .outer.wide is already max-width: none
+ * unconditionally, included anyway for clarity. */
+@media (max-width: 1024px) {
+  .outer,
+  .outer.medium,
+  .outer.wide {
+    max-width: none;
+  }
+}
+
 /* Dark mode only — a soft mid-grey halo around the frame border, layered
  * alongside (not replacing) the existing hard-offset chrome shadow. Light
  * mode is untouched: no extra shadow rule applies there. Grey rather than

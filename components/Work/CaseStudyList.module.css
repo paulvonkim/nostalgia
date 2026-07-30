@@ -4,7 +4,22 @@
   gap: var(--space-9) var(--space-8);
 }
 
-@media (max-width: 640px) {
+/* Auto-fit collapses to 1 column wherever a tablet viewport can't
+ * comfortably fit two 300px-min cards side by side, rather than a single
+ * hand-picked pixel breakpoint guessing across the whole 481–1024px
+ * range — the browser measures the actual available width instead. */
+@media (max-width: 1024px) {
+  .list {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-7);
+  }
+}
+
+/* Always a single column here, overriding whatever the auto-fit above
+ * would otherwise compute — a 300px-min card can still technically fit
+ * two-up on some phones in landscape, which isn't the intent at this
+ * size (full-width stacked cards, per the reference). */
+@media (max-width: 480px) {
   .list {
     grid-template-columns: 1fr;
   }

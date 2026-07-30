@@ -5,8 +5,18 @@ import styles from "./Hero.module.css";
 export function Hero() {
   return (
     <div className={styles.hero}>
-      <div className={styles.copy}>
-        <h1 className={styles.wordmark}>Paul Kim</h1>
+      <h1 className={styles.wordmark}>Paul Kim</h1>
+      <DitherReveal
+        className={styles.portrait}
+        defaultSrc="/images/paul/ascii-img.png"
+        hoverSrc="/images/paul/ascii-img-light.png"
+        alt="Portrait of Paul Kim"
+        width={3600}
+        height={3240}
+        sizes="260px"
+        priority
+      />
+      <div className={styles.copyRest}>
         <p className={styles.pitch}>
           <span className={styles.pitchLine}>
             I create experiences built on research,
@@ -24,16 +34,6 @@ export function Hero() {
           <Button href="/work">Open My Work</Button>
         </div>
       </div>
-      <DitherReveal
-        className={styles.portrait}
-        defaultSrc="/images/paul/ascii-img.png"
-        hoverSrc="/images/paul/ascii-img-light.png"
-        alt="Portrait of Paul Kim"
-        width={3600}
-        height={3240}
-        sizes="260px"
-        priority
-      />
     </div>
   );
 }

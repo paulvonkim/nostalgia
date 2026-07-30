@@ -19,3 +19,13 @@
   right: 99px; /* 24px base + 75px shift left */
   z-index: 10;
 }
+
+/* Resume/LinkedIn/Impressum move into the mobile nav panel below this
+ * width (Navbar.module.css .panel) — that's their only surface here,
+ * not a duplicate of this desktop-icon presentation. */
+@media (max-width: 1024px) {
+  .topGroup,
+  .bottomGroup {
+    display: none;
+  }
+}

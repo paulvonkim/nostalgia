@@ -1,4 +1,6 @@
-/* padding-bottom compensates for the title bar's own visual weight above
+/* Desktop: two-column grid — wordmark+rest in column 1 (420px, matching
+ * the old .copy's max-width), portrait spanning both rows in column 2.
+ * padding-bottom compensates for the title bar's own visual weight above
  * the window's content (its padding + text + border, ~40px) which has no
  * equivalent below — without this, the window's symmetric 40px content
  * padding (Window.module.css .content) reads as tighter at the bottom
@@ -7,23 +9,38 @@
  * since every other page (About, Work, case studies) uses that same
  * padding and isn't reporting the same crowded-bottom complaint. */
 .hero {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-9);
+  display: grid;
+  grid-template-columns: 420px auto;
+  grid-template-areas:
+    "wordmark portrait"
+    "rest portrait";
+  column-gap: var(--space-9);
+  row-gap: var(--space-5);
+  align-items: start;
   padding-bottom: var(--space-5);
 }
 
-.portrait {
-  width: 260px;
-  flex-shrink: 0;
-}
-
-.copy {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-5);
-  max-width: 420px;
-  padding-top: var(--space-1);
+/* Column layout instead of the grid above — min-height: 100% (not the
+ * grid's own intrinsic sizing) is what makes justify-content:
+ * space-evenly below actually have leftover space to distribute: .hero
+ * is .content's only child, and .content is a plain padded block (not a
+ * flex container), so without this .hero would just size to its own
+ * content and never inherit .content's own (now viewport-stretched,
+ * see Window.module.css) available height — the extra room would sit as
+ * blank space below the CTA instead of being spread across all three
+ * items. space-evenly, not space-between — space-between leaves zero gap
+ * at the very top/bottom (only distributing space *between* items);
+ * space-evenly treats the edges as gaps too. */
+@media (max-width: 1024px) {
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: var(--space-5);
+    min-height: 100%;
+    padding-bottom: 0;
+  }
 }
 
 /* Live text now, not a baked bitmap — the old bitmap existed specifically
@@ -35,16 +52,64 @@
  * risk of recurring and hasn't been visually verified after this
  * change; check it before trusting this looks right. Color: currently
  * --text-color (theme-aware) rather than the bitmap's old fixed-black-
- * plus-dark-mode-invert trick, since this is live text now, not pixels. */
+ * plus-dark-mode-invert trick, since this is live text now, not pixels.
+ *
+ * padding-top: an optical nudge aligning the wordmark's own top with the
+ * portrait's top edge in the desktop grid (moved here from the old .copy
+ * wrapper, which no longer exists — .wordmark is a direct grid/flex
+ * child now). Left unconditional (not zeroed at ≤1024px) since it was
+ * never scoped to just desktop before either. */
 .wordmark {
+  grid-area: wordmark;
   margin: 0;
+  padding-top: var(--space-1);
   font-family: var(--font-pixel);
   font-variation-settings: "ELSH" 1;
   font-weight: 400;
   font-size: 56px;
   line-height: 1;
+  white-space: nowrap;
   -webkit-font-smoothing: none;
   color: var(--text-color);
+}
+
+@media (max-width: 1024px) {
+  .wordmark {
+    font-size: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wordmark {
+    font-size: 38px;
+  }
+}
+
+.portrait {
+  grid-area: portrait;
+  width: 260px;
+}
+
+/* Capped relative to viewport, not just a smaller fixed px value — 260px
+ * alone still crowds a narrow phone screen edge-to-edge; min() keeps it
+ * at the full 260px as soon as there's room for it (most of tablet). No
+ * order override needed here anymore — .hero's DOM order (Hero.tsx) now
+ * already matches the desired visual order (wordmark, portrait, rest). */
+@media (max-width: 1024px) {
+  .portrait {
+    width: min(260px, 60vw);
+  }
+}
+
+/* Wraps the pitch text + CTA — replaces the old .copy wrapper, which
+ * used to also contain the wordmark (now a flat sibling instead, see
+ * Hero.tsx). Sized by its grid area (420px, desktop) or by .hero's own
+ * flex column (≤1024px); no max-width of its own needed either way. */
+.copyRest {
+  grid-area: rest;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
 }
 
 /* line-height tightened from 1.5 to 1.3 — that value was tuned for
@@ -52,9 +117,9 @@
  * breaks into 3 short, deliberate clause-lines (see Hero.tsx), 1.5 left
  * visible gaps between lines that read as loose/accidental rather than
  * a considered block. This is the "within the paragraph" fix, not the
- * surrounding .copy gap (var(--space-5), spacing to the wordmark/CTA) —
- * that value is unrelated to the text's own internal rhythm and wasn't
- * part of what looked off here. */
+ * surrounding .copyRest gap (var(--space-5), spacing to the CTA) — that
+ * value is unrelated to the text's own internal rhythm and wasn't part
+ * of what looked off here. */
 .pitch {
   margin: 0;
   font-family: var(--font-body);
@@ -64,10 +129,10 @@
   color: var(--text-color);
 }
 
-/* white-space: nowrap — .copy's 420px max-width is narrower than two of
- * the three clauses actually need at this font-size (measured ~468px
- * and ~478px vs. a 420px container), so the browser's own wrap was
- * kicking in a second time *inside* those clauses even with the
+/* white-space: nowrap — .copyRest's 420px grid column is narrower than
+ * two of the three clauses actually need at this font-size (measured
+ * ~468px and ~478px vs. a 420px container), so the browser's own wrap
+ * was kicking in a second time *inside* those clauses even with the
  * deliberate <br> between them, producing more than 3 lines. This
  * forces each clause to stay on its own single line no matter the
  * container width, so the <br>s above are the only breaks that ever
@@ -76,6 +141,30 @@
   white-space: nowrap;
 }
 
+/* The forced nowrap above is scoped to desktop's fixed 420px column
+ * (see that rule's own comment) — left as-is below 1024px, .copyRest's
+ * width changes with the viewport and the same clauses would just
+ * overflow it instead of wrapping naturally. */
+@media (max-width: 1024px) {
+  .pitchLine {
+    white-space: normal;
+  }
+}
+
 .cta {
   margin-top: var(--space-2);
+}
+
+/* Full-width CTA on phones only (not tablet) — a thumb-width target reads
+ * better than a small centered pill at this size. Button.module.css's own
+ * padding is untouched; targeting the rendered <a> by tag (not a shared
+ * class) is what lets this reach across the CSS Modules boundary. */
+@media (max-width: 480px) {
+  .cta {
+    width: 100%;
+  }
+
+  .cta a {
+    width: 100%;
+  }
 }

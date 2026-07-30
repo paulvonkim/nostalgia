@@ -45,6 +45,11 @@ const NO_OVERFLOW: ScrollState = {
 // window can never be dragged up behind it.
 const NAVBAR_HEIGHT = 46;
 
+// Matches the max-width: 1024px queries in Window.module.css (drag
+// disabled, forced full-width, native scroll) — see styles/tokens.css
+// for the documented breakpoint reference this number comes from.
+const DRAG_DISABLED_QUERY = "(max-width: 1024px)";
+
 // How much of the title bar must stay on-screen at any edge, so a dragged
 // window can never get lost off-screen — generous enough to comfortably
 // grab back, not just technically visible.
@@ -90,6 +95,24 @@ export function Window({
     setPosition({ x: 0, y: 0 });
   }, [pathname]);
 
+  // Covers the one case the pointerdown guard below can't: a window
+  // already dragged off-center on desktop, then the viewport resized
+  // down to ≤1024px without a page reload (e.g. rotating a tablet, or a
+  // narrowed browser window) — without this, the stale drag offset would
+  // keep applying even though new drags are now blocked. Checked on
+  // mount too (not just on change), so a page that loads directly at
+  // ≤1024px starts at {0,0} rather than relying on the initial state
+  // already happening to be that by coincidence.
+  useEffect(() => {
+    const mql = window.matchMedia(DRAG_DISABLED_QUERY);
+    function syncPosition(query: MediaQueryList | MediaQueryListEvent) {
+      if (query.matches) setPosition({ x: 0, y: 0 });
+    }
+    syncPosition(mql);
+    mql.addEventListener("change", syncPosition);
+    return () => mql.removeEventListener("change", syncPosition);
+  }, []);
+
   useEffect(() => {
     const viewport = viewportRef.current;
     if (!viewport) return;
@@ -131,6 +154,13 @@ export function Window({
 
   function handlePointerDown(e: ReactPointerEvent<HTMLDivElement>) {
     if (e.button !== 0 || !outerRef.current) return;
+    // Checked live at the moment a drag would start, not via a stored
+    // isDraggable state — a plain matchMedia().matches read here is
+    // always accurate for whatever the viewport is right now, with no
+    // extra state/listener needed just for this one branch (the effect
+    // above still exists, but only to reset an existing stale offset,
+    // not to gate this).
+    if (window.matchMedia(DRAG_DISABLED_QUERY).matches) return;
     const rect = outerRef.current.getBoundingClientRect();
     dragRef.current = {
       pointerId: e.pointerId,

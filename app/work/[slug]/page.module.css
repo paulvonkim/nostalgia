@@ -7,6 +7,22 @@
   background: var(--bg-desktop);
 }
 
+/* align-items: stretch, not center — see app/page.module.css's own copy
+ * of this comment for the full rationale (same fix, same reasoning). */
+@media (max-width: 1024px) {
+  .desktop {
+    align-items: stretch;
+    justify-content: normal;
+    padding-top: 46px;
+    /* var(--bg-window), not --bg-desktop — the accent-blue desktop wash
+     * is a desktop-only flourish; at this width the window fills the
+     * viewport edge to edge anyway (see Window.module.css), so the wash
+     * would only ever show as a thin, pointless sliver around it. Same
+     * fix as Home's own page.module.css. */
+    background: var(--bg-window);
+  }
+}
+
 .body {
   margin-top: var(--space-9); /* separates the hero block from the section stack below it */
 }

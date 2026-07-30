@@ -6,3 +6,19 @@
   padding-top: 70px; /* 46px navbar + 24px margin — same convention as DesktopIcons.module.css's top offset */
   background: var(--bg-desktop);
 }
+
+/* var(--bg-window), not --bg-desktop — the accent-blue desktop wash is a
+ * desktop-only flourish; at this width the window fills the viewport
+ * edge to edge anyway (see Window.module.css), so the wash would only
+ * ever show as a thin, pointless sliver around it. Same fix as Home's
+ * own page.module.css. */
+/* align-items: stretch, not center — see app/page.module.css's own copy
+ * of this comment for the full rationale (same fix, same reasoning). */
+@media (max-width: 1024px) {
+  .desktop {
+    align-items: stretch;
+    justify-content: normal;
+    padding-top: 46px;
+    background: var(--bg-window);
+  }
+}
