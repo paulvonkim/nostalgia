@@ -12,8 +12,11 @@
  * unlike Window's own internal .content padding (unchanged, still
  * var(--space-8)), this is the outer edge inset between the window chrome
  * itself and the screen. */
+/* align-items: stretch, not center — see app/page.module.css's own copy
+ * of this comment for the full rationale (same fix, same reasoning). */
 @media (max-width: 1024px) {
   .desktop {
+    align-items: stretch;
     padding-left: var(--space-6);
     padding-right: var(--space-6);
     /* var(--bg-window), not --bg-desktop — the accent-blue desktop wash

@@ -12,8 +12,11 @@
  * edge to edge anyway (see Window.module.css), so the wash would only
  * ever show as a thin, pointless sliver around it. Same fix as Home's
  * own page.module.css. */
+/* align-items: stretch, not center — see app/page.module.css's own copy
+ * of this comment for the full rationale (same fix, same reasoning). */
 @media (max-width: 1024px) {
   .desktop {
+    align-items: stretch;
     background: var(--bg-window);
   }
 }

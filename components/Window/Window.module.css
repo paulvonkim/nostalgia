@@ -10,11 +10,25 @@
  * width: 100% below has nothing real to stretch against without this,
  * since .outer itself never grows past whatever .inner happens to
  * measure. Gutter also shrinks here (the reference's fixed 8px reads as
- * excessive chrome once the window is already edge-to-edge). */
+ * excessive chrome once the window is already edge-to-edge).
+ *
+ * align-self: flex-start — .desktop's own align-items is stretch at this
+ * width (see the page-level .desktop rules), which would otherwise force
+ * .outer itself to grow to .desktop's full height. That's fine for Home
+ * (.inner's own min-height below already fills that space), but for the
+ * sized variants (.sizeImpressum/.sizeCaseStudy, own explicit height
+ * capped below 100vh) .inner wouldn't stretch to match — its own
+ * explicit height wins over stretch — leaving a visible gap of .outer's
+ * bare --bg-chrome fill between .inner's bottom edge and .outer's own,
+ * stretched one. Opting .outer out of that and letting it size to its
+ * own content (then top-align within .desktop) sidesteps that entirely:
+ * every variant fills exactly as tall as its own content wants, docked
+ * to the top instead of centered with gaps on both sides. */
 @media (max-width: 1024px) {
   .outer {
     width: 100%;
     padding: var(--space-2);
+    align-self: flex-start;
   }
 }
 
@@ -59,6 +73,21 @@
   .inner.sizeCaseStudy {
     width: 100%;
     max-width: none;
+  }
+}
+
+/* Sizeless variant only (Home) — .sizeImpressum/.sizeCaseStudy already
+ * carry their own explicit height, so they're excluded here rather than
+ * having this min-height stack on top of (and potentially exceed) their
+ * own cap. Home's .inner has no height of its own at all (content-
+ * intrinsic, see its own comment above), so without this it just centers
+ * shorter than the viewport instead of filling it. 46px is Home's own
+ * .desktop padding-top (navbar clearance); the --space-2 pair is .outer's
+ * own padding at this width (see .outer's media query above) — both
+ * subtracted since neither is part of .inner's own box. */
+@media (max-width: 1024px) {
+  .inner:not(.sizeImpressum):not(.sizeCaseStudy) {
+    min-height: calc(100vh - 46px - (var(--space-2) * 2));
   }
 }
 

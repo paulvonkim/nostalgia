@@ -11,8 +11,16 @@
  * desktop-only flourish; at this width the window fills the viewport
  * edge to edge anyway (see Window.module.css), so the wash would only
  * ever show as a thin, pointless sliver around it. */
+/* align-items: stretch, not center — center left the window floating
+ * mid-screen with gaps above/below (its own natural content height is
+ * shorter than the viewport); stretch lets it fill top-to-bottom
+ * instead. .outer's own align-self (Window.module.css) opts back out of
+ * a literal forced stretch so it still just sizes to its content — this
+ * mainly matters for removing the *symmetric* centering gap, docking the
+ * window to the top instead. */
 @media (max-width: 1024px) {
   .desktop {
+    align-items: stretch;
     background: var(--bg-window);
   }
 }

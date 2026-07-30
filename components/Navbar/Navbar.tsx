@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Clock } from "@/components/Clock/Clock";
 import { AboutMenu } from "./AboutMenu";
 import { DiamondMark } from "./DiamondMark";
@@ -30,18 +30,37 @@ export function Navbar() {
     };
   }, [isMenuOpen]);
 
+  // Explicit reset here, not just via the scroll-lock effect's own
+  // cleanup above — that cleanup fires reliably on a plain toggle, but
+  // this component gets freshly mounted per page (every page.tsx renders
+  // its own <Navbar/>, there's no shared layout instance), so a Link
+  // click that both closes the panel and navigates can't be trusted to
+  // let the old instance's cleanup win the race against the new page's
+  // own mount/paint. This runs unconditionally and synchronously instead
+  // of waiting on that timing. useCallback so its identity is stable —
+  // otherwise the Escape-key effect below would need to tear down and
+  // re-add its listener on every render, not just when isMenuOpen flips.
+  const closeMenu = useCallback(() => {
+    document.body.style.overflow = "";
+    setIsMenuOpen(false);
+  }, []);
+
+  const toggleMenu = useCallback(() => {
+    if (isMenuOpen) {
+      closeMenu();
+    } else {
+      setIsMenuOpen(true);
+    }
+  }, [isMenuOpen, closeMenu]);
+
   useEffect(() => {
     if (!isMenuOpen) return;
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setIsMenuOpen(false);
+      if (event.key === "Escape") closeMenu();
     }
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isMenuOpen]);
-
-  function closeMenu() {
-    setIsMenuOpen(false);
-  }
+  }, [isMenuOpen, closeMenu]);
 
   return (
     <header className={styles.navbar}>
@@ -69,7 +88,7 @@ export function Navbar() {
         aria-haspopup="true"
         aria-expanded={isMenuOpen}
         aria-label="Menu"
-        onClick={() => setIsMenuOpen((value) => !value)}
+        onClick={toggleMenu}
       >
         <span className={styles.hamburgerBars} aria-hidden="true">
           <span className={styles.hamburgerBar} />

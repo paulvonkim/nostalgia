@@ -52,7 +52,7 @@ export function WorkMenu({ variant = "dropdown", onNavigate }: WorkMenuProps) {
       <div className={styles.panelSection}>
         <Link
           href="/work"
-          className={`${styles.panelItem} ${pathname === "/work" ? styles.panelItemActive : ""}`}
+          className={`${styles.panelItem} ${pathname === "/work" ? styles.menuItemActive : ""}`}
           onClick={onNavigate}
         >
           All Selected Work
@@ -64,7 +64,7 @@ export function WorkMenu({ variant = "dropdown", onNavigate }: WorkMenuProps) {
               <Link
                 key={study.id}
                 href={href}
-                className={`${styles.panelItem} ${pathname === href ? styles.panelItemActive : ""}`}
+                className={`${styles.panelItem} ${pathname === href ? styles.menuItemActive : ""}`}
                 onClick={onNavigate}
               >
                 Case Study #{index + 1}

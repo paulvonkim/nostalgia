@@ -48,7 +48,7 @@ export function AboutMenu({
       <div className={styles.panelSection}>
         <Link
           href="/about"
-          className={`${styles.panelItem} ${pathname === "/about" ? styles.panelItemActive : ""}`}
+          className={`${styles.panelItem} ${pathname === "/about" ? styles.menuItemActive : ""}`}
           onClick={onNavigate}
         >
           About
@@ -85,7 +85,7 @@ export function AboutMenu({
           </a>
           <Link
             href="/impressum"
-            className={`${styles.panelItem} ${pathname === "/impressum" ? styles.panelItemActive : ""}`}
+            className={`${styles.panelItem} ${pathname === "/impressum" ? styles.menuItemActive : ""}`}
             onClick={onNavigate}
           >
             Impressum

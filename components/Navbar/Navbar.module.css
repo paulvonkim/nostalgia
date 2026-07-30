@@ -297,16 +297,13 @@
   -webkit-font-smoothing: none;
 }
 
-.panelItemActive {
-  color: var(--color-effect-blue);
-}
-
-/* ThemeMenu's panel variant uses this instead of .panelItemActive above —
- * reuses .menuItemActive's own existing background/color values exactly
- * (not a new color convention), just via a compound selector: applying
- * .menuItemActive alone would lose to .panelItem's own later-declared
- * color rule at equal specificity, since .menuItemActive is declared
- * earlier in this file. */
+/* Reused by WorkMenu/AboutMenu/ThemeMenu's panel variants for current-
+ * route or selected-toggle state alike — same black-fill/white-text
+ * treatment the desktop dropdown already uses for its own active state
+ * (.menuItemActive above), not a separate blue-text convention. Compound
+ * selector, not .menuItemActive alone: that alone would lose to
+ * .panelItem's own later-declared color rule at equal specificity, since
+ * .menuItemActive is declared earlier in this file. */
 .panelItem.menuItemActive,
 .panelItem.menuItemActive:hover {
   background: var(--color-black);
