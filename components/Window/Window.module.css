@@ -76,6 +76,23 @@
   }
 }
 
+/* Sized variants (Impressum, Work/About/case-study) — their own
+ * height: min(Xpx, 85vh) is a deliberate desktop proportion, not a
+ * viewport-fit target, so it left the same too-short-with-a-gap problem
+ * the sizeless variant had. height: auto frees the box from that 85vh
+ * cap; min-height is the actual floor, using each page's own 70px
+ * .desktop padding-top (navbar + 24px margin, see those page.module.css
+ * files) rather than Home's 46px. Content taller than this still scrolls
+ * inside .content (overflow: auto, unchanged) — this only fixes the
+ * too-short case, not the scroll mechanism. */
+@media (max-width: 1024px) {
+  .inner.sizeImpressum,
+  .inner.sizeCaseStudy {
+    height: auto;
+    min-height: calc(100vh - 70px - (var(--space-2) * 2));
+  }
+}
+
 /* Sizeless variant only (Home) — .sizeImpressum/.sizeCaseStudy already
  * carry their own explicit height, so they're excluded here rather than
  * having this min-height stack on top of (and potentially exceed) their
