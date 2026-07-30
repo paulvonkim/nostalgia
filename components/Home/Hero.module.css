@@ -22,19 +22,21 @@
 
 /* Column layout instead of the grid above — min-height: 100% (not the
  * grid's own intrinsic sizing) is what makes justify-content:
- * space-between below actually have leftover space to distribute: .hero
+ * space-evenly below actually have leftover space to distribute: .hero
  * is .content's only child, and .content is a plain padded block (not a
  * flex container), so without this .hero would just size to its own
  * content and never inherit .content's own (now viewport-stretched,
  * see Window.module.css) available height — the extra room would sit as
  * blank space below the CTA instead of being spread across all three
- * items. */
+ * items. space-evenly, not space-between — space-between leaves zero gap
+ * at the very top/bottom (only distributing space *between* items);
+ * space-evenly treats the edges as gaps too. */
 @media (max-width: 1024px) {
   .hero {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
     gap: var(--space-5);
     min-height: 100%;
     padding-bottom: 0;

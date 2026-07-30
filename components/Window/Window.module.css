@@ -211,6 +211,14 @@
   display: none;
 }
 
+/* Window.tsx wraps children in an unstyled div between .content and the
+ * actual page content (the ResizeObserver target, contentSizeRef) —
+ * without an explicit height here, percentage heights in children (e.g.
+ * Hero's min-height: 100%) have nothing definite to resolve against. */
+.content > div {
+  height: 100%;
+}
+
 /* Fixed var(--space-8) reads as oversized once the window itself is
  * already edge-to-edge (see .outer above) — two narrower tiers instead
  * of one, matching the mobile/tablet split used elsewhere. */
