@@ -254,9 +254,18 @@ export function Window({
       startHeight: innerRect.height,
       // Clearance relative to the window's actual current on-screen
       // position (rect.left/top), not the viewport center — matches the
-      // drag handler's own EDGE_MARGIN idiom above.
-      maxWidth: window.innerWidth - EDGE_MARGIN - rect.left,
-      maxHeight: window.innerHeight - EDGE_MARGIN - rect.top,
+      // drag handler's own EDGE_MARGIN idiom above. Floored at the GROW_MIN
+      // constants: a window sitting near the right/bottom edge (e.g. after
+      // a drag) can otherwise compute a max below that minimum, which would
+      // invert the clamp() range in handleGrowPointerMove below.
+      maxWidth: Math.max(
+        GROW_MIN_WIDTH,
+        window.innerWidth - EDGE_MARGIN - rect.left,
+      ),
+      maxHeight: Math.max(
+        GROW_MIN_HEIGHT,
+        window.innerHeight - EDGE_MARGIN - rect.top,
+      ),
     };
     e.currentTarget.setPointerCapture(e.pointerId);
   }

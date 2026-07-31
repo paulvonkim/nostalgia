@@ -103,7 +103,7 @@ export const caseStudies: CaseStudy[] = [
       {
         type: "full-width-image",
         image: {
-          url: "/images/case-studies/arco-agent/home-screen.png",
+          url: "/images/case-studies/arco-agent/arco-landing.png",
           alt: "Redesigned document-first home screen",
         },
       },
