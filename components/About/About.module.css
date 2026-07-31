@@ -12,16 +12,19 @@
 
 /* Same responsive collapse pattern as CaseStudyList's grid — mirrored,
  * not reinvented, for the same "grid gets cramped on narrow screens"
- * reason. The header (AboutHeader) has no equivalent breakpoint, same
- * as Home's Hero, which doesn't stack on mobile either — not something
- * introduced here that the rest of the site doesn't already accept. */
-@media (max-width: 900px) {
+ * reason, and matching AboutHeader's own thresholds (900px/560px)
+ * exactly, since that grid is intentionally mirrored from this one.
+ * @container, not @media — queries the window's own available width
+ * (Window.module.css .content), not the viewport: the window's resize
+ * handle can now make it narrower than these thresholds on a wide
+ * desktop viewport, and this grid needs to collapse there too. */
+@container window-content (max-width: 900px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 560px) {
+@container window-content (max-width: 560px) {
   .grid {
     grid-template-columns: 1fr;
   }

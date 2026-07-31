@@ -16,13 +16,17 @@
   gap: var(--space-8);
 }
 
-@media (max-width: 900px) {
+/* @container, not @media — queries the window's own available width
+ * (Window.module.css .content), not the viewport: the window's resize
+ * handle can now make it narrower than these thresholds on a wide
+ * desktop viewport, and this grid needs to collapse there too. */
+@container window-content (max-width: 900px) {
   .header {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 560px) {
+@container window-content (max-width: 560px) {
   .header {
     grid-template-columns: 1fr;
   }
@@ -87,13 +91,13 @@
   justify-content: space-between;
 }
 
-@media (max-width: 900px) {
+@container window-content (max-width: 900px) {
   .info {
     grid-column: 2 / 3;
   }
 }
 
-@media (max-width: 560px) {
+@container window-content (max-width: 560px) {
   .imageFrame,
   .info {
     grid-column: 1;

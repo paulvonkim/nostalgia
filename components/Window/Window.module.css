@@ -304,6 +304,13 @@
   padding: var(--space-8);
   overflow: auto;
   scrollbar-width: none; /* Firefox — real scroll mechanics stay, chrome is drawn by .scrollbar */
+  /* Lets page content (Hero, AboutHeader, About's card grid) query the
+   * window's own actual available width via @container instead of the
+   * viewport — width here is already definite (driven by .inner/.body),
+   * safe to contain. Needed since the resize handle can now make the
+   * window itself narrower than the viewport ever implied. */
+  container-type: inline-size;
+  container-name: window-content;
 }
 
 .content::-webkit-scrollbar {
