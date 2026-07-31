@@ -72,7 +72,7 @@ const EDGE_MARGIN = 100;
 // Floor for the resize handle — small enough to feel deliberate, not so
 // small the title bar's own contents (flanks + title text) start
 // overlapping or wrapping.
-const GROW_MIN_WIDTH = 480;
+const GROW_MIN_WIDTH = 840;
 const GROW_MIN_HEIGHT = 320;
 
 function clamp(value: number, min: number, max: number) {
