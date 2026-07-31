@@ -16,20 +16,19 @@
   gap: var(--space-8);
 }
 
-/* @container, not @media — queries the window's own available width
- * (Window.module.css .content), not the viewport: the window's resize
- * handle can now make it narrower than these thresholds on a wide
- * desktop viewport, and this grid needs to collapse there too. */
-@container window-content (max-width: 900px) {
-  .header {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* [data-under-900]/[data-under-560], not @media/@container — queries the
+ * window's own available width (Window.module.css .content, measured via
+ * ResizeObserver and reflected as a data attribute there), not the
+ * viewport: the window's resize handle can now make it narrower than
+ * these thresholds on a wide desktop viewport, and this grid needs to
+ * collapse there too. Attribute selectors aren't scoped by CSS Modules,
+ * so this reaches across the module boundary correctly. */
+[data-under-900] .header {
+  grid-template-columns: repeat(2, 1fr);
 }
 
-@container window-content (max-width: 560px) {
-  .header {
-    grid-template-columns: 1fr;
-  }
+[data-under-560] .header {
+  grid-template-columns: 1fr;
 }
 
 /* Same square frame as AboutCard's .imageFrame (components/About/
@@ -91,17 +90,13 @@
   justify-content: space-between;
 }
 
-@container window-content (max-width: 900px) {
-  .info {
-    grid-column: 2 / 3;
-  }
+[data-under-900] .info {
+  grid-column: 2 / 3;
 }
 
-@container window-content (max-width: 560px) {
-  .imageFrame,
-  .info {
-    grid-column: 1;
-  }
+[data-under-560] .imageFrame,
+[data-under-560] .info {
+  grid-column: 1;
 }
 
 /* Live text, not a baked bitmap like the Home wordmark. Geist Pixel

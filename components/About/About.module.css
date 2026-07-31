@@ -14,18 +14,17 @@
  * not reinvented, for the same "grid gets cramped on narrow screens"
  * reason, and matching AboutHeader's own thresholds (900px/560px)
  * exactly, since that grid is intentionally mirrored from this one.
- * @container, not @media — queries the window's own available width
- * (Window.module.css .content), not the viewport: the window's resize
- * handle can now make it narrower than these thresholds on a wide
- * desktop viewport, and this grid needs to collapse there too. */
-@container window-content (max-width: 900px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+ * [data-under-900]/[data-under-560], not @media/@container — queries the
+ * window's own available width (Window.module.css .content, measured via
+ * ResizeObserver and reflected as a data attribute there), not the
+ * viewport: the window's resize handle can now make it narrower than
+ * these thresholds on a wide desktop viewport, and this grid needs to
+ * collapse there too. Attribute selectors aren't scoped by CSS Modules,
+ * so this reaches across the module boundary correctly. */
+[data-under-900] .grid {
+  grid-template-columns: repeat(2, 1fr);
 }
 
-@container window-content (max-width: 560px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
+[data-under-560] .grid {
+  grid-template-columns: 1fr;
 }

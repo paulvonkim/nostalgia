@@ -34,12 +34,25 @@ interface ScrollState {
   hasOverflow: boolean;
   thumbHeightPct: number;
   thumbTopPct: number;
+  // Window's own available width (viewportRef.clientWidth), not the
+  // viewport — drives the [data-under-*] attribute selectors that stand
+  // in for @container queries in Hero/AboutHeader/About.module.css (see
+  // those files' own comments for why plain @container isn't used there).
+  under1024: boolean;
+  under900: boolean;
+  under560: boolean;
 }
 
 const NO_OVERFLOW: ScrollState = {
   hasOverflow: false,
   thumbHeightPct: 100,
   thumbTopPct: 0,
+  // False until the first real measurement — matches SSR (no data
+  // attribute rendered, see .content's JSX below, until JS confirms the
+  // actual width after mount).
+  under1024: false,
+  under900: false,
+  under560: false,
 };
 
 // Must stay below the fixed Navbar (Navbar.module.css height: 46px) so the
@@ -150,10 +163,13 @@ export function Window({
 
     function measure() {
       if (!viewport) return;
-      const { scrollHeight, clientHeight, scrollTop } = viewport;
+      const { scrollHeight, clientHeight, scrollTop, clientWidth } = viewport;
+      const under1024 = clientWidth <= 1024;
+      const under900 = clientWidth <= 900;
+      const under560 = clientWidth <= 560;
       const hasOverflow = scrollHeight > clientHeight + 1;
       if (!hasOverflow) {
-        setScroll(NO_OVERFLOW);
+        setScroll({ ...NO_OVERFLOW, under1024, under900, under560 });
         return;
       }
       const thumbHeightPct = (clientHeight / scrollHeight) * 100;
@@ -163,6 +179,9 @@ export function Window({
         hasOverflow: true,
         thumbHeightPct,
         thumbTopPct: scrollRatio * (100 - thumbHeightPct),
+        under1024,
+        under900,
+        under560,
       });
     }
 
@@ -359,7 +378,13 @@ export function Window({
           <span className={styles.flank} aria-hidden="true" />
         </div>
         <div className={styles.body}>
-          <div className={styles.content} ref={viewportRef}>
+          <div
+            className={styles.content}
+            ref={viewportRef}
+            data-under-1024={scroll.under1024 || undefined}
+            data-under-900={scroll.under900 || undefined}
+            data-under-560={scroll.under560 || undefined}
+          >
             <div ref={contentSizeRef}>{children}</div>
           </div>
           {scrollbar && (

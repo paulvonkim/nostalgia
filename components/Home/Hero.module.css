@@ -31,21 +31,23 @@
  * items. space-evenly, not space-between — space-between leaves zero gap
  * at the very top/bottom (only distributing space *between* items);
  * space-evenly treats the edges as gaps too. */
-/* @container, not @media — this is the window's own available width
- * (Window.module.css .content), not the viewport: the resize handle can
- * now make the window narrower than 1024px on a wide desktop viewport,
- * and the two-column grid above needs to stack there too, not just on
- * an actually-narrow device. */
-@container window-content (max-width: 1024px) {
-  .hero {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    gap: var(--space-5);
-    min-height: 100%;
-    padding-bottom: 0;
-  }
+/* [data-under-1024], not @media/@container — this is the window's own
+ * available width (Window.module.css .content, measured via
+ * ResizeObserver and reflected as a data attribute there), not the
+ * viewport: the resize handle can now make the window narrower than
+ * 1024px on a wide desktop viewport, and the two-column grid above needs
+ * to stack there too, not just on an actually-narrow device. Attribute
+ * selectors aren't scoped by CSS Modules, so this reaches across the
+ * module boundary (the attribute lives on Window's own .content div)
+ * correctly. */
+[data-under-1024] .hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: var(--space-5);
+  min-height: 100%;
+  padding-bottom: 0;
 }
 
 /* Live text now, not a baked bitmap — the old bitmap existed specifically
@@ -95,21 +97,21 @@
   width: 260px;
 }
 
-/* Capped relative to the window's own available width (@container, not
- * @media — see .hero's own comment above), not just a smaller fixed px
- * value — 260px alone still crowds a narrow phone screen (or a resized-
- * narrow window) edge-to-edge; min() keeps it at the full 260px as soon
- * as there's room for it (most of tablet). No order override needed
- * here anymore — .hero's DOM order (Hero.tsx) now already matches the
- * desired visual order (wordmark, portrait, rest).
+/* Capped relative to the window's own available width ([data-under-1024]
+ * — see .hero's own comment above), not just a smaller fixed px value —
+ * 260px alone still crowds a narrow phone screen (or a resized-narrow
+ * window) edge-to-edge; min() keeps it at the full 260px as soon as
+ * there's room for it (most of tablet). No order override needed here
+ * anymore — .hero's DOM order (Hero.tsx) now already matches the desired
+ * visual order (wordmark, portrait, rest).
  *
- * 60vw specifically stays a viewport unit, not a container one — cqw
- * would recreate the same overflow the container query above exists to
- * fix (60% of a still-wide viewport, inside a now-narrow window). */
-@container window-content (max-width: 1024px) {
-  .portrait {
-    width: min(260px, 60vw);
-  }
+ * 60vw is left as-is here (not part of this conversion) — it still
+ * measures the real viewport, not the window's own current width, so a
+ * desktop window resized much narrower than the viewport can still hit
+ * this at the full 260px rather than shrinking with it. Same limitation
+ * as before this attribute-selector migration; not introduced by it. */
+[data-under-1024] .portrait {
+  width: min(260px, 60vw);
 }
 
 /* Wraps the pitch text + CTA — replaces the old .copy wrapper, which
@@ -155,12 +157,10 @@
 /* The forced nowrap above is scoped to desktop's fixed 420px column
  * (see that rule's own comment) — left as-is below this width, .copyRest's
  * width changes with the available space and the same clauses would just
- * overflow it instead of wrapping naturally. @container, not @media — see
- * .hero's own comment above for why. */
-@container window-content (max-width: 1024px) {
-  .pitchLine {
-    white-space: normal;
-  }
+ * overflow it instead of wrapping naturally. [data-under-1024], not
+ * @media/@container — see .hero's own comment above for why. */
+[data-under-1024] .pitchLine {
+  white-space: normal;
 }
 
 .cta {
