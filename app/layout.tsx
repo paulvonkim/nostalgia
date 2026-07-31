@@ -10,7 +10,7 @@ const chicago = localFont({
 
 export const metadata: Metadata = {
   title: "Paul Kim — Design Portfolio",
-  description: "Paul Kims Product Design (UX/UI) Portfolio.",
+  description: "Paul Kims Product Designer (UX/UI) based in Berlin.",
 };
 
 export default function RootLayout({

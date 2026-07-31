@@ -69,11 +69,14 @@ const DRAG_DISABLED_QUERY = "(max-width: 1024px)";
 // grab back, not just technically visible.
 const EDGE_MARGIN = 100;
 
-// Floor for the resize handle — small enough to feel deliberate, not so
-// small the title bar's own contents (flanks + title text) start
-// overlapping or wrapping.
-const GROW_MIN_WIDTH = 840;
-const GROW_MIN_HEIGHT = 320;
+// Small absolute sanity floor for the resize handle — the real minimum
+// (ResizeState.minWidth/minHeight below, measured live in
+// handleGrowPointerDown from the window's own chrome plus its actual
+// content size) is almost always larger than this; these just stop the
+// window from ever going comically small if a page's content somehow
+// measures smaller still.
+const GROW_MIN_WIDTH = 320;
+const GROW_MIN_HEIGHT = 240;
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
@@ -97,6 +100,8 @@ interface ResizeState {
   startClientY: number;
   startWidth: number;
   startHeight: number;
+  minWidth: number;
+  minHeight: number;
   maxWidth: number;
   maxHeight: number;
 }
@@ -259,30 +264,56 @@ export function Window({
   }
 
   function handleGrowPointerDown(e: ReactPointerEvent<HTMLButtonElement>) {
-    if (e.button !== 0 || !outerRef.current || !innerRef.current) return;
+    if (
+      e.button !== 0 ||
+      !outerRef.current ||
+      !innerRef.current ||
+      !viewportRef.current
+    )
+      return;
     // Same guard as handlePointerDown — disabled below 1024px, same
     // breakpoint drag already respects.
     if (window.matchMedia(DRAG_DISABLED_QUERY).matches) return;
     const rect = outerRef.current.getBoundingClientRect();
     const innerRect = innerRef.current.getBoundingClientRect();
+    // Chrome = title bar + border + padding — everything inside .inner
+    // that isn't the scrollable content viewport (.content). Measured
+    // live, not a fixed constant, so it tracks whatever chrome/padding
+    // Window.module.css actually renders for this page's size tier.
+    const chromeWidth = innerRect.width - viewportRef.current.clientWidth;
+    const chromeHeight = innerRect.height - viewportRef.current.clientHeight;
+    // The real floor: never small enough to clip the page's own content
+    // — scrollWidth/scrollHeight (not clientWidth/Height), so this
+    // accounts for content that's already overflowing at the window's
+    // current size. GROW_MIN_WIDTH/HEIGHT are just the absolute sanity
+    // backstop below that.
+    const minWidth = Math.max(
+      GROW_MIN_WIDTH,
+      chromeWidth + (contentSizeRef.current?.scrollWidth ?? 0),
+    );
+    const minHeight = Math.max(
+      GROW_MIN_HEIGHT,
+      chromeHeight + (contentSizeRef.current?.scrollHeight ?? 0),
+    );
     resizeRef.current = {
       pointerId: e.pointerId,
       startClientX: e.clientX,
       startClientY: e.clientY,
       startWidth: innerRect.width,
       startHeight: innerRect.height,
+      minWidth,
+      minHeight,
       // Clearance relative to the window's actual current on-screen
       // position (rect.left/top), not the viewport center — matches the
-      // drag handler's own EDGE_MARGIN idiom above. Floored at the GROW_MIN
-      // constants: a window sitting near the right/bottom edge (e.g. after
-      // a drag) can otherwise compute a max below that minimum, which would
-      // invert the clamp() range in handleGrowPointerMove below.
-      maxWidth: Math.max(
-        GROW_MIN_WIDTH,
-        window.innerWidth - EDGE_MARGIN - rect.left,
-      ),
+      // drag handler's own EDGE_MARGIN idiom above. Floored at the real
+      // measured minWidth/minHeight, not the GROW_MIN_* constants
+      // directly: a window sitting near the right/bottom edge (e.g.
+      // after a drag) can otherwise compute a max below that floor,
+      // which would invert the clamp() range in handleGrowPointerMove
+      // below.
+      maxWidth: Math.max(minWidth, window.innerWidth - EDGE_MARGIN - rect.left),
       maxHeight: Math.max(
-        GROW_MIN_HEIGHT,
+        minHeight,
         window.innerHeight - EDGE_MARGIN - rect.top,
       ),
     };
@@ -298,12 +329,12 @@ export function Window({
 
     const nextWidth = clamp(
       resize.startWidth + dx,
-      GROW_MIN_WIDTH,
+      resize.minWidth,
       resize.maxWidth,
     );
     const nextHeight = clamp(
       resize.startHeight + dy,
-      GROW_MIN_HEIGHT,
+      resize.minHeight,
       resize.maxHeight,
     );
 
