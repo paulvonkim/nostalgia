@@ -7,7 +7,7 @@ const TAGS = [
   "Product Design",
   "Design System",
   "Cross-Functional",
-  "AI-Native",
+  "AI-Fluent",
 ];
 
 export function AboutHeader() {
