@@ -21,6 +21,21 @@
   --color-effect-blue-light: #c2e4ff; /* logo hover facet fill */
   --color-effect-magenta: #c96fc6; /* retired as the hover fill (replaced by --color-effect-blue above); unused, kept for palette reference */
 
+  /* ---- Patterns ----------------------------------------------------
+   * %23B2B2B2 is --color-grey-400 hardcoded — data URIs can't reference
+   * CSS custom properties, so if grey-400 ever changes, this SVG's fill
+   * must be updated by hand to match. */
+  --dot-grid-color: rgb(0 0 0 / 25%);
+  --dot-grid-size: 80px;
+  --pattern-dot-grid: radial-gradient(
+    circle,
+    var(--dot-grid-color) 1px,
+    transparent 1px
+  );
+  --bg-window-pattern: var(--bg-window) var(--pattern-dot-grid) center top /
+    var(--dot-grid-size) var(--dot-grid-size) fixed;
+
+  --bg-window-pattern: var(--bg-window);
   /* ---- Case-study color pairs (bold / subtle) ---------------------
    * Exact values, not approximations — mapping of pair -> case study
    * lives in design.md §11.
@@ -119,9 +134,18 @@
   --grain-easing: steps(6, jump-end);
 
   /* ---- Semantic tokens (light theme, default) ----------------------- */
-  --bg-desktop: var(--color-effect-blue);
+  --bg-desktop: linear-gradient(
+    107deg,
+    var(--color-effect-blue) 1.8%,
+    var(--color-grey-300) 92.74%
+  );
   --bg-chrome: var(--color-grey-100);
   --bg-window: var(--color-white);
+  /* `center` is what makes the grid symmetric — it anchors the tile grid
+   * at the element's midpoint so it grows/crops evenly on all sides as
+   * the window resizes, instead of hugging the top-left corner. */
+  --bg-window-pattern: var(--bg-window) var(--pattern-dot-grid) center /
+    var(--dot-grid-size) var(--dot-grid-size) repeat;
   /* Chrome (window furniture), not content — same grey as the window
    * gutter/dialog boxes, not --bg-window's white "paper" tone, which
    * read as too light/washed out for a persistent structural bar. */
@@ -137,9 +161,11 @@
  * only applies when explicitly toggled via the navbar's Theme control
  * (data-theme="dark"), never automatically from prefers-color-scheme. */
 [data-theme="dark"] {
-  --bg-desktop: var(--color-grey-700);
+  --bg-desktop: linear-gradient(107deg, var(--bg-window) 1.8%, var(--color-grey-700) 92.74%);
   --bg-chrome: #2a2a2a;
   --bg-window: #1a1a1a;
+  /* Flat fallback — dark mode keeps its plain #1a1a1a, no dot grid. */
+  --bg-window-pattern: var(--bg-window);
   --bg-navbar: var(--bg-chrome);
   /* Structural chrome lines (window border, title bar pinstripes,
    * scrollbar border) use the existing light-grey neutral, not pure white —

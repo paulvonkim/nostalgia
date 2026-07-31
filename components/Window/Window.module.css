@@ -39,7 +39,7 @@
    * max-width is only a safety cap for very large monitors, not a target. */
   max-width: min(1100px, 92vw);
   border: var(--border-width) solid var(--border-color);
-  background: var(--bg-window);
+  background: var(--bg-window-pattern);
   /* Anchors .growBox (position: absolute, bottom-right corner). */
   position: relative;
 }
@@ -300,7 +300,7 @@
 .content {
   flex: 1 1 auto;
   min-width: 0;
-  background: var(--bg-window);
+  background: var(--bg-window-pattern);
   padding: var(--space-8);
   overflow: auto;
   scrollbar-width: none; /* Firefox — real scroll mechanics stay, chrome is drawn by .scrollbar */

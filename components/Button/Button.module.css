@@ -21,7 +21,11 @@
   box-sizing: border-box;
   border: 1px solid var(--color-black);
   border-radius: 0;
-  background: var(--color-grey-300);
+  background: linear-gradient(
+    94deg,
+    var(--color-effect-blue-light) 1.5%,
+    var(--color-grey-100) 99.62%
+  );
   color: var(--color-black);
   /* Geist Pixel (Square variant), not Chicago — CTA/buttons moved to the
    * sitewide headings/tags/buttons face (see styles/tokens.css).
@@ -55,7 +59,11 @@
  * outer shadow to drop, so the shift alone carries the 3D read — nudging
  * toward the surface, same physical direction as the tags' press. */
 .button:hover {
-  background: var(--color-grey-100);
+  background: linear-gradient(
+    94deg,
+    var(--color-effect-blue-light) 1.5%,
+    var(--color-white) 99.62%
+  );
   transform: translate(2px, 2px);
 }
 
@@ -63,11 +71,19 @@
  * default focus ring with nothing to replace it, so this adds one back
  * (same fill as :hover) rather than leaving keyboard focus invisible. */
 .button:focus-visible {
-  background: var(--color-grey-100);
+  background: linear-gradient(
+    94deg,
+    var(--color-effect-blue-light) 1.5%,
+    var(--color-grey-100) 99.62%
+  );
 }
 
 .button:active {
-  background: var(--color-grey-400);
+  background: linear-gradient(
+    94deg,
+    var(--color-effect-blue) 1.5%,
+    var(--color-grey-400) 99.62%
+  );
   /* Bevel inverts — dark top/left, light bottom/right — and padding
    * nudges 1px down/right, so both the frame and the content sell the
    * same "pressed in" read. */
