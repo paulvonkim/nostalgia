@@ -1,9 +1,10 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   type ReactNode,
   type PointerEvent as ReactPointerEvent,
+  type TransitionEvent as ReactTransitionEvent,
   useEffect,
   useRef,
   useState,
@@ -55,6 +56,12 @@ const DRAG_DISABLED_QUERY = "(max-width: 1024px)";
 // grab back, not just technically visible.
 const EDGE_MARGIN = 100;
 
+// Floor for the resize handle — small enough to feel deliberate, not so
+// small the title bar's own contents (flanks + title text) start
+// overlapping or wrapping.
+const GROW_MIN_WIDTH = 480;
+const GROW_MIN_HEIGHT = 320;
+
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
@@ -71,6 +78,16 @@ interface DragState {
   height: number;
 }
 
+interface ResizeState {
+  pointerId: number;
+  startClientX: number;
+  startClientY: number;
+  startWidth: number;
+  startHeight: number;
+  maxWidth: number;
+  maxHeight: number;
+}
+
 export function Window({
   title,
   children,
@@ -78,21 +95,31 @@ export function Window({
   scrollbar = true,
 }: WindowProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const outerRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const contentSizeRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<DragState | null>(null);
+  const resizeRef = useRef<ResizeState | null>(null);
   const [scroll, setScroll] = useState<ScrollState>(NO_OVERFLOW);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
+  const [customSize, setCustomSize] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
+  const [isClosing, setIsClosing] = useState(false);
 
   // Dragging is meant to persist while you're on a page, but each new
   // route (Work, About, a case study, Home...) should start centered
   // rather than carrying over wherever the window was left. This also
   // covers first mount, since effects run once regardless of deps.
+  // Resize customization resets the same way, for the same reason.
   // biome-ignore lint/correctness/useExhaustiveDependencies: pathname is the trigger, not used in the body
   useEffect(() => {
     setPosition({ x: 0, y: 0 });
+    setCustomSize(null);
   }, [pathname]);
 
   // Covers the one case the pointerdown guard below can't: a window
@@ -102,11 +129,15 @@ export function Window({
   // keep applying even though new drags are now blocked. Checked on
   // mount too (not just on change), so a page that loads directly at
   // ≤1024px starts at {0,0} rather than relying on the initial state
-  // already happening to be that by coincidence.
+  // already happening to be that by coincidence. Same reasoning covers a
+  // stale custom resize.
   useEffect(() => {
     const mql = window.matchMedia(DRAG_DISABLED_QUERY);
     function syncPosition(query: MediaQueryList | MediaQueryListEvent) {
-      if (query.matches) setPosition({ x: 0, y: 0 });
+      if (query.matches) {
+        setPosition({ x: 0, y: 0 });
+        setCustomSize(null);
+      }
     }
     syncPosition(mql);
     mql.addEventListener("change", syncPosition);
@@ -208,13 +239,96 @@ export function Window({
     }
   }
 
+  function handleGrowPointerDown(e: ReactPointerEvent<HTMLButtonElement>) {
+    if (e.button !== 0 || !outerRef.current || !innerRef.current) return;
+    // Same guard as handlePointerDown — disabled below 1024px, same
+    // breakpoint drag already respects.
+    if (window.matchMedia(DRAG_DISABLED_QUERY).matches) return;
+    const rect = outerRef.current.getBoundingClientRect();
+    const innerRect = innerRef.current.getBoundingClientRect();
+    resizeRef.current = {
+      pointerId: e.pointerId,
+      startClientX: e.clientX,
+      startClientY: e.clientY,
+      startWidth: innerRect.width,
+      startHeight: innerRect.height,
+      // Clearance relative to the window's actual current on-screen
+      // position (rect.left/top), not the viewport center — matches the
+      // drag handler's own EDGE_MARGIN idiom above.
+      maxWidth: window.innerWidth - EDGE_MARGIN - rect.left,
+      maxHeight: window.innerHeight - EDGE_MARGIN - rect.top,
+    };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  }
+
+  function handleGrowPointerMove(e: ReactPointerEvent<HTMLButtonElement>) {
+    const resize = resizeRef.current;
+    if (!resize || resize.pointerId !== e.pointerId) return;
+
+    const dx = e.clientX - resize.startClientX;
+    const dy = e.clientY - resize.startClientY;
+
+    const nextWidth = clamp(
+      resize.startWidth + dx,
+      GROW_MIN_WIDTH,
+      resize.maxWidth,
+    );
+    const nextHeight = clamp(
+      resize.startHeight + dy,
+      GROW_MIN_HEIGHT,
+      resize.maxHeight,
+    );
+
+    setCustomSize({ width: nextWidth, height: nextHeight });
+  }
+
+  function handleGrowPointerUp(e: ReactPointerEvent<HTMLButtonElement>) {
+    if (resizeRef.current?.pointerId === e.pointerId) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+      resizeRef.current = null;
+    }
+  }
+
+  // prefers-reduced-motion skips straight to navigating — .closing's own
+  // transition is also neutralized under the same query (Window.module.css)
+  // as a belt-and-suspenders backstop, but this is what actually avoids
+  // running the animation in the first place.
+  function handleClose() {
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (reduceMotion) {
+      router.push("/");
+      return;
+    }
+    setIsClosing(true);
+  }
+
+  // .closing animates both transform and opacity (Window.module.css) —
+  // guarded to transform specifically so this only fires once per close,
+  // not once per animated property.
+  function handleInnerTransitionEnd(e: ReactTransitionEvent<HTMLDivElement>) {
+    if (isClosing && e.propertyName === "transform") {
+      router.push("/");
+    }
+  }
+
   return (
     <div
       className={styles.outer}
       ref={outerRef}
       style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
     >
-      <div className={`${styles.inner} ${size ? SIZE_CLASS[size] : ""}`}>
+      <div
+        className={`${styles.inner} ${size ? SIZE_CLASS[size] : ""} ${isClosing ? styles.closing : ""}`}
+        ref={innerRef}
+        style={
+          customSize
+            ? { width: customSize.width, height: customSize.height }
+            : undefined
+        }
+        onTransitionEnd={handleInnerTransitionEnd}
+      >
         <div
           className={`${styles.titleBar} ${isDragging ? styles.dragging : ""}`}
           onPointerDown={handlePointerDown}
@@ -222,6 +336,15 @@ export function Window({
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
         >
+          {pathname !== "/" && (
+            <button
+              type="button"
+              className={styles.closeBox}
+              aria-label="Close"
+              onPointerDown={(e) => e.stopPropagation()}
+              onClick={handleClose}
+            />
+          )}
           <span className={styles.flank} aria-hidden="true" />
           <span className={styles.title}>{title}</span>
           <span className={styles.flank} aria-hidden="true" />
@@ -248,6 +371,15 @@ export function Window({
             </div>
           )}
         </div>
+        <button
+          type="button"
+          className={styles.growBox}
+          aria-label="Resize window"
+          onPointerDown={handleGrowPointerDown}
+          onPointerMove={handleGrowPointerMove}
+          onPointerUp={handleGrowPointerUp}
+          onPointerCancel={handleGrowPointerUp}
+        />
       </div>
     </div>
   );

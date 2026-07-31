@@ -40,6 +40,8 @@
   max-width: min(1100px, 92vw);
   border: var(--border-width) solid var(--border-color);
   background: var(--bg-window);
+  /* Anchors .growBox (position: absolute, bottom-right corner). */
+  position: relative;
 }
 
 /* Impressum only — About used to share this size too, but now uses
@@ -110,6 +112,27 @@
   }
 }
 
+/* Close animation, applied to .inner — not .outer, which already carries
+ * its own drag-position transform (Window.tsx's inline style); animating
+ * a second, different transform on the same element would fight it. */
+.closing {
+  transform: scale(0.05);
+  opacity: 0;
+  transform-origin: top left;
+  transition:
+    transform 220ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 220ms ease;
+}
+
+/* Belt-and-suspenders — handleClose (Window.tsx) already skips this path
+ * entirely under reduced motion, this just protects any future code path
+ * that sets isClosing without checking. */
+@media (prefers-reduced-motion: reduce) {
+  .closing {
+    transition: none;
+  }
+}
+
 .titleBar {
   display: flex;
   align-items: center;
@@ -149,6 +172,38 @@
   .titleBar {
     cursor: default;
   }
+
+  /* Same breakpoint already used everywhere else to disable drag —
+   * resize and close-animation are desktop-only too. */
+  .closeBox,
+  .growBox {
+    display: none;
+  }
+}
+
+/* Classic Mac title-bar close box — top-left, before the left .flank
+ * (Window.tsx). var(--scrollbar-width) reuses the existing "chrome
+ * control" size token instead of a new magic number. */
+.closeBox {
+  width: var(--scrollbar-width);
+  height: var(--scrollbar-width);
+  border: var(--border-width) solid var(--border-color);
+  background: var(--bg-chrome);
+  flex-shrink: 0;
+  cursor: pointer;
+  padding: 0;
+  transition:
+    transform 100ms ease,
+    background-color 100ms ease;
+}
+
+/* Same fill .titleBar:hover already uses. */
+.closeBox:hover {
+  background: var(--color-grey-300);
+}
+
+.closeBox:active {
+  transform: scale(0.9);
 }
 
 .flank {
@@ -198,6 +253,48 @@
    * case studies). */
   flex: 1 1 auto;
   min-height: 0;
+}
+
+/* Classic Mac resize handle — bottom-right corner, flush on .inner's own
+ * border (position: relative, above). Diagonal hatch, same repeating-
+ * gradient technique as .flank, rotated to a corner-grip angle instead of
+ * a horizontal pinstripe. */
+.growBox {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: var(--scrollbar-width);
+  height: var(--scrollbar-width);
+  border: var(--border-width) solid var(--border-color);
+  background: repeating-linear-gradient(
+      135deg,
+      var(--border-color) 0,
+      var(--border-color) 1px,
+      transparent 1px,
+      transparent 3px
+    )
+    var(--bg-chrome);
+  padding: 0;
+  cursor: nwse-resize;
+  transition: background-color 100ms ease;
+}
+
+.growBox:hover {
+  background-color: var(--color-grey-300);
+}
+
+/* Same fixed-black-on-hover-fill fix already applied to .flank above —
+ * the hover fill is a fixed light grey regardless of theme, so the hatch
+ * (drawn in --border-color, which flips light in dark mode) goes
+ * low-contrast against it unless pinned to black here too. */
+[data-theme="dark"] .growBox:hover {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--color-black) 0,
+    var(--color-black) 1px,
+    transparent 1px,
+    transparent 3px
+  );
 }
 
 .content {
