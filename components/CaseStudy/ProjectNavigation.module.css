@@ -5,6 +5,11 @@
   max-width: 848px;
   margin: var(--space-9) auto 0;
   padding-top: var(--space-6);
+  /* padding, not margin — a trailing margin on the last child of
+   * Window's scrollable .content doesn't reserve scroll space in the
+   * browser (a known overflow/scrollHeight quirk), so it silently
+   * vanishes; padding on .nav itself doesn't have that problem. */
+  padding-bottom: var(--space-9);
   border-top: var(--border-width) solid var(--border-color);
 }
 

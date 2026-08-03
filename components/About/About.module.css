@@ -2,6 +2,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-9);
+  /* Matches ProjectNavigation's own bottom spacing — padding, not
+   * margin, since a trailing margin on the last in-flow child of
+   * Window's scrollable .content doesn't reserve scroll space in the
+   * browser (see ProjectNavigation.module.css's own comment). */
+  padding-bottom: var(--space-9);
 }
 
 .grid {

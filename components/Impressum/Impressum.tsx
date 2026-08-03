@@ -26,7 +26,7 @@ export function Impressum() {
         <p className={styles.body}>
           Phone: +49 151 207 50 2 50
           <br />
-          E-Mail: paulkim.designs@gmail.com
+          E-Mail: hello@paulkim.design
         </p>
       </section>
 

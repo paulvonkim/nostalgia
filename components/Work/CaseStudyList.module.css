@@ -2,6 +2,11 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-9) var(--space-8);
+  /* Matches ProjectNavigation's own bottom spacing — padding, not
+   * margin, since a trailing margin on the last in-flow child of
+   * Window's scrollable .content doesn't reserve scroll space in the
+   * browser (see ProjectNavigation.module.css's own comment). */
+  padding-bottom: var(--space-9);
 }
 
 /* Auto-fit collapses to 1 column wherever a tablet viewport can't

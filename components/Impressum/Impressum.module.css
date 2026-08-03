@@ -5,6 +5,11 @@
   max-width: 560px;
   font-family: var(--font-body);
   color: var(--text-color);
+  /* Matches ProjectNavigation's own bottom spacing — padding, not
+   * margin, since a trailing margin on the last in-flow child of
+   * Window's scrollable .content doesn't reserve scroll space in the
+   * browser (see ProjectNavigation.module.css's own comment). */
+  padding-bottom: var(--space-9);
 }
 
 /* Geist Pixel (Square variant) — overrides .impressum's inherited
