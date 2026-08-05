@@ -1,6 +1,5 @@
 import Image from "next/image";
 import type { CaseStudy } from "@/data/case-studies";
-import { HERO_IMAGE_DIMENSIONS } from "@/data/hero-image-dimensions";
 import styles from "./CaseStudyHero.module.css";
 
 interface CaseStudyHeroProps {
@@ -36,7 +35,6 @@ export function CaseStudyHero({ study }: CaseStudyHeroProps) {
   const notices = (study.sections ?? []).filter(
     (section) => section.type === "notice",
   );
-  const dimensions = HERO_IMAGE_DIMENSIONS[study.id];
 
   return (
     <div className={styles.hero}>
@@ -84,8 +82,8 @@ export function CaseStudyHero({ study }: CaseStudyHeroProps) {
         <Image
           src={study.imageUrl}
           alt={study.title}
-          width={dimensions.width}
-          height={dimensions.height}
+          width={study.imageWidth}
+          height={study.imageHeight}
           priority
           className={styles.image}
           sizes="(max-width: 900px) 92vw, 848px"

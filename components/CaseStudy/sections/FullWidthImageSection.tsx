@@ -7,9 +7,11 @@ interface FullWidthImageSectionProps {
   caption?: string;
 }
 
-// Wider nested-window frame, caption in a bottom status-bar strip (not a
-// floating web caption). No hover-zoom, no lightbox, no dimmed overlay —
-// plain static image. No ASCII/dither effect — that's Hero/About only.
+// Wider nested-window frame, plain caption below it — not a bottom
+// status-bar strip inside the chrome. Same reasoning as VideoSection's
+// own caption: text below in system font, not squeezed into the window
+// itself. No hover-zoom, no lightbox, no dimmed overlay — plain static
+// image. No ASCII/dither effect — that's Hero/About only.
 //
 // size="wide" (848px, matching SectionRenderer's .stack column), not
 // "medium" (600px) — SectionWindow.tsx's own size-hierarchy comment
@@ -27,15 +29,18 @@ export function FullWidthImageSection({
   caption,
 }: FullWidthImageSectionProps) {
   return (
-    <SectionWindow size="wide" statusBar={caption}>
-      <Image
-        src={image.url}
-        alt={image.alt}
-        width={1700}
-        height={1100}
-        className={styles.image}
-        sizes="(max-width: 900px) 92vw, 848px"
-      />
-    </SectionWindow>
+    <div className={styles.section}>
+      <SectionWindow size="wide">
+        <Image
+          src={image.url}
+          alt={image.alt}
+          width={1700}
+          height={1100}
+          className={styles.image}
+          sizes="(max-width: 900px) 92vw, 848px"
+        />
+      </SectionWindow>
+      {caption && <p className={styles.caption}>{caption}</p>}
+    </div>
   );
 }

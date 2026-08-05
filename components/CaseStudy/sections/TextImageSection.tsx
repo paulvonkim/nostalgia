@@ -8,9 +8,11 @@ interface TextImageSectionProps {
   image: { url: string; alt: string };
 }
 
-// Image in a small nested window — mini title bar using the image's alt as
-// the title text, same border language as the main Window, smaller scale.
-// No ASCII/dither effect — that's Hero/About only.
+// Image in a small nested window, same border language as the main
+// Window, smaller scale. No title bar — the image's alt text is
+// accessibility metadata, not display copy, so it isn't put on screen as
+// a (truncating, single-line) window title. No ASCII/dither effect —
+// that's Hero/About only.
 export function TextImageSection({
   heading,
   body,
@@ -23,7 +25,7 @@ export function TextImageSection({
         <p className={styles.body}>{body}</p>
       </div>
       <div className={styles.imageCol}>
-        <SectionWindow title={image.alt} size="medium">
+        <SectionWindow size="medium">
           <Image
             src={image.url}
             alt={image.alt}

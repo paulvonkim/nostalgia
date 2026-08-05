@@ -1,6 +1,22 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
 .image {
   display: block;
   width: 100%;
   height: auto;
   object-fit: contain;
+}
+
+/* Plain text below the frame, not the window's own chrome — see
+ * VideoSection.module.css's identical .caption for the same reasoning:
+ * a single-line title bar truncates, plain text wraps naturally. */
+.caption {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--text-color-muted);
 }

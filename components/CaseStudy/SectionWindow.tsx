@@ -8,12 +8,10 @@ const SIZE_CLASS = {
 } as const;
 
 interface SectionWindowProps {
-  /** Omit to render without a top title bar (full-width-image uses only
-   * the bottom status bar, per design.md §12). */
+  /** Omit to render without a top title bar — full-width-image and video
+   * both use this; any caption for either goes below the window as plain
+   * text (FullWidthImageSection/VideoSection's own .caption), not chrome. */
   title?: string;
-  /** Bottom status-bar strip (Photoshop 1.0 info-bar reference) — distinct
-   * from the plain-text caption used below the video section's frame. */
-  statusBar?: ReactNode;
   /** Size hierarchy (design.md): hero image is largest, full-width-image
    * ("wide") is the next tier down at the full 848px column, text-image
    * ("medium") is smaller still so it doesn't compete for attention,
@@ -30,7 +28,6 @@ interface SectionWindowProps {
 // inside a scrolling case study body.
 export function SectionWindow({
   title,
-  statusBar,
   size = "compact",
   children,
 }: SectionWindowProps) {
@@ -46,7 +43,6 @@ export function SectionWindow({
           </div>
         )}
         <div className={styles.body}>{children}</div>
-        {statusBar && <div className={styles.statusBar}>{statusBar}</div>}
       </div>
     </div>
   );

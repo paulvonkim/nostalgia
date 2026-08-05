@@ -3,7 +3,6 @@ import { Button } from "@/components/Button/Button";
 import { HoverGrainImage } from "@/components/GrainPulse/HoverGrainImage";
 import { Tag } from "@/components/Tag/Tag";
 import type { CaseStudy } from "@/data/case-studies";
-import { HERO_IMAGE_DIMENSIONS } from "@/data/hero-image-dimensions";
 import styles from "./CaseStudyCard.module.css";
 
 interface CaseStudyCardProps {
@@ -23,7 +22,6 @@ interface CaseStudyCardProps {
 // (it renders its own <a>) and because that's the reference's own model:
 // a static panel you read, with one explicit "open" action.
 export function CaseStudyCard({ study, priority = false }: CaseStudyCardProps) {
-  const dimensions = HERO_IMAGE_DIMENSIONS[study.id];
   return (
     <div className={styles.card}>
       <div className={styles.imageFrame}>
@@ -31,8 +29,8 @@ export function CaseStudyCard({ study, priority = false }: CaseStudyCardProps) {
           <Image
             src={study.imageUrl}
             alt={study.title}
-            width={dimensions.width}
-            height={dimensions.height}
+            width={study.imageWidth}
+            height={study.imageHeight}
             priority={priority}
             className={styles.image}
             sizes="(max-width: 640px) 92vw, 46vw"

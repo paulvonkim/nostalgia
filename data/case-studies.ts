@@ -31,6 +31,8 @@ export interface CaseStudy {
   title: string;
   description: string;
   imageUrl: string;
+  imageWidth: number;
+  imageHeight: number;
   tags: string[];
   featured?: boolean;
   duration?: string;
@@ -53,6 +55,8 @@ export const caseStudies: CaseStudy[] = [
     description:
       "A B2B SaaS transitioning from document management to agentic automation.",
     imageUrl: "/images/case-studies/arco-agent/hero-img.png",
+    imageWidth: 2068,
+    imageHeight: 1182,
     heroBackground: "#1a0a2e",
     heroGradient: "linear-gradient(to bottom, #2d1b69, #0a0a0a)",
     accentColor: "#7c3aed",
@@ -125,6 +129,8 @@ export const caseStudies: CaseStudy[] = [
     description:
       "Enterprise PLM implementation across 45 stakeholders, from fragmented spreadsheets to a single source of truth.",
     imageUrl: "/images/case-studies/drykorn-plm/hero-img.png",
+    imageWidth: 2068,
+    imageHeight: 1192,
     accentColor: "hsl(0, 70%, 55%)",
     heroGradient: "linear-gradient(to bottom, #1a0000, #0a0a0a)",
     tags: ["Service Design", "Change Management", "PLM"],
@@ -221,11 +227,12 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: "arco-design-system",
-    hidden: true,
     title: "A design system the next tools can read",
     description:
       "A sprawling Figma workspace with no single source of truth. Three team members who had never worked together. Half a day a week to fix it.",
-    imageUrl: "/images/case-studies/arco-ds/hero-img.png",
+    imageUrl: "/images/case-studies/arco-ds/hero-image.png",
+    imageWidth: 4144,
+    imageHeight: 2352,
     heroBackground: "#0a1f1e",
     heroBorderColor: "rgba(13, 148, 136, 0.3)",
     accentColor: "#0d9488",
@@ -270,10 +277,9 @@ export const caseStudies: CaseStudy[] = [
       {
         type: "full-width-image",
         image: {
-          url: "/images/case-studies/arco-ds/variables-panel.png",
+          url: "/images/case-studies/arco-ds/variablesPanel.png",
           alt: "Variables panel in Figma showing token architecture with semantic categories and states",
         },
-        caption: "The roadmap defined before a single token was touched.",
       },
       {
         type: "text-image",
@@ -295,8 +301,8 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         type: "text-image",
-        heading: "What was built in half a day a week",
-        body: "Half a day a week. That was the constraint. In that time: a full roadmap, a token architecture at 86% consistency between Figma and Storybook, and a pipeline between design and AI-assisted production that didn't exist before. The system is not finished. But it has a direction, and the next designer who touches it will know exactly where they are.",
+        heading: "What was built, one half-day a week at a time",
+        body: "Design systems are never finished, they evolve. This one runs on a standing half-day-a-week cadence, and in that time it produced a full roadmap, a token architecture at 86% consistency between Figma and Storybook, and a pipeline connecting design to AI-assisted production that didn't exist before.",
         image: {
           url: "/images/case-studies/arco-ds/annotations.png",
           alt: "Figma variables panel showing token structure",
@@ -310,6 +316,8 @@ export const caseStudies: CaseStudy[] = [
     description:
       "A declining category rebuilt through field research. Still in the range, still growing, years later.",
     imageUrl: "/images/case-studies/suits/hero-img.png",
+    imageWidth: 3108,
+    imageHeight: 1791,
     accentColor: "hsl(210, 20%, 35%)",
     heroGradient: "linear-gradient(to bottom, #111827, #030712)",
     tags: ["Service Design", "Field Research", "Systems Design"],
@@ -432,6 +440,8 @@ export const caseStudies: CaseStudy[] = [
     description:
       "A B2B SaaS document processing product, anonymised. Sole designer, inherited mid-development.",
     imageUrl: "/images/case-studies/arco/hero-img.png",
+    imageWidth: 3120,
+    imageHeight: 1770,
     tags: ["Feature Design", "B2B SaaS", "JTBD"],
     featured: false,
     role: "Product Designer (Sole Designer)",

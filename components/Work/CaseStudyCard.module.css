@@ -30,7 +30,7 @@
  * CaseStudyHero and the section images. No fixed aspect-ratio on this
  * frame, unlike the old .stage: forcing one is exactly what would crop
  * it again, so this just sizes to whatever the real image's own ratio
- * (via HERO_IMAGE_DIMENSIONS) comes out to.
+ * (stored on the case study record) comes out to.
  *
  * No `border` here, matching the reference exactly — its frame edge is
  * built entirely from the box-shadow (bevel + corner accent), not a flat
@@ -53,51 +53,43 @@
     1px 1px 0 0 var(--color-black);
 }
 
-/* Grayscale-to-color hover, cross-faded through the same grain-pulse
- * texture DitherReveal uses (components/GrainPulse/) — hovering the
- * image itself, not the whole card, matching how the shared Tag
- * component's own hover (Tag.module.css) is scoped to the tag rather
- * than the card: not every reaction here assumes "the whole card is one
- * clickable unit." grayscale(0.6), not full grayscale(1) — partial
- * desaturation per the brief. */
+/* Grayscale tint only — the work grid is now static, so the image stays
+ * visually calm instead of cross-fading on hover. */
 .image {
   display: block;
   width: 100%;
   height: auto;
   object-fit: contain;
   filter: grayscale(0.6);
-  transition: filter var(--grain-duration) var(--grain-easing);
+  transition: filter 350ms ease;
 }
 
-.imageStage:hover .image {
+/* Wrapper-specific tweaks for the HoverGrainImage stage */
+.imageStage {
+  overflow: hidden;
+  will-change: filter;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* :focus-within/:active are :hover's keyboard/touch equivalents (.card
+ * itself isn't focusable, but Button inside it is) — same reasoning as
+ * CaseStudyCard's title/description below. */
+.card:hover .image,
+.card:focus-within .image,
+.card:active .image {
   filter: grayscale(0);
 }
 
-/* No reliable hover on touch (useGrainPulse also skips wiring its
- * pointer handlers there, see components/GrainPulse/useGrainPulse.ts) —
- * same fallback as Home's DitherReveal: show the resolved, full-color
- * state by default instead of stranding touch visitors on the
- * desaturated rest state with no way to trigger :hover. */
+/* No reliable hover on touch — render at full color by default rather
+ * than stranding touch visitors on the desaturated rest state with no
+ * way to trigger :hover. */
 @media (hover: none) {
   .image {
     filter: grayscale(0);
   }
 }
 
-/* No padding/gap here — .card's own 24px padding is the only inset, so
- * title/description/tags/button sit flush with the image frame's edges.
- * The earlier version added 4px of its own horizontal padding on top of
- * that, misaligning text ~4px from the image; spacing between children
- * is each element's own margin below (matching the reference's rhythm)
- * instead of a flex gap layered on top of them.
- *
- * flex: 1 1 auto — CaseStudyList's grid already stretches every .card in
- * a row to match the row's tallest card (CSS Grid's default
- * align-items: stretch); without this, that extra height just sat below
- * a shorter card's content with nothing claiming it, so .footer stayed
- * wherever the text happened to end instead of at the card's true bottom
- * edge. This makes .content itself grow to fill that stretched height,
- * so .footer's margin-top: auto below has real space to push into. */
 .content {
   display: flex;
   flex-direction: column;
@@ -133,7 +125,7 @@
   font-size: 20px;
   line-height: 1.2;
   color: var(--color-grey-500);
-  transition: color 150ms ease;
+  transition: color 200ms ease;
 }
 
 .description {
@@ -143,23 +135,18 @@
   font-weight: 200;
   line-height: 1.4;
   color: var(--color-grey-500);
-  transition: color 150ms ease;
+  transition: color 200ms ease;
 }
 
-/* var(--text-color), not the fixed --color-grey-700: grey-700 is a dark
- * grey, so "darkening on hover" only reads as more contrast in light
- * mode — against dark mode's near-black window background it went the
- * wrong way, dropping contrast from ~5.4:1 at rest to ~2.2:1 on hover.
- * --text-color flips with the theme (black in light, near-white in
- * dark), so hover gains contrast in both directions instead of losing
- * it in one.
+/* var(--text-color), not a fixed color: --text-color flips with the
+ * theme (black in light, near-white in dark), so hover gains contrast
+ * in both directions instead of losing it in dark mode.
  *
  * :focus-within and :active are hover's keyboard/touch equivalents —
- * :hover never fires for either. .card itself isn't focusable (a plain
- * div, not a link), but Button inside it is, so :focus-within fires once
- * a keyboard user tabs to it; :active covers touch, since it applies to
- * ancestors of whatever's being pressed for as long as the press is
- * held, same as it would on desktop mouse-down. */
+ * :hover never fires for either. .card itself isn't focusable, but
+ * Button inside it is, so :focus-within fires once a keyboard user tabs
+ * to it; :active covers touch, applying to ancestors of whatever's
+ * being pressed for as long as the press is held. */
 .card:hover .title,
 .card:hover .description,
 .card:focus-within .title,
@@ -169,8 +156,8 @@
   color: var(--text-color);
 }
 
-/* No reliable hover on touch — same reasoning as .image above: render at
- * full contrast by default rather than leaving it stuck at the muted
+/* No reliable hover on touch — same reasoning as .image above: render
+ * at full contrast by default rather than leaving it stuck at the muted
  * grey rest state with no hover to ever lift it. */
 @media (hover: none) {
   .title,
