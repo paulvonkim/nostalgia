@@ -8,8 +8,8 @@ export function About() {
     <div className={styles.about}>
       <AboutHeader />
       <div className={styles.grid}>
-        {aboutCards.map((card) => (
-          <AboutCard key={card.id} card={card} />
+        {aboutCards.map((card, index) => (
+          <AboutCard key={card.id} card={card} index={index} />
         ))}
       </div>
     </div>

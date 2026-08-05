@@ -1,4 +1,8 @@
+"use client";
+
 import type { ReactNode } from "react";
+import reveal from "@/components/ScrollReveal/ScrollReveal.module.css";
+import { useScrollReveal } from "@/components/ScrollReveal/useScrollReveal";
 import styles from "./SectionWindow.module.css";
 
 const SIZE_CLASS = {
@@ -32,8 +36,12 @@ export function SectionWindow({
   children,
 }: SectionWindowProps) {
   const sizeClass = SIZE_CLASS[size];
+  const { ref, isVisible } = useScrollReveal();
   return (
-    <div className={`${styles.outer} ${sizeClass ? styles[sizeClass] : ""}`}>
+    <div
+      ref={ref}
+      className={`${styles.outer} ${sizeClass ? styles[sizeClass] : ""} ${isVisible ? reveal.visible : reveal.hidden}`}
+    >
       <div className={styles.inner}>
         {title && (
           <div className={styles.titleBar}>

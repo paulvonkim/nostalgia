@@ -1,18 +1,31 @@
+"use client";
+
 import Image from "next/image";
 import { HoverGrainImage } from "@/components/GrainPulse/HoverGrainImage";
+import reveal from "@/components/ScrollReveal/ScrollReveal.module.css";
+import { useScrollReveal } from "@/components/ScrollReveal/useScrollReveal";
 import type { AboutCard as AboutCardData } from "@/data/about-cards";
 import styles from "./AboutCard.module.css";
 
 interface AboutCardProps {
   card: AboutCardData;
+  /** Position in the grid — staggers each card's reveal so a row cascades
+   * in instead of popping together. Capped at 240ms so a long row doesn't
+   * leave the last card waiting a beat after the rest have settled. */
+  index: number;
 }
 
 // Static tile — image, heading, caption. No tags, no CTA (those live in
 // AboutHeader only), but heading/caption reuse CaseStudyCard's hover
 // color treatment (see AboutCard.module.css).
-export function AboutCard({ card }: AboutCardProps) {
+export function AboutCard({ card, index }: AboutCardProps) {
+  const { ref, isVisible } = useScrollReveal();
   return (
-    <div className={styles.card}>
+    <div
+      ref={ref}
+      className={`${styles.card} ${isVisible ? reveal.visible : reveal.hidden}`}
+      style={{ transitionDelay: `${Math.min(index * 80, 240)}ms` }}
+    >
       <div className={styles.imageFrame}>
         <HoverGrainImage className={styles.imageStage}>
           <Image
